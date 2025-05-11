@@ -1,0 +1,124 @@
+<div class="background-blur"></div>
+
+<div class="container">
+  <header>
+    <!-- Logo -->
+    <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+  </header>
+
+  <section class="block">
+    <h2>📄 Document à signer</h2>
+
+    <!-- Bouton Choisir un PDF -->
+    <label class="custom-upload-btn">
+      CHOISIR UN PDF
+      <input type="file" (change)="onFileSelected($event)" accept="application/pdf" class="hidden-input" />
+    </label> 
+    <span class="file-status">{{ fileName }}</span>
+
+    <!-- Zone d'affichage du PDF -->
+    <section style="position: relative; margin-top: 20px;">
+      <div class="pdf-container" #pdfContainer>
+        <pdf-viewer
+          *ngIf="pdfSrc"
+          [src]="pdfSrc"
+          [render-text]="true"
+          [original-size]="true"
+          [show-all]="true"
+          (after-load-complete)="chargerPDF($event)"
+          style="display: block; width: 100%; height: 800px; border: 1px solid #ccc;">
+        </pdf-viewer>
+
+        <canvas
+          id="pdf-canvas"
+          style="position: absolute; top: 0; left: 0; z-index: 10;"
+          (mousedown)="placerSignature($event)">
+        </canvas>
+      </div>
+    </section>
+  </section>
+
+  <!-- Signature manuelle (optionnelle) -->
+  <section class="block">
+    <h2>✍️ Votre signature</h2>
+    <div class="signature-box">
+      <canvas id="canvas" width="860" height="120"></canvas>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="btn-group">
+      <button class="btn" (click)="effacerSignature()">EFFACER</button>
+      <button class="btn" (click)="ajouterFichier()">AJOUTER</button>
+      <button class="btn" (click)="telechargerDocument()">TÉLÉCHARGER LE DOCUMENT</button>
+    </div>
+  </section>
+
+  <!-- Infos utilisateur -->
+  <section class="infos">
+    <p><strong>Informations utilisateur</strong></p>
+    <p>Nom : {{ utilisateur.nom }}</p>
+    <p>Rôle : Maître d’ouvrage</p>
+    <p>Email : {{ utilisateur.email }}</p>
+    <p>Date : {{ today | date: 'fullDate' }}</p>
+  </section>
+
+  <!-- Infos sur le document -->
+  <section class="infos">
+    <p><strong>Informations sur le document</strong></p>
+    <p>Titre : {{ document.titre }}</p>
+    <p>Date de création : {{ document.dateCreation | date: 'fullDate' }}</p>
+    <p>Référence interne : {{ document.referenceInterne }}</p>
+    <p>Nombre de signataires : {{ document.nombreSignataires }}</p>
+  </section>
+
+  <!-- Liste des signataires -->
+  <section class="block">
+    <h2>Liste des signataires</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Fonction</th>
+          <th>Email</th>
+          <th>Statut</th>
+          <th>Date de signature</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let signataire of signataires">
+          <td>{{ signataire.nom }}</td>
+          <td>{{ signataire.fonction }}</td>
+          <td>{{ signataire.email }}</td>
+          <td class="status" [ngClass]="{'signed': signataire.signe, 'pending': !signataire.signe}">
+            <span *ngIf="signataire.signe">✅ Signé</span>
+            <span *ngIf="!signataire.signe">🕒 En attente</span>
+          </td>
+          <td>{{ signataire.dateSignature || 'En attente' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <p>⚠️ Cette signature électronique a la même valeur légale qu’une signature manuscrite.</p>
+    <p><strong>J'accepte les conditions générales</strong></p>
+  </footer>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

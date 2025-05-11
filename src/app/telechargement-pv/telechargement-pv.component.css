@@ -1,0 +1,140 @@
+.background-blur { 
+  background-image: url('/assets/image-dawamaghreb/imageaccueil.jpg.webp');
+  background-size: cover;
+  background-position: center;
+  filter: blur(4px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.container {
+  background-color: rgba(254, 187, 95, 0.95); /* Orange clair avec opacité */
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  height: 120px;
+}
+
+h1 {
+  font-size: 1.8rem;
+  color: #fff;
+  margin: 0;
+}
+
+.infos h2 {
+  margin-bottom: 10px;
+  color: #003049;
+}
+
+.pdf-container {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  max-height: 600px;
+}
+
+.btn {
+  background-color: #2DBDB4;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 5px 10px 5px 0;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background-color: white;
+  color: #2DBDB4;
+  border: 1px solid #2DBDB4;
+}
+
+.btn-group {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+footer {
+  margin-top: 30px;
+  font-size: 13px;
+  text-align: center;
+  color: #1b1b1b;
+}
+
+table,
+td {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+.infos {
+  margin-top: 30px;
+  font-size: 16px;
+  color: #1b1b1b;
+  background-color: #ffffffd9;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.infos ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.infos ul li {
+  margin-bottom: 8px;
+}
+
+.infos a {
+  color: #003049;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.infos a:hover {
+  text-decoration: underline;
+  color: #2DBDB4;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .btn-group {
+    flex-direction: column;
+  }
+}

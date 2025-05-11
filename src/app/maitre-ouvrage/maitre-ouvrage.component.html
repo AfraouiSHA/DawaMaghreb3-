@@ -1,0 +1,52 @@
+<div class="home-container">  
+  <!-- Image floue en arrière-plan -->
+  <div class="blur-background"></div>
+
+  <!-- Logo -->
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+
+  <!-- Titre -->
+  <h1 class="title">MAÎTRE D’OUVRAGE</h1>
+
+  <!-- Boutons principaux -->
+  <div class="button-row">
+    <button class="orange-btn">TÉLÉCHARGER LES DOCUMENTS</button>
+    <button class="orange-btn" (click)="goToTelechargementPV()">TÉLÉCHARGER PV</button>
+    
+
+    <!-- Bouton pour la signature électronique -->
+    <button class="orange-btn" (click)="goToSignatureElectronique()">SIGNER ÉLECTRONIQUEMENT</button>
+  </div>
+
+  <!-- Tableau -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>DOCUMENT</th>
+          <th>STATUT</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+         <td>PV N°01/2025</td>
+          <td><span class="status green">Validé</span></td>
+          <td><button class="action-btn">📥 Télécharger</button></td>
+        </tr>
+        <tr>
+          <td>PV N°02/2025</td>
+          <td><span class="status yellow">En attente</span></td>
+          <td><button class="action-btn">✍️ Signer</button></td>
+        </tr>
+        <tr>
+          <td>PV N°03/2025</td>
+          <td><span class="status red">Rejeté</span></td>
+          <td><button class="action-btn">🔁 Réessayer</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  
