@@ -39,6 +39,9 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { T } from '@angular/cdk/portal-directives.d-BoG39gYN';
 import { TelechargementPvComponent } from './telechargement-pv/telechargement-pv.component';
 import { provideHttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
+
+
 
 @NgModule({
   declarations: [
