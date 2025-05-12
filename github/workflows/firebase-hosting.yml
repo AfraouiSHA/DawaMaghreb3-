@@ -3,30 +3,31 @@ name: Deploy to Firebase Hosting
 on:
   push:
     branches:
-      - main  # ou master selon votre branche principale
+      - main  # ou 'master', selon ta branche par défaut
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build Angular project
-        run: npm run build -- --output-path=internship-project
+      - name: Build Angular app
+        run: npm run build -- --configuration production
 
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_DAWAMAGHREB }}"
           channelId: live
+          projectId: dawamaghreb-700a9
