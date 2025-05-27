@@ -44,7 +44,7 @@ export const routes: Routes = [
   { path: 'mot-de-passe-oublie', component: MotDePasseComponent },
   { path: 'parametres', component: ParametresComponent },
   { path: 'suivie-decompte', component: SuivieDecompteComponent },
-
+  
   // 🔁 Fallback
   { path: '**', redirectTo: 'login' }
 ];

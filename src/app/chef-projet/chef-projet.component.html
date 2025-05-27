@@ -1,41 +1,44 @@
-<div class="home-container">
-    <!-- Image floue -->
-    <div class="blur-background"></div>
-  
-    <!-- Logo -->
-    <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg"
-         alt="Logo Dawa"
-         class="logo" />
-  
-    <!-- Titre -->
-    <h1 class="title">CHEF DE PROJET</h1>
-  
-    <!-- Cartes fonctionnalités -->
-    <div class="cards">
-      <!-- 1. Documents -->
-      <a routerLink="/documents" class="card">
-        <h2>Centraliser les documents</h2>
-        <button class="mini-btn">➔</button>
-      </a>
-  
-      <!-- 2. Décomptes -->
-      <a routerLink="/decomptes" class="card">
-        <h2>Suivi des décomptes</h2>
-        <button class="mini-btn">➔</button>
-      </a>
-  
-      <!-- 3. Mieux offrant -->
-      <a routerLink="/mieux-offrant" class="card">
-        <h2>Résultats mieux offrant</h2>
-        <button class="mini-btn">➔</button>
-      </a>
-  
-      <!-- 4. Communication fournisseurs -->
-      <a routerLink="/fournisseurs" class="card">
-        <h2>Communication fournisseurs</h2>
-        <button class="mini-btn">➔</button>
-      </a>
+<div class="home-container"> 
+  <!-- Image floue -->
+  <div class="blur-background"></div>
+
+  <!-- Logo -->
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg"
+       alt="Logo Dawa"
+       class="logo" />
+
+  <!-- Titre -->
+  <h1 class="title">CHEF DE PROJET</h1>
+
+  <!-- Cartes fonctionnalités -->
+  <div class="cards">
+
+    <!-- 1. Documents -->
+    <a routerLink="/documents" class="card">
+      <h2>Centraliser les documents</h2>
+      <button class="mini-btn">➔</button>
+    </a>
+
+    <!-- 2. Suivi des décomptes -->
+    <div class="card">
+      <h2>Suivi des décomptes</h2>
+      <button class="mini-btn" (click)="allerAuSuiviDecompte()">➔</button>
     </div>
-  </div>
+
+    <!-- 3. Résultats mieux offrant -->
+    <div class="card">
+      <h2>Résultats mieux offrant</h2>
+      <button class="mini-btn" (click)="allerAuMieuxOffrant()">➔</button>
+    </div>
+
+ <!-- 4. Communication fournisseurs -->
+<div class="card">
+  <h2>Communication fournisseurs</h2>
+  <button class="mini-btn" (click)="allerAuCommunicationFournisseurs()">➔</button>
+</div>
+</div>
   
-  
+
+
+
+
