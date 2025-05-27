@@ -1,0 +1,86 @@
+.forgot-password-page {
+    position: relative;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  .blur-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('/assets/image-dawamaghreb/imageaccueil.jpg.webp');
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    z-index: 0;
+  }
+  
+  .forgot-password-content {
+    position: relative;
+    z-index: 1;
+    max-width: 400px;
+    margin: 6rem auto;
+    background-color: rgba(247, 247, 247, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  
+  .forgot-password-content .logo {
+    width: 140px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .forgot-password-content h2 {
+    color: #2DBDB4;
+    margin-bottom: 1rem;
+  }
+  
+  .forgot-password-content p {
+    margin-bottom: 1.5rem;
+  }
+  
+  .forgot-password-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .forgot-password-content input[type="email"] {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  .forgot-password-content button.btn-primary {
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #2DBDB4;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+  
+  .forgot-password-content button.btn-primary:hover {
+    opacity: 0.9;
+  }
+  
+  .back-login {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: #2DBDB4;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .back-login:hover {
+    text-decoration: underline;
+  }
+  

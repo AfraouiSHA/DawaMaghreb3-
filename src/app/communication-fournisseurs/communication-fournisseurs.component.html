@@ -1,0 +1,107 @@
+<div class="home-container">
+  <!-- Image floue -->
+  <div class="blur-background"></div>
+
+
+
+<div class="background-container">
+  <!-- Logo DAWA en haut à gauche -->
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" />
+
+   
+
+  <!-- Conteneur principal -->
+  <div class="communication-container">
+  
+    <!-- Formulaire ajout fournisseur -->
+    <section class="ajout-fournisseur">
+      <h2>Ajouter un fournisseur</h2>
+      <form #fournisseurForm="ngForm" (ngSubmit)="ajouterFournisseur()">
+        <input type="text" name="nom" placeholder="Nom de l'entreprise" [(ngModel)]="nouveauFournisseur.nom" required />
+        <input type="text" name="iceEntreprise" placeholder="ICE de l'entreprise" [(ngModel)]="nouveauFournisseur.iceEntreprise" required />
+        <input type="email" name="email" placeholder="Email" [(ngModel)]="nouveauFournisseur.email" required />
+        <input type="tel" name="telephone" placeholder="Téléphone" [(ngModel)]="nouveauFournisseur.telephone" />
+        <input type="text" name="adresse" placeholder="Adresse" [(ngModel)]="nouveauFournisseur.adresse" />
+        <button type="submit" [disabled]="!fournisseurForm.valid">Ajouter</button>
+      </form>
+    </section>
+  
+    <!-- Liste des fournisseurs -->
+    <aside class="suppliers-list">
+      <h2>Fournisseurs</h2>
+      <ul>
+        <li *ngFor="let fournisseur of fournisseurs"
+            [class.active]="fournisseur === fournisseurSelectionne"
+            (click)="selectionnerFournisseur(fournisseur)">
+          {{ fournisseur.nom }}
+        </li>
+      </ul>
+    </aside>
+  
+    <!-- Zone centrale avec chat et informations -->
+    <main class="chat-window" *ngIf="fournisseurSelectionne">
+      <header>
+        <h3>Message d'attribution au Fournisseur Retenu {{ fournisseurSelectionne.nom }}</h3>
+      </header>
+  
+      
+  
+      <footer>
+        <input type="text" placeholder="Écrire un message..." [(ngModel)]="nouveauMessage" (keydown.enter)="envoyerMessage()" name="message" />
+        <button (click)="envoyerMessage()">Envoyer</button>
+      </footer>
+  
+      <button class="btn-demande" (click)="envoyerMessage()">📤 envoyé la message au fournisseur </button>
+
+</main>
+</div>
+
+  
+  <!-- Bloc d’information sur le marché -->
+  <div class="marche-details" *ngIf="fournisseurSelectionne">
+    <h2> Informations générales sur le marché attribué</h2>
+    <ul>
+      <li><strong>Référence :</strong> {{ fournisseurSelectionne.marche?.reference || 'N/A' }}</li>
+      <li><strong>Date d’attribution :</strong> {{ fournisseurSelectionne.marche?.dateAttribution ? (fournisseurSelectionne.marche.dateAttribution | date: 'dd MMM yyyy') : 'N/A' }}</li>
+      <li><strong>Montant :</strong> {{ fournisseurSelectionne.marche?.montant ? (fournisseurSelectionne.marche.montant | currency: 'MAD':'symbol') : 'N/A' }}</li>
+      <li><strong>Durée :</strong> {{ fournisseurSelectionne.marche?.duree || 'N/A' }}</li>
+      <li><strong>Mode de passation :</strong> {{ fournisseurSelectionne.marche?.modePassation || 'N/A' }}</li>
+      <li><strong>Objet :</strong> {{ fournisseurSelectionne.marche?.objet || 'N/A' }}</li>
+    </ul>
+  
+    <h2> Coordonnées du fournisseur retenu</h2>
+    <ul>
+      <li><strong>Entreprise :</strong> {{ fournisseurSelectionne.nom }}</li>
+      <li><strong>ICE D'entreprise :</strong> {{ fournisseurSelectionne.ICE }}</li>
+      <li><strong>Email :</strong> {{ fournisseurSelectionne.email }}</li>
+      <li><strong>Téléphone :</strong> {{ fournisseurSelectionne.telephone }}</li>
+      <li><strong>Adresse :</strong> {{ fournisseurSelectionne.adresse }}</li>
+    </ul>
+  
+    <h2>📂 Documents liés à l’attribution</h2>
+    <ul>
+      <li><a href="#">📄 Lettre d’attribution</a></li>
+      <li><a href="#">📄 Contrat signé</a></li>
+      <li><a href="#">📄 PV de commission</a></li>
+      <li><a href="#">📄 Avis d’attribution</a></li>
+    </ul>
+  
+    
+  
+    <h2> Suivi et historique</h2>
+    <ul>
+      <li><strong>Date d’envoi :</strong> {{ fournisseurSelectionne.dateNotification ? (fournisseurSelectionne.dateNotification | date: 'dd MMM yyyy') : 'N/A' }}</li>
+      <li><strong>Statut :</strong> En attente</li>
+      <li><strong>Confirmation :</strong> Non reçue</li>
+      
+    </ul>
+  
+    
+    <ul class="actions">
+      <li><button (click)="modifierMessage()">✏️ Modifier le message</button></li>
+      <li><button (click)="joindreDocuments()">📎 Joindre des documents</button></li>
+      <li><button (click)="relancerFournisseur()">🔁 Relancer le fournisseur</button></li>
+      <li><button (click)="telechargerElements()">📥 Télécharger tous les éléments</button></li>
+    </ul>
+  </div>
+</div>

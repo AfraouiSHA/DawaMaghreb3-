@@ -1,0 +1,65 @@
+<div class="page-container">
+    <div class="blur-background"></div>
+  
+    <header class="header">
+      <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+      <h1 class="header-title">Suivi des Décomptes</h1>
+    </header>
+  
+    <div class="glass-card">
+      <section class="project-info">
+        <div><strong>Projet :</strong> {{ projet.nom }}</div>
+        <div><strong>Référence :</strong> {{ projet.reference }}</div>
+        <div><strong>Client :</strong> {{ projet.client }}</div>
+        <div><strong>Date début :</strong> {{ projet.dateDebut }}</div>
+        <div><strong>Échéance :</strong> {{ projet.echeance }}</div>
+        <div><strong>Statut :</strong> {{ projet.statut }}</div>
+      </section>
+  
+      <section class="table-section">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Période</th>
+              <th>Montant HT</th>
+              <th>Montant TTC</th>
+              <th>État</th>
+              <th>Date Validation</th>
+              <th>Date de Soumission</th>
+              <th>Date de Paiement</th>
+              <th>Montant Payé</th>
+              <th>Paiement</th>
+              <th>Justificatif</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of decomptes">
+              <td>{{ item.id }}</td>
+              <td>{{ item.periode }}</td>
+              <td>{{ item.montantHT }}</td>
+              <td>{{ item.montantTTC }}</td>
+              <td [ngClass]="{
+                    'etat': true,
+                    'valide': item.etat === 'Validé',
+                    'attente': item.etat === 'En attente'
+                  }">
+                {{ item.etat }}
+              </td>
+              <td>{{ item.dateValidation || '--' }}</td>
+              <td>{{ item.dateSoumission || '--' }}</td>
+              <td>{{ item.datePaiement || '--' }}</td>
+              <td>{{ item.montantPaye || '--' }}</td>
+              <td><button class="btn-voir">Voir</button></td>
+              <td>
+                <a *ngIf="item.justificatif" href="{{ item.justificatif }}" target="_blank" class="btn-voir">PDF</a>
+                <span *ngIf="!item.justificatif">--</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  
+  

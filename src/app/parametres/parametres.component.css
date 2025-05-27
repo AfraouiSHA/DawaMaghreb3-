@@ -1,0 +1,287 @@
+/* ----------------------------- */
+/* Conteneur principal du settings */
+.settings-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 30px;
+  position: relative;
+  z-index: 20;
+}
+
+/* Navigation des sections */
+.settings-nav {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #e8e8e8;
+}
+
+.settings-nav button {
+  background: none;
+  border: none;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #777;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  border-radius: 6px 6px 0 0;
+}
+
+.settings-nav button:hover {
+  color: #f0b295;
+  background-color: rgba(240, 178, 149, 0.1);
+}
+
+.settings-nav button.active {
+  color: #a288d9;
+  border-bottom-color: #a9c3f5;
+  background-color: #f5f5ff;
+  font-weight: 700;
+}
+
+/* Contenu de chaque section */
+.settings-content {
+  background-color: #fffdf8;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ----------------------------- */
+/* Sections de paramètres */
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.settings-section h2 {
+  border-bottom: 2px solid #f8d8a9;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  color: #f0c997;
+}
+
+/* Paires label + input */
+.info-pair {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-pair label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.info-pair input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.info-pair input:focus {
+  border-color: #f0c997;
+  outline: none;
+}
+
+/* Lignes des réglages */
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* Toggle thème */
+.theme-toggle button {
+  margin-left: 10px;
+  padding: 6px 20px;
+  border-radius: 20px;
+  border: 1px solid #fadaa9;
+  background-color: #fff9f2;
+  color: #e0a96d;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.theme-toggle button.active,
+.theme-toggle button:hover {
+  background-color: #dbe89e;
+  color: #fff;
+  border-color: #c6e67d;
+}
+
+/* ----------------------------- */
+/* Bouton déconnexion */
+.logout-button {
+  width: 100%;
+  padding: 14px;
+  font-weight: 700;
+  color: white;
+  background-color: #f6c781;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #e0a96d;
+}
+
+/* Entrées de l'historique */
+.history-entry {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.05);
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* ----------------------------- */
+/* Section Sécurité – mot de passe */
+.security-password-section {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+.security-password-section h2 {
+  font-size: 1.5rem;
+  color: #FEBB5F;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #FEBB5F;
+  padding-bottom: 10px;
+}
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.password-field-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.password-field-group label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.password-field-group input {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.password-field-group input:focus {
+  border-color: #2DBDB4;
+  outline: none;
+}
+
+.password-strength-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: -10px;
+}
+
+.strength-label {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.strength-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #ccc;
+  transition: background-color 0.3s;
+}
+
+.strength-none    { background-color: #ccc; }
+.strength-weak    { background-color: #f87171; }
+.strength-medium  { background-color: #fb923c; }
+.strength-strong  { background-color: #34d399; }
+.strength-very-strong { background-color: #059669; }
+
+/* Bouton mise à jour mot de passe */
+.btn-action {
+  background-color: #2DBDB4;      /* turquoise */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.btn-action:hover {
+  background-color: #26a7a0; /* plus foncé au survol */
+}
+
+
+/* ----------------------------- */
+/* Arrière-plan flou */
+.blur-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/image-dawamaghreb/imageaccueil.jpg.webp');
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  z-index: 0;
+}
+
+/* Conteneur au-dessus du flou */
+.ao-container {
+  position: relative;
+  z-index: 10;
+  padding: 50px 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.88);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo centré */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  max-width: 160px;
+  height: auto;
+}
+

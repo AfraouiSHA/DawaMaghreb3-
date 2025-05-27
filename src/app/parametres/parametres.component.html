@@ -1,0 +1,109 @@
+<!-- Image de fond floutée -->
+<div class="blur-background"></div>
+
+<!-- Conteneur principal -->
+<div class="ao-container">
+
+  <!-- Logo centré en haut -->
+  <div class="logo-container">
+    <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+  </div>
+
+  <!-- Wrapper paramètres -->
+  <div class="settings-wrapper">
+
+    <!-- Boutons de navigation -->
+    <nav class="settings-nav">
+      <button 
+        *ngFor="let section of sections"
+        (click)="selectedSection = section.key"
+        [class.active]="selectedSection === section.key">
+        {{ section.label }}
+      </button>
+    </nav>
+
+    <!-- Contenu dynamique -->
+    <div class="settings-content">
+
+      <!-- Profil entreprise -->
+      <section *ngIf="selectedSection === 'profil'" class="settings-section">
+        <h2>Profil de l’entreprise</h2>
+        <div class="info-pair" *ngFor="let key of entrepriseKeys">
+          <label [for]="key">{{ key | titlecase }}</label>
+          <input 
+            [id]="key" 
+            [name]="key" 
+            type="text" 
+            [(ngModel)]="entreprise[key]" 
+            [placeholder]="key | titlecase" />
+        </div>
+      </section>
+
+      <!-- Sécurité -->
+      <section *ngIf="selectedSection === 'securite'" class="settings-section">
+        <h2>Sécurité</h2>
+
+        <!-- Modification du mot de passe -->
+        <div class="security-password-section">
+          <h3>Changer votre mot de passe</h3>
+
+          <form class="password-form" (ngSubmit)="savePassword()">
+
+            <div class="password-field-group">
+              <label for="current-password">Mot de passe actuel</label>
+              <input type="password" id="current-password" [(ngModel)]="oldPassword" name="oldPassword" placeholder="Entrez l’ancien mot de passe" />
+            </div>
+
+            <div class="password-field-group">
+              <label for="new-password">Nouveau mot de passe</label>
+              <input type="password" id="new-password" [(ngModel)]="newPassword" name="newPassword" placeholder="Nouveau mot de passe" />
+              <div class="password-strength-container">
+            
+               
+              </div>
+            </div>
+
+            <div class="password-field-group">
+              <label for="confirm-password">Confirmer le mot de passe</label>
+              <input type="password" id="confirm-password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Répétez le mot de passe" />
+            </div>
+
+            <div class="button-group">
+              <button class="btn-action">Mettre à jour</button>
+              <button class="btn-action">Annuler</button>
+            </div>
+            
+
+          </form>
+        </div>
+
+        <!-- Thème -->
+        <div class="setting-row">
+          <p><strong>Thème</strong></p>
+          <div class="theme-toggle">
+            <button [class.active]="theme === 'light'" (click)="setTheme('light')">Clair</button>
+            <button [class.active]="theme === 'dark'" (click)="setTheme('dark')">Sombre</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Historique de connexion -->
+      <section *ngIf="selectedSection === 'historique'" class="settings-section">
+        <h2>Historique de connexion</h2>
+        <div *ngFor="let item of loginHistory" class="history-entry">
+          <span>{{ item.date | date:'short' }}</span>
+          <span>{{ item.ip }}</span>
+          <span>{{ item.browser }}</span>
+        </div>
+      </section>
+
+      <!-- Déconnexion -->
+      <section *ngIf="selectedSection === 'deconnexion'" class="settings-section logout-section">
+        <button class="logout-button" (click)="logout()">Déconnexion</button>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+

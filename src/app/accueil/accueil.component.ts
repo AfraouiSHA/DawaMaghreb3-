@@ -1,25 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';  
 import { Router } from '@angular/router';
+import { AuthService } from '../Service/auth.service';
 
 @Component({
   selector: 'app-accueil',
   templateUrl: './accueil.component.html',
   styleUrls: ['./accueil.component.css']
 })
-export class AccueilComponent {
-  constructor(private router: Router) { }
+export class AccueilComponent implements OnInit {
+  user: any = null;
+  userRole: string = '';
 
-  // Méthodes de redirection pour chaque rôle
+  constructor(private router: Router, private authService: AuthService) { }
+
+  ngOnInit(): void {
+    this.checkAccess();
+  }
+
+  checkAccess() {
+    this.user = this.authService.getCurrentUser();
+
+    if (!this.user) {
+      // 🔒 Aucun utilisateur connecté, rediriger vers login
+      this.router.navigate(['/login']);
+    } else {
+      this.userRole = this.user.role;
+    }
+  }
+
+  // ✅ Accès temporaire sans contrôle de rôle, pour test
   goToMaitreOuvrage() {
-    this.router.navigate(['/maitre-ouvrage']);  // Redirection vers la page Maître d’ouvrage
+    this.router.navigate(['/maitre-ouvrage']);
   }
 
   goToChefDeProjet() {
-    this.router.navigate(['/chef-de-projet']);  // Redirection vers la page Chef de projet
+    this.router.navigate(['/chef-projet']); // corrigé: 'chef-projet' sans tiret supplémentaire
   }
 
   goToFournisseur() {
-    this.router.navigate(['/fournisseur']);  // Redirection vers la page Fournisseur
+    this.router.navigate(['/fournisseur']);
   }
 }
 

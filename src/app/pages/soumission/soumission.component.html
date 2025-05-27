@@ -1,0 +1,138 @@
+<div class="blur-background"></div>
+
+<div class="soumission-container">
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+
+  <h1 class="title">Soumissionner à l'appel d'offres</h1>
+
+  <form class="form-container" novalidate>
+
+    <!-- Infos appel d’offres -->
+    <section class="card-section">
+      <h2>📝 Informations sur l’appel d’offres</h2>
+      <div class="field-group">
+        <label>Référence / Numéro</label>
+        <input type="text" name="refAO" placeholder="Ex: AO-2025-001" required />
+      </div>
+      <div class="field-group">
+        <label>Objet</label>
+        <textarea name="objetAO" placeholder="Objet de l’appel d’offres" required></textarea>
+      </div>
+      <div class="field-group">
+        <label>Date limite de soumission</label>
+        <input type="date" name="dateLimite" required />
+      </div>
+    </section>
+
+    <!-- Infos entreprise -->
+    <section class="card-section">
+      <h2>🏢 Informations sur l’entreprise</h2>
+
+      <div class="field-group">
+        <label>Adresse</label>
+        <textarea name="adresse" placeholder="Adresse complète" required></textarea>
+      </div>
+
+      <div class="field-group">
+        <label>Téléphone</label>
+        <input type="tel" name="telephone" placeholder="+212 6 XX XX XX XX" required />
+      </div>
+
+      <div class="field-group">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="contact@entreprise.ma" required />
+      </div>
+
+      <div class="field-group">
+        <label>Compte bancaire</label>
+        <input type="text" name="compteBancaire" placeholder=" Numéro de compte" required />
+      </div>
+
+      <div class="field-group grid-2">
+        <div>
+          <label>N° inscription taxe professionnelle</label>
+          <input type="text" name="taxePro" required />
+        </div>
+        <div>
+          <label>N° ICE</label>
+          <input type="text" name="ice" required />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>N° affiliation CNSS</label>
+        <input type="text" name="cnss" required />
+      </div>
+    </section>
+
+    <!-- Devis -->
+    <section class="card-section">
+      <h2>📄 Devis</h2>
+      <div class="button-row">
+        <button type="button" class="action-button turquoise">Remplir le devis</button>
+        <button type="button" class="action-button turquoise">Télécharger le devis</button>
+      </div>
+      <label class="save-draft">
+        <input type="checkbox" name="saveDraft" />
+        Enregistrer comme brouillon
+      </label>
+    </section>
+
+    <!-- Documents à joindre -->
+    <section class="card-section">
+      <h2>📁 Documents à joindre</h2>
+
+      <h3>Offre technique</h3>
+      <div class="field-group">
+        <label>Références projets similaires</label>
+        <input type="file" name="refProjets" accept=".pdf,.doc,.docx" multiple />
+      </div>
+      <div class="field-group">
+        <label>Descriptifs techniques</label>
+        <input type="file" name="descriptifsTech" accept=".pdf,.doc,.docx" multiple />
+      </div>
+      <div class="field-group">
+        <label>Plans d’implantation / schémas</label>
+        <input type="file" name="plans" accept=".pdf,.jpg,.png" multiple />
+      </div>
+      <div class="field-group">
+        <label>CV techniciens & ingénieurs</label>
+        <input type="file" name="cvTech" accept=".pdf,.doc,.docx" multiple />
+      </div>
+
+      <h3>Documents administratifs</h3>
+      <div class="field-group">
+        <label>Registre de Commerce (RC)</label>
+        <input type="file" name="registreCommerce" accept=".pdf,.jpg,.png" required />
+      </div>
+      <div class="field-group">
+        <label>Attestation CNSS</label>
+        <input type="file" name="attestationCNSS" accept=".pdf,.jpg,.png" required />
+      </div>
+    </section>
+
+    <!-- Délais et engagements -->
+    <section class="card-section">
+      <h2>⏳ Délais et engagements</h2>
+      <div class="field-group">
+        <label>Délai d’exécution proposé</label>
+        <input type="text" name="delaiExecution" placeholder="Ex: 3 mois" required />
+      </div>
+
+      <label class="checkbox-label">
+        <input type="checkbox" name="acceptConditions" required />
+        Je confirme avoir lu et accepté les conditions générales de l’appel d’offres
+      </label>
+    </section>
+
+    <!-- Actions -->
+    <section class="card-section actions">
+      <button type="submit" class="action-button orange">Soumettre la soumission</button>
+      <button type="reset" class="action-button turquoise">Sauvegarder comme brouillon</button>
+      <button type="button" class="action-button" onclick="history.back()">Annuler / Retour</button>
+    </section>
+
+  </form>
+</div>
+
+

@@ -1,0 +1,95 @@
+<!-- Image floue en arrière-plan -->
+<div class="blur-background"></div>
+
+<!-- Contenu principal -->
+<div class="result-page">
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+
+  <h2>📨 Message d’attribution envoyé au fournisseur</h2>
+  <div class="section">
+    <p><strong>À l’attention de :</strong>  SARL</p>
+    <p><strong>Date d’envoi :</strong> </p>
+    
+  </div>
+
+  <div class="section">
+    <h3>✉️ Message envoyé :</h3>
+    <p>Madame, Monsieur,</p>
+    <p>
+      Suite à l’analyse de l’appel d’offres <strong></strong>, nous avons le plaisir de vous informer que votre
+      entreprise, <strong> SARL</strong>, a été retenue pour l’exécution du marché suivant :
+    </p>
+    <ul>
+      <li><strong>Objet :</strong> </li>
+      <li><strong>Montant attribué :</strong>  MAD</li>
+      <li><strong>Durée d’exécution :</strong>  </li>
+      <li><strong>Date d’attribution :</strong> </li>
+    </ul>
+    <p>
+      Vous trouverez ci-joint les documents contractuels relatifs à cette attribution.
+      <br />
+      Merci de bien vouloir confirmer la réception de ce message ainsi que votre accord avant le <strong>25 mai 2025</strong>.
+    </p>
+  </div>
+
+  <div class="section">
+    <h3>🏢 Coordonnées du fournisseur retenu</h3>
+    <table class="info-table">
+      <tr><th>Entreprise</th><td> SARL</td></tr>
+      <tr><th>ICE</th><td>À compléter</td></tr>
+      <tr><th>Email</th><td></td></tr>
+      <tr><th>Téléphone</th><td></td></tr>
+      <tr><th>Adresse</th><td></td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>📂 Documents contractuels joints</h3>
+    <ul class="doc-list">
+      <li>📄 Lettre d’attribution</li>
+      <li>📄 Contrat signé</li>
+      <li>📄 Procès-verbal de commission</li>
+      <li>📄 Avis d’attribution</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>📜 Informations générales sur le marché</h3>
+    <table class="info-table">
+      <tr><th>Référence</th><td>AO-2025-009</td></tr>
+    
+      <tr><th>Objet</th><td>Fourniture d’équipements réseau</td></tr>
+      <tr><th>Montant</th><td>MAD 150,000.00</td></tr>
+      <tr><th>Durée</th><td>12 mois</td></tr>
+      <tr><th>Mode de passation</th><td>Appel d’offres</td></tr>
+      <tr><th>Date d’attribution</th><td>20 mai 2025</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>📡 Suivi de communication</h3>
+    <table class="info-table">
+      <tr><th>Message envoyé le</th><td>20 mai 2025</td></tr>
+      
+      <tr>
+        <th>Confirmation de réception</th>
+        <td>
+          <label>
+            <input type="checkbox" [(ngModel)]="confirmationRecu" (change)="mettreAJourConfirmation()" />
+            {{ confirmationRecu ? '✅ Bien reçue' : '❌ Non reçue' }}
+          </label>
+        </td>
+      </tr>
+      
+    
+    </table>
+  </div>
+
+  <div class="section actions">
+    <button class="btn">✏️ Modifier le message</button>
+    <button class="btn">📎 Joindre des documents</button>
+    <button class="btn">🔁 Relancer le fournisseur</button>
+    
+  </div>
+</div>
+

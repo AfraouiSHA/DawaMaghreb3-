@@ -1,32 +1,39 @@
-import { environment } from './environments/environment';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
-import { APP_ROUTES } from './app/app.routes';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
+import { AppComponent } from './app/app.component';
+import { APP_ROUTES } from './app/app.routes';
+
+import { environment } from './environments/environment';
+
+/*  🔹 ngx-translate */
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-// Firebase
-import { provideFirebaseApp } from '@angular/fire/app';
+/*  🔹 Firebase (v9-modular) */
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+
+/*  🔹 ngx-toastr */
 import { provideToastr } from 'ngx-toastr';
-// Factory pour charger les traductions
+
+/*  ─── Factory pour ngx-translate ─── */
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-// Initialisation de l'application Angular et de Firebase
+/*  ─── Bootstrap stand-alone ─── */
 bootstrapApplication(AppComponent, {
   providers: [
-    // Routes de l'application
-    provideToastr(),
+    /* Router (stand-alone) */
     APP_ROUTES,
 
-    // Fournisseurs pour les modules nécessaires
+    /* ngx-toastr */
+    provideToastr(),
+
+    /* Http + ngx-translate */
     importProvidersFrom(
       HttpClientModule,
       TranslateModule.forRoot({
@@ -34,12 +41,15 @@ bootstrapApplication(AppComponent, {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,
           deps: [HttpClient],
-        }
-      })
+        },
+      }),
     ),
 
-    // Initialisation de Firebase avec la configuration de l'environnement
+    /* Firebase */
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth())
-  ]
-}).catch(err => console.error('Erreur lors de l\'initialisation de l\'application :', err));
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+  ],
+}).catch((err) =>
+  console.error('Erreur lors de l’initialisation de l’application :', err),
+);

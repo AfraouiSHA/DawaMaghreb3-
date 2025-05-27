@@ -21,9 +21,9 @@ export class SignatureElectroniqueComponent implements OnInit {
 
   // Informations utilisateur
   utilisateur = {
-    nom: 'Amine El Mokhtari',
+    nom: '',
     fonction: 'Chef de projet',
-    email: 'amine@dawa.com'
+    email: '@dawa.com'
   };
 
   // Informations sur le document

@@ -1,4 +1,4 @@
-.register-container {
+.register-container { 
   position: relative;
   height: 100vh;
   display: flex;
@@ -71,7 +71,22 @@
   background-color: #e0a94d;
 }
 
+/* Ajout du style pour le lien "Déjà inscrit ? Se connecter" */
 
+.login-link {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
 
+.login-link a {
+  color: #2DBDB4;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+}
 
-  
+.login-link a:hover {
+  color: #1a8b89;
+}

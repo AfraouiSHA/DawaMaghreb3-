@@ -1,22 +1,64 @@
-<div class="register-container">
+<div class="register-container"> 
   <form class="register-form" (ngSubmit)="onSubmit()" #registerForm="ngForm">
     <h2>Créer un compte</h2>
 
-    <input type="text" placeholder="Nom" [(ngModel)]="user.nom" name="nom" required />
-    <input type="text" placeholder="Prénom" [(ngModel)]="user.prenom" name="prenom" required />
-    <input type="email" placeholder="Email" [(ngModel)]="user.email" name="email" required />
-    <input type="password" placeholder="Mot de passe" [(ngModel)]="user.password" name="password" required />
+    <input
+      type="text"
+      placeholder="Nom"
+      [(ngModel)]="user.nom"
+      name="nom"
+      required
+      autocomplete="family-name"
+    />
+
+    <input
+      type="text"
+      placeholder="Prénom"
+      [(ngModel)]="user.prenom"
+      name="prenom"
+      required
+      autocomplete="given-name"
+    />
+
+    <input
+      type="email"
+      placeholder="Email"
+      [(ngModel)]="user.email"
+      name="email"
+      required
+      autocomplete="email"
+    />
+
+    <input
+      type="password"
+      placeholder="Mot de passe"
+      [(ngModel)]="user.password"
+      name="password"
+      required
+      autocomplete="new-password"
+    />
 
     <select [(ngModel)]="user.profil" name="profil" required>
-      <option value="" disabled [selected]="!user.profil">Sélectionnez votre profil</option>
+      <option value="" disabled selected>Sélectionnez votre profil</option>
       <option value="maitre">Maître d’ouvrage</option>
       <option value="chef">Chef de projet</option>
       <option value="fournisseur">Fournisseur</option>
     </select>
 
-    <button type="submit" [disabled]="!registerForm.form.valid">Créer un compte</button>
+    <button type="submit" [disabled]="!registerForm.form.valid">
+      Créer un compte
+    </button>
+
+    <!-- Lien vers la page de connexion -->
+    <p class="login-link">
+      Déjà inscrit ?
+      <a [routerLink]="['/login']">Se connecter</a>
+    </p>
   </form>
 </div>
 
-<img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
-
+<img
+  src="assets/image-dawamaghreb/dawamaghreb_logo.jpg"
+  alt="Logo Dawa"
+  class="logo"
+/>
