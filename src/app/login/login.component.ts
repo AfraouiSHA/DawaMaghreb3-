@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../Service/auth.service';
+import { AuthService } from '../service/auth.service';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Auth } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';

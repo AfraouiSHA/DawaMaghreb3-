@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';  
 import { Router } from '@angular/router';
-import { AuthService } from '../Service/auth.service';
+import { AuthService } from '../service/auth.service';
+
 
 @Component({
   selector: 'app-accueil',
@@ -41,4 +42,3 @@ export class AccueilComponent implements OnInit {
     this.router.navigate(['/fournisseur']);
   }
 }
-

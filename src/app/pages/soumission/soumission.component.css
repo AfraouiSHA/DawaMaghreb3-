@@ -1,228 +1,269 @@
+/* === Arrière-plan flou === */
 .blur-background {
-    position: fixed; /* absolute peut poser souci si le parent n'est pas positionné */
-    top: 0; 
-    left: 0;
-    width: 100%; 
-    height: 100%;
-    background: url('/assets/image-dawamaghreb/imageaccueil.jpg.webp') center/cover no-repeat;
-    filter: blur(8px);
-    z-index: -1;  /* Mettre en dessous du contenu */
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/assets/image-dawamaghreb/imageaccueil.jpg.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
+  transform: scale(1.05);
+}
 
-
-/* Conteneur principal du formulaire */
+/* === Conteneur principal du formulaire === */
 .form-container {
-    width: 90%;
-    max-width: 800px;
-    background: rgba(0, 0, 0, 0.55);
-    border-radius: 25px;
-    padding: 30px 40px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.7);
-    color: #f7f7f7;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: left;
-    margin-bottom: 50px;
-  }
-  
-  /* Section style "carte" */
-  .card-section {
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 1.5px solid rgba(254,187,95,0.5);
-  }
-  
-  /* Titres des sections */
-  .card-section > h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #FEBB5F;
-    margin-bottom: 20px;
-    text-shadow: 0 0 5px #FEBB5FAA;
-  }
-  
-  .card-section h3 {
-    font-size: 1.3rem;
-    margin-top: 25px;
-    margin-bottom: 10px;
-    color: #2DBDB4;
-    font-weight: 600;
-    text-shadow: 0 0 4px #2DBDB4AA;
-  }
-  
-  /* Champs et labels */
-  .field-group {
-    margin-bottom: 18px;
-  }
-  
-  .field-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    font-size: 1rem;
-  }
-  
-  /* Inputs & textarea */
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="date"],
-  textarea,
-  input[type="file"] {
-    width: 100%;
-    padding: 10px 15px;
-    border-radius: 15px;
-    border: none;
-    font-size: 1rem;
-    font-family: inherit;
-    background-color: rgba(255 255 255 / 0.12);
-    color: #f7f7f7;
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
-    transition: background-color 0.3s ease;
-  }
-  
-  input[type="text"]:focus,
-  input[type="email"]:focus,
-  input[type="tel"]:focus,
-  input[type="date"]:focus,
-  textarea:focus {
-    outline: none;
-    background-color: rgba;
-    box-shadow: 0 0 8px #FEBB5F;
-  }
-  
-  /* Textarea adjustments */
-  textarea {
-    min-height: 80px;
-    resize: vertical;
-  }
-  
-  /* Mise en grille pour champs côte à côte */
-  .grid-2 {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .grid-2 > div {
-    flex: 1;
-  }
-  
-  /* Boutons */
-  .action-button {
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 12px 22px;
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
-    margin-right: 15px;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.4);
-    transition: all 0.3s ease;
-    color: #f7f7f7;
-    background-color: #444; /* fallback */
-  }
-  
-  .action-button.orange {
-    background-color: #FEBB5F;
-    color: #2a1a00;
-  }
-  
-  .action-button.orange:hover {
-    background-color: #f8a533;
-    box-shadow: 0 6px 15px #f8a533aa;
-  }
-  
-  .action-button.turquoise {
-    background-color: #2DBDB4;
-    color: #f7f7f7;
-  }
-  
-  .action-button.turquoise:hover {
-    background-color: #28a79a;
-    box-shadow: 0 6px 15px #28a79aaa;
-  }
-  
-  .action-button:last-child {
-    margin-right: 0;
-  }
-  
-  /* Ligne de boutons */
-  .button-row {
-    margin-bottom: 20px;
-  }
-  
-  /* Checkbox label */
-  .checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 600;
-    font-size: 1rem;
-    margin-top: 15px;
-    color: #f7f7f7;
-    user-select: none;
-  }
-  
-  .save-draft {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    font-size: 1rem;
-    color: #f7f7f7;
-    cursor: pointer;
-  }
-  
-/* ==== logo ==== */
+  width: 90%;
+  max-width: 800px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 25px;
+  padding: 30px 40px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+  color: #f7f7f7;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: left;
+  margin-bottom: 50px;
+}
+
+/* === Section style carte === */
+.card-section {
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1.5px solid rgba(254, 187, 95, 0.5);
+}
+
+.card-section > h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #FEBB5F;
+  margin-bottom: 20px;
+  text-shadow: 0 0 5px #FEBB5FAA;
+}
+
+.card-section h3 {
+  font-size: 1.3rem;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  color: #2DBDB4;
+  font-weight: 600;
+  text-shadow: 0 0 4px #2DBDB4AA;
+}
+
+/* === Champs et labels === */
+.field-group {
+  margin-bottom: 18px;
+}
+
+.field-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+/* === Inputs & textarea === */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  border: none;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #f7f7f7;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+  transition: background-color 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 8px #FEBB5F;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* === Grille 2 colonnes === */
+.grid-2 {
+  display: flex;
+  gap: 20px;
+}
+
+.grid-2 > div {
+  flex: 1;
+}
+
+/* === Boutons === */
+.action-button {
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 12px 22px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  margin-right: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  color: #f7f7f7;
+  background-color: #444;
+}
+
+.action-button.orange {
+  background-color: #FEBB5F;
+  color: #2a1a00;
+}
+
+.action-button.orange:hover {
+  background-color: #f8a533;
+  box-shadow: 0 6px 15px #f8a533aa;
+}
+
+.action-button.turquoise {
+  background-color: #2DBDB4;
+  color: #f7f7f7;
+}
+
+.action-button.turquoise:hover {
+  background-color: #28a79a;
+  box-shadow: 0 6px 15px #28a79aaa;
+}
+
+.action-button:last-child {
+  margin-right: 0;
+}
+
+.button-row {
+  margin-bottom: 20px;
+}
+
+/* === Checkbox & sauvegarde === */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 15px;
+  color: #f7f7f7;
+  user-select: none;
+}
+
+.save-draft {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #f7f7f7;
+  cursor: pointer;
+}
+
+/* === Logo === */
 .logo {
-    width: 200px;
-    position: absolute;
-    top: 40px;
-    left: 40px;
-    z-index: 2;
+  width: 200px;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  z-index: 2;
+}
+
+/* === Titre principal === */
+.title {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #FEBB5F;
+  font-weight: 800;
+  font-size: 2.8rem;
+  text-align: center;
+  margin: 40px 0 30px;
+  text-shadow: 0 0 15px #FEBB5FAA;
+}
+
+/* === Conteneur général === */
+.soumission-container {
+  min-height: 100vh;
+  padding: 0 20px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  z-index: 10;
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 25px 20px;
   }
-  
-  /* Titre principal */
+
   .title {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #FEBB5F;
-    font-weight: 800;
-    font-size: 2.8rem;
-    text-align: center;
-    margin: 40px 0 30px;
-    text-shadow: 0 0 15px #FEBB5FAA;
+    font-size: 2.2rem;
+    margin: 30px 0 20px;
   }
-  
-  /* Conteneur général */
-  .soumission-container {
-    min-height: 100vh;
-    padding: 0 20px 60px;
-    display: flex;
+
+  .logo {
+    width: 110px;
+    top: 12px;
+    left: 12px;
+  }
+
+  .grid-2 {
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
-    z-index: 10;
   }
-  
-  /* Responsive */
-  @media (max-width: 600px) {
-    .form-container {
-      padding: 25px 20px;
-    }
-    .title {
-      font-size: 2.2rem;
-      margin: 30px 0 20px;
-    }
-    .logo {
-      width: 110px;
-      top: 12px;
-      left: 12px;
-    }
-    .grid-2 {
-      flex-direction: column;
-    }
-  }
-  
-  
+}
+
+/* === Style du tableau === */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  font-size: 0.95rem;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f7f7f7;
+}
+
+th {
+  background-color: rgba(43, 189, 180, 0.3);
+  font-weight: 700;
+  color: #FEBB5F;
+  text-shadow: 0 0 6px #FEBB5F88;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
   
   

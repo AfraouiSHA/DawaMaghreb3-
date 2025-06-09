@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../Service/auth.service';
+import { AuthService } from '../service/auth.service';
 import { FirebaseError } from 'firebase/app'; // 👉 Import pour typage précis des erreurs
 
 @Component({

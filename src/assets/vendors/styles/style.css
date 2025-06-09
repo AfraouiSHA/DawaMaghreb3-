@@ -61,13 +61,15 @@ html {
   font-size:1em !important;
 }
 html {
-  -webkit-text-size-adjust: none;
   -moz-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 input[type="submit"] {
-  -webkit-appearance: none;
+  -webkit-appearance: none; /* Pour Safari, Chrome anciens */
+  -moz-appearance: none;    /* Pour Firefox */
+  appearance: none;         /* Pour navigateurs modernes (Chrome 84+, Edge 84+, Safari 15.4+) */
 }
+
 *,
 :after,
 :before {

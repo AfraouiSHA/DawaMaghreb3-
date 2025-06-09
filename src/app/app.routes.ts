@@ -15,9 +15,11 @@ import { SoumissionComponent } from './pages/soumission/soumission.component';
 import { ConsulterResultatComponent } from './espace-fournisseur/consulter-resultat/consulter-resultat.component';
 import { MotDePasseComponent } from './mot-de-passe/mot-de-passe.component';
 import { ParametresComponent } from './parametres/parametres.component';
-
+import { CentraliserDocumentsComponent } from './centraliser-documents/centraliser-documents.component';
 
 import { SuivieDecompteComponent } from './suivie-decompte/suivie-decompte.component';
+
+
 
 
 
@@ -44,7 +46,10 @@ export const routes: Routes = [
   { path: 'mot-de-passe-oublie', component: MotDePasseComponent },
   { path: 'parametres', component: ParametresComponent },
   { path: 'suivie-decompte', component: SuivieDecompteComponent },
-  
+  { path: 'centraliser-documents', component: CentraliserDocumentsComponent },
+
+
+
   // 🔁 Fallback
   { path: '**', redirectTo: 'login' }
 ];

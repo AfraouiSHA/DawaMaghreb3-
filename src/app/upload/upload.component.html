@@ -1,0 +1,5 @@
+<p>upload works!</p>
+<input type="file" (change)="onFileSelected($event)" />
+<button (click)="onUpload()">Uploader</button>
+<p *ngIf="successMessage" style="color: green">{{ successMessage }}</p>
+<p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>

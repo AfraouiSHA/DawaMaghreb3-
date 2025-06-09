@@ -11,16 +11,12 @@
 	Common Styles Initials
 ==============================================================*/
 html {
-	-webkit-text-size-adjust: none; /* Prevent font scaling in landscape */
-	width: 100%;
-	height: 100%;
-	-webkit-font-smoothing: antialiased;
-	-moz-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+ 
+  /* Lissage des polices sur macOS (Firefox uniquement) */
+  -moz-osx-font-smoothing: grayscale;
 }
-input[type="submit"] {
-	-webkit-appearance: none;
-}
+
+
 *, *:after, *:before {
 	box-sizing: border-box;
 	margin: 0;
