@@ -1,24 +1,30 @@
+// src/main.ts
+import 'zone.js';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms'; // ✅ AJOUT ICI
+
+// 1. Import NÉCESSAIRE pour le DatePipe et les fonctionnalités navigateur de base
+import { BrowserModule } from '@angular/platform-browser'; // <-- AJOUTEZ CET IMPORT
+
+// Importations pour la locale française
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 
 import { AppComponent } from './app/app.component';
 import { APP_ROUTES } from './app/app.routes';
-
 import { environment } from './environments/environment';
 
-/* ngx-translate */
+/* 🔹 ngx-translate */
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-/* Firebase */
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-
-/* ngx-toastr */
+/* 🔹 ngx-toastr */
 import { provideToastr } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// Enregistrez les données de la locale française pour Angular Pipes
+registerLocaleData(localeFr, 'fr');
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -26,11 +32,16 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    APP_ROUTES,
-    provideToastr(),
+    APP_ROUTES, // Si vous utilisez les routes avec provideRouter
+    provideToastr({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
     importProvidersFrom(
+      BrowserModule, // <-- AJOUTEZ ICI LE BrowserModule POUR LE SUPPORT DES PIPES COMME DatePipe
       HttpClientModule,
-      ReactiveFormsModule, // ✅ AJOUT ICI
+      BrowserAnimationsModule, // Nécessaire pour Toastr et Angular Material
       TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
@@ -39,11 +50,8 @@ bootstrapApplication(AppComponent, {
         },
       }),
     ),
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
+    // Aucun fournisseur Firebase nécessaire
   ],
-}).catch((err) =>
-  console.error('Erreur lors de l’initialisation de l’application :', err),
-);
-
+}).catch((err) => {
+  console.error('Erreur lors de l\'initialisation de l\'application :', err);
+});

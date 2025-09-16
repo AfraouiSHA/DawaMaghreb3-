@@ -11,11 +11,6 @@ export class ChefProjetComponent {
 
   constructor(private router: Router) {}
 
-  allerAuSuiviDecompte() {
-    console.log('Redirection vers la page Suivi de décompte');
-    this.router.navigate(['/suivie-decompte']);
-  }
-
   allerAuMieuxOffrant() {
     console.log('Redirection vers la page Mieux Offrant');
     this.router.navigate(['/mieux-offrant']);
@@ -23,6 +18,6 @@ export class ChefProjetComponent {
 
   allerAuCommunicationFournisseurs() {
     console.log('Redirection vers la page Communication fournisseurs');
-    this.router.navigate(['/communication-fournisseurs']);  // Assure-toi que cette route existe
+    this.router.navigate(['/communication-fournisseurs']);
   }
 }

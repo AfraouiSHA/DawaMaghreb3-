@@ -1,12 +1,20 @@
-<div class="blur-background"></div> 
+<div class="blur-background"></div>
 
 <div class="fournisseur-container">
   <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
-
   <h1 class="title">Espace Fournisseur</h1>
 
+  <div *ngFor="let ao of availableAOs" class="ao-card">
+    <h3>{{ ao.numeroAO }} - {{ ao.objet }}</h3>
+    <p>Date limite : {{ ao.dateLimite | date:'dd/MM/yyyy' }}</p>
+    <button class="action-button orange" (click)="allerASoumission(ao.numeroAO)">
+      Soumettre une offre
+    </button>
+  </div>
+
   <div class="button-section">
-    <button class="action-button orange" (click)="allerASoumission()">Soumissionner à l’appel d’offres</button>
-    <button class="action-button turquoise" (click)="allerAConsulterResultat()">Consulter le résultat</button>
+  <button class="btn" [routerLink]="['/consulter-resultat', id_fournisseur]">
+  Aller à Consulter Résultat
+</button>
   </div>
 </div>

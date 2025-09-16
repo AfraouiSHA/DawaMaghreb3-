@@ -61,6 +61,13 @@
     cursor: pointer;
   }
   
+
+
+
+
+
+
+  
   /* Tableau */
   .table-container {
     display: flex;
@@ -82,7 +89,7 @@
   th, td {
     padding: 1rem;
     text-align: center;
-    color: white;
+    color: #000000;
     font-weight: bold;
   }
   
@@ -129,7 +136,3 @@
     font-weight: bold;
     font-size: 14px;
   }
-  
-  
-  
-  

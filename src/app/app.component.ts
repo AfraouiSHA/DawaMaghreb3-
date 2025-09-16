@@ -1,21 +1,25 @@
-import { DOCUMENT } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AdobeSignService } from './adobe-sign.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    TranslateModule // Ne pas utiliser forRoot ici
+  ],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   title = 'internship-project';
 
-  lang: string = 'fr'; // type string au lieu de any
+  lang: string = 'fr';
   translations: any;
 
   constructor(
@@ -27,14 +31,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.lang = localStorage.getItem('lang') || 'fr'; // Valeur par défaut 'fr'
+    this.lang = localStorage.getItem('lang') || 'fr';
     this.loadStylesAndTranslations(this.lang);
   }
 
   private loadStylesAndTranslations(lang: string) {
     const head = this.document.head;
 
-    // Nettoyer les liens css déjà insérés (optionnel)
     Array.from(head.querySelectorAll('link[data-dynamic-style]')).forEach(link =>
       head.removeChild(link)
     );
@@ -46,7 +49,7 @@ export class AppComponent implements OnInit {
       link.rel = 'stylesheet';
       link.type = 'text/css';
       link.href = href;
-      link.setAttribute('data-dynamic-style', 'true'); // pour nettoyage futur
+      link.setAttribute('data-dynamic-style', 'true');
       head.appendChild(link);
     });
 
@@ -55,12 +58,7 @@ export class AppComponent implements OnInit {
       mainIdElement.style.setProperty('direction', lang === 'fr' ? 'ltr' : 'rtl', 'important');
     }
 
-    const i18nFile = lang === 'fr' ? 'assets/i18n/fr.json' : 'assets/i18n/ar.json';
-    this.httpClient.get(i18nFile).subscribe(data => {
-      console.log('Translations loaded:', data);
-      this.translations = data;
-      this.translate.use(lang);
-    });
+    this.translate.use(lang);
   }
 
   private getStylesheetsForLang(lang: string): string[] {
@@ -87,10 +85,6 @@ export class AppComponent implements OnInit {
     const selectedLang = event.target.value;
     console.log('Language changed to:', selectedLang);
     localStorage.setItem('lang', selectedLang);
-    // Option 1 : reload page pour recharger tout (comme avant)
     window.location.reload();
-
-    // Option 2 : ou mieux, charger dynamiquement sans reload
-    // this.loadStylesAndTranslations(selectedLang);
   }
 }

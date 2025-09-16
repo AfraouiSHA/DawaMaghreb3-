@@ -1,190 +1,250 @@
-<!-- src/app/centraliser-documents/centraliser-documents.component.html -->
+<div class="modern-page-container">
+  <div class="background-layer"></div>
+  <div class="background-overlay"></div>
 
-<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 font-sans">
-  <!-- Container principal avec styles modernes -->
-  <div class="w-full max-w-5xl bg-white rounded-xl shadow-2xl p-8 space-y-8">
-
-    <!-- Logo centré -->
-    <div class="flex justify-center mb-6">
-      <img
-        src="assets/image-dawamaghreb/dawamaghreb_logo.jpg"
-        alt="Logo Dawamaghreb"
-        class="h-20"
-      />
+  <header class="page-header">
+    <div class="header-content">
+      <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawamaghreb" class="company-logo" />
+      <div class="header-text">
+        <h1 class="main-title">Centralisation des Documents</h1>
+        <p class="main-subtitle">Plateforme collaborative de gestion documentaire</p>
+      </div>
     </div>
 
-    <!-- Titre principal -->
-    <h2 class="text-4xl font-extrabold text-center text-blue-800 mb-8">Centraliser les documents</h2>
+    <div class="search-container">
+      <input type="text" placeholder="Nom de documents"
+             [(ngModel)]="nomDocumentsRecherche"
+             (input)="rechercherDocuments()"
+             class="search-input">
+      <button class="orange-btn" (click)="rechercherDocuments()">🔍 Rechercher</button>
+    </div>
+  </header>
 
-    <!-- Contenu en colonnes (pour les documents fournisseurs et MO) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Colonne Fournisseurs -->
-      <section class="bg-blue-50 p-6 rounded-lg shadow-inner" aria-labelledby="fournisseurTitle">
-        <h3 id="fournisseurTitle" class="text-2xl font-bold text-blue-700 mb-4 flex items-center">
-          <span class="mr-2">📦</span> Documents destinés aux fournisseurs
-        </h3>
+  <main class="main-sections">
+    <div class="sections-container">
+      <section class="document-section fournisseur-section">
+        <div class="section-wrapper">
+          <div class="section-header">
+            <div class="section-icon fournisseur-icon">📦</div>
+            <div class="section-info">
+              <h2 class="section-title">Fournisseur</h2>
+              <p class="section-subtitle">Gérez les documents destinés au fournisseur</p>
+            </div>
+          </div>
 
-        <div class="field-group mb-4">
-          <label for="fileFournisseur" class="block text-sm font-medium text-gray-700 mb-2">
-            Sélectionner un fichier pour les fournisseurs:
-          </label>
-          <input
-            #fileFournisseurInput
-            type="file"
-            id="fileFournisseur"
-            accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.jpg,.png"
-            (change)="onFileChange($event, 'fournisseur')"
-            class="block w-full text-sm text-gray-500
-                   file:mr-4 file:py-2 file:px-4
-                   file:rounded-full file:border-0
-                   file:text-sm file:font-semibold
-                   file:bg-blue-100 file:text-blue-700
-                   hover:file:bg-blue-200 transition duration-150 ease-in-out"
-          />
+          <div *ngIf="nomDocumentsRecherche.length === 0">
+            <ng-container *ngFor="let section of [
+              { titre: '📢 Avis de l\'appel d\'offres', docs: fichiersFournisseurs.avis, category: 'avis' },
+              { titre: '📂 Dossier Administratif', docs: fichiersFournisseurs.administratifs, category: 'administratifs' },
+              { titre: '📂 Dossier Technique', docs: fichiersFournisseurs.techniques, category: 'techniques' },
+              { titre: '📂 Dossier Financier', docs: fichiersFournisseurs.financiers, category: 'financiers' },
+              { titre: '📂 Autres Documents', docs: fichiersFournisseurs.autres, category: 'autres' }
+            ]">
+              <h3 class="category-title">{{ section.titre }}</h3>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nom du document</th>
+                      <th>Date </th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="section.docs.length === 0">
+                      <td colspan="3" class="empty-state">Aucun document dans cette catégorie</td>
+                    </tr>
+                    <tr *ngFor="let doc of section.docs; let i = index">
+                      <td>{{ doc.nom }}</td>
+                      <td>{{ doc.date }}</td>
+                      <td class="action-buttons">
+                        <label class="action-btn upload-btn">
+                          <input type="file" (change)="onFileChange($event, 'fournisseur', section.category, i)" style="display: none;"/>
+                          ⬆️
+                        </label>
+                        <button class="action-btn" (click)="downloadFile(doc)" [disabled]="!doc.url">📥</button>
+                        <button class="action-btn" (click)="previewFile(doc)" [disabled]="!doc.url">👁️</button>
+                        <button class="action-btn" (click)="remplirInformation(doc.id)" [disabled]="!doc.id">
+                          Remplir Information
+                        </button>
+                        <button class="action-btn delete-btn" (click)="supprimerFichier(i, 'fournisseur', section.category)" [disabled]="!doc.url">🗑️</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="section.category === 'autres'" class="add-document-container">
+                <input type="text" [(ngModel)]="newOtherDocNameF" placeholder="Nom du document" class="add-doc-input">
+                <label class="action-btn upload-btn orange-btn">
+                  <input type="file" (change)="onAddOtherFileChange($event, 'fournisseur', newOtherDocNameF)" style="display: none;"/>
+                  ➕ Ajouter un document
+                </label>
+              </div>
+            </ng-container>
+          </div>
+          
+          <div *ngIf="nomDocumentsRecherche.length > 0">
+            <h3 class="files-list-title">Résultats de la recherche pour "<span>{{ nomDocumentsRecherche }}</span>"</h3>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nom du document</th>
+                    <th>Date </th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="documentsFiltresF.length === 0">
+                    <td colspan="3" class="empty-state">Aucun document trouvé.</td>
+                  </tr>
+                  <tr *ngFor="let doc of documentsFiltresF; let i = index">
+                    <td>{{ doc.nom }}</td>
+                    <td>{{ doc.date }}</td>
+                    <td class="action-buttons">
+                      <label class="action-btn upload-btn">
+                         <input type="file" (change)="onFileChange($event, 'fournisseur', doc.category!, i)" style="display: none;"/>
+                       ⬆️
+                      </label>
+                      <button class="action-btn" (click)="downloadFile(doc)" [disabled]="!doc.url">📥</button>
+                      <button class="action-btn" (click)="previewFile(doc)" [disabled]="!doc.url">👁️</button>
+                      <button class="action-btn" (click)="remplirInformation(doc.id)" [disabled]="!doc.id">
+                        Remplir Information
+                      </button>
+                      <button class="action-btn delete-btn" (click)="supprimerFichier(i, 'fournisseur', doc.category!)" [disabled]="!doc.url">🗑️</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-
-        <h4 class="text-lg font-semibold text-gray-800 mt-6 mb-3">Fichiers sélectionnés (non persistés sans backend) :</h4>
-        <ul class="list-disc list-inside text-gray-700 space-y-1">
-          <li *ngIf="fichiersFournisseurs.length === 0" class="text-gray-500 italic">Aucun fichier sélectionné.</li>
-          <li *ngFor="let fichier of fichiersFournisseurs">
-            <a
-              [href]="fichier.url"
-              [attr.download]="fichier.nom"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-blue-600 hover:underline"
-            >
-              {{ fichier.nom }}
-            </a>
-          </li>
-        </ul>
       </section>
 
-      <!-- Colonne Maître d’ouvrage -->
-      <section class="bg-green-50 p-6 rounded-lg shadow-inner" aria-labelledby="maitreOuvrageTitle">
-        <h3 id="maitreOuvrageTitle" class="text-2xl font-bold text-green-700 mb-4 flex items-center">
-          <span class="mr-2">🏢</span> Documents destinés au maître d’ouvrage
-        </h3>
+      <section class="document-section maitre-ouvrage-section">
+        <div class="section-wrapper">
+          <div class="section-header">
+            <div class="section-icon maitre-ouvrage-icon">👷‍♀️</div>
+            <div class="section-info">
+              <h2 class="section-title">Maître d'Ouvrage</h2>
+              <p class="section-subtitle">Gérez les documents destinés au maître d'ouvrage</p>
+            </div>
+          </div>
 
-        <div class="field-group mb-4">
-          <label for="fileMaitreOuvrage" class="block text-sm font-medium text-gray-700 mb-2">
-            Sélectionner un fichier pour le maître d’ouvrage:
-          </label>
-          <input
-            #fileMaitreOuvrageInput
-            type="file"
-            id="fileMaitreOuvrage"
-            accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.jpg,.png"
-            (change)="onFileChange($event, 'maitreOuvrage')"
-            class="block w-full text-sm text-gray-500
-                   file:mr-4 file:py-2 file:px-4
-                   file:rounded-full file:border-0
-                   file:text-sm file:font-semibold
-                   file:bg-green-100 file:text-green-700
-                   hover:file:bg-green-200 transition duration-150 ease-in-out"
-          />
+          <div *ngIf="nomDocumentsRecherche.length === 0">
+            <ng-container *ngFor="let section of [
+              { titre: '📢 Avis de l\'appel d\'offres', docs: fichiersMaitreOuvrage.avis, category: 'avis' },
+              { titre: '📂 Dossier Technique', docs: fichiersMaitreOuvrage.techniques, category: 'techniques' },
+              { titre: '📂 Dossier Financier', docs: fichiersMaitreOuvrage.financiers, category: 'financiers' },
+              { titre: '📂 PV de Réunion', docs: fichiersMaitreOuvrage.pv, category: 'pv' },
+              { titre: '📂 Autres Documents', docs: fichiersMaitreOuvrage.autres, category: 'autres' }
+            ]">
+              <h3 class="category-title">{{ section.titre }}</h3>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nom du document</th>
+                      <th>Date </th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="section.docs.length === 0">
+                      <td colspan="3" class="empty-state">Aucun document dans cette catégorie</td>
+                    </tr>
+                    <tr *ngFor="let doc of section.docs; let i = index">
+                      <td>{{ doc.nom }}</td>
+                      <td>{{ doc.date }}</td>
+                      <td class="action-buttons">
+                        <label class="action-btn upload-btn">
+                          <input type="file" (change)="onFileChange($event, 'maitreOuvrage', section.category, i)" style="display: none;"/>
+                          ⬆️
+                        </label>
+                        <button class="action-btn" (click)="remplirInformation(doc.id)" [disabled]="!doc.id">
+                          Remplir Information
+                        </button>
+                        <button class="action-btn" (click)="downloadFile(doc)" [disabled]="!doc.url">📥</button>
+                        <button class="action-btn" (click)="previewFile(doc)" [disabled]="!doc.url">👁️</button>
+                        <button class="action-btn delete-btn" (click)="supprimerFichier(i, 'maitreOuvrage', section.category)" [disabled]="!doc.url">🗑️</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="section.category === 'pv'" class="add-document-container">
+                <input type="text" [(ngModel)]="newPvDocNameMOA" placeholder="Nom du PV" class="add-doc-input">
+                <label class="action-btn upload-btn orange-btn">
+                  <input type="file" (change)="onAddPvFileChange($event, 'maitreOuvrage', newPvDocNameMOA)" style="display: none;"/>
+                  ➕ Ajouter un PV
+                </label>
+              </div>
+              <div *ngIf="section.category === 'autres'" class="add-document-container">
+                <input type="text" [(ngModel)]="newOtherDocNameMOA" placeholder="Nom du document" class="add-doc-input">
+                <label class="action-btn upload-btn orange-btn">
+                  <input type="file" (change)="onAddOtherFileChange($event, 'maitreOuvrage', newOtherDocNameMOA)" style="display: none;"/>
+                  ➕ Ajouter un document
+                </label>
+              </div>
+            </ng-container>
+          </div>
+
+          <div *ngIf="nomDocumentsRecherche.length > 0">
+            <h3 class="files-list-title">Résultats de la recherche pour "<span>{{ nomDocumentsRecherche }}</span>"</h3>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nom du document</th>
+                    <th>Date </th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="documentsFiltresMOA.length === 0">
+                    <td colspan="3" class="empty-state">Aucun document trouvé.</td>
+                  </tr>
+                  <tr *ngFor="let doc of documentsFiltresMOA; let i = index">
+                    <td>{{ doc.nom }}</td>
+                    <td>{{ doc.date }}</td>
+                    <td class="action-buttons">
+                      <label class="action-btn upload-btn">
+                        <input type="file" (change)="onFileChange($event, 'maitreOuvrage', doc.category!, i)" style="display: none;"/>
+                        ⬆️
+                      </label>
+                      <button class="action-btn" (click)="remplirInformation(doc.id)" [disabled]="!doc.id">
+                        Remplir Information
+                      </button>
+                      <button class="action-btn" (click)="downloadFile(doc)" [disabled]="!doc.url">📥</button>
+                      <button class="action-btn" (click)="previewFile(doc)" [disabled]="!doc.url">👁️</button>
+                      <button class="action-btn delete-btn" (click)="supprimerFichier(i, 'maitreOuvrage', doc.category!)" [disabled]="!doc.url">🗑️</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-
-        <h4 class="text-lg font-semibold text-gray-800 mt-6 mb-3">Fichiers sélectionnés (non persistés sans backend) :</h4>
-        <ul class="list-disc list-inside text-gray-700 space-y-1">
-          <li *ngIf="fichiersMaitreOuvrage.length === 0" class="text-gray-500 italic">Aucun fichier sélectionné.</li>
-          <li *ngFor="let fichier of fichiersMaitreOuvrage">
-            <a
-              [href]="fichier.url"
-              [attr.download]="fichier.nom"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-green-600 hover:underline"
-            >
-              {{ fichier.nom }}
-            </a>
-          </li>
-        </ul>
       </section>
     </div>
+  </main>
 
-    <!-- Section pour le tableau Excel (Devis), toujours en bas et centré -->
-    <section class="bg-gray-50 p-6 rounded-lg shadow-inner mt-8" aria-labelledby="excelTableTitle">
-      <h3 id="excelTableTitle" class="text-2xl font-bold text-gray-700 mb-4 flex items-center">
-        <span class="mr-2">📊</span> Tableau Excel du Devis (stocké localement)
-      </h3>
+  <footer class="page-footer">
+    <p>&copy; 2025 Dawamaghreb. Tous droits réservés.</p>
+  </footer>
 
-      <div *ngIf="!afficherTableau" class="text-gray-600 text-center py-4">
-        Aucun devis Excel chargé. Veuillez téléverser un fichier Excel pour le voir ici.
+  <div *ngIf="showModal" class="modal-overlay">
+    <div class="modal-content" [ngClass]="modalType">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ modalTitle }}</h3>
+        <button class="close-btn" (click)="closeModal()">×</button>
       </div>
-
-      <div *ngIf="afficherTableau && tableauDevis.length > 0" class="overflow-x-auto bg-white shadow-lg rounded-lg p-4">
-        <!-- Le tableau DataTables avec ID "monTableau" -->
-        <table id="monTableau" class="min-w-full divide-y divide-gray-200 display responsive nowrap">
-          <thead class="bg-gray-100">
-            <tr>
-              <!-- Correction ici : Séparation de *ngFor et *ngIf avec <ng-container> -->
-              <ng-container *ngFor="let header of tableauDevis[0]; let colIndex = index">
-                <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    [attr.colspan]="getSpan(0, colIndex).colspan"
-                    [attr.rowspan]="getSpan(0, colIndex).rowspan"
-                    *ngIf="!isCellHidden(0, colIndex)">
-                  {{ header }}
-                </th>
-              </ng-container>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr *ngFor="let row of tableauDevis; let rowIndex = index">
-              <!-- Sauter la première ligne (les en-têtes) car elle est dans le thead -->
-              <ng-container *ngIf="rowIndex > 0">
-                <!-- Correction ici : Séparation de *ngFor et *ngIf avec <ng-container> -->
-                <ng-container *ngFor="let cell of row; let colIndex = index">
-                  <td
-                      class="px-6 py-4 whitespace-nowrap"
-                      [attr.colspan]="getSpan(rowIndex, colIndex).colspan"
-                      [attr.rowspan]="getSpan(rowIndex, colIndex).rowspan"
-                      contenteditable="true"
-                      (blur)="updateCellFromEvent($event, rowIndex, colIndex)"
-                      *ngIf="!isCellHidden(rowIndex, colIndex)">
-                    {{ cell }}
-                  </td>
-                </ng-container>
-              </ng-container>
-            </tr>
-          </tbody>
-        </table>
+      <div class="modal-body">
+        <p>{{ modalMessage }}</p>
       </div>
-    </section>
-
-    <!-- Boutons d'action génériques si besoin (pour l'instant, seulement des inputs de fichier) -->
-    <!-- <div class="flex justify-center gap-4 mt-8">
-      <button type="button" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
-        Action Générique
-      </button>
-    </div> -->
-
-  </div>
-</div>
-
-<!-- Modal pour les messages (remplace alert()) -->
-<div *ngIf="showModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-xl p-6 w-96">
-    <h3 class="text-xl font-bold mb-4" [ngClass]="{'text-green-600': modalType === 'success', 'text-red-600': modalType === 'error', 'text-yellow-600': modalType === 'warning', 'text-blue-600': modalType === 'info'}">
-      {{ modalTitle }}
-    </h3>
-    <p class="text-gray-700 mb-6">{{ modalMessage }}</p>
-    <div class="flex justify-end">
-      <button (click)="closeModal()"
-              class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        OK
-      </button>
+      <div class="modal-footer">
+        <button class="action-btn" (click)="closeModal()">Fermer</button>
+      </div>
     </div>
   </div>
 </div>
-
-
-
-  
-
-
-
-
-  
-  

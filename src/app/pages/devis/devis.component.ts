@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';  
 import { ExcelDataService } from '../../service/excel-data.service';
+import { saveAs } from 'file-saver';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-devis',
@@ -25,7 +27,7 @@ export class DevisComponent implements OnInit {
           this.colonnes = [];
         }
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         console.error('❌ Erreur lors de la récupération des données Excel :', err);
         this.donneesExcel = [];
         this.colonnes = [];
@@ -51,6 +53,15 @@ export class DevisComponent implements OnInit {
 
   telecharger(): void {
     console.log('Méthode telecharger() appelée');
-    // TODO : logique pour générer et télécharger un fichier Excel ou PDF
+    this.excelService.telechargerTemplateExcel().subscribe({
+      next: (blob: Blob) => {
+        saveAs(blob, 'DEVIS_TEMPLATE.xlsx');
+        console.log('✅ Téléchargement du fichier Excel déclenché.');
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('❌ Erreur lors du téléchargement du modèle Excel :', error);
+        alert('Erreur lors du téléchargement du modèle Excel depuis le serveur.');
+      }
+    });
   }
 }

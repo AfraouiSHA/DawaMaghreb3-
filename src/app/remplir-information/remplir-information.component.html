@@ -1,0 +1,61 @@
+<div class="container">
+  <h1>Remplir les informations du Procès-Verbal</h1>
+  <p>ID du document : {{ documentId }}</p>
+
+  <form (ngSubmit)="sauvegarderPv()">
+    <section class="form-section">
+      <h2>🧾 Informations générales sur le PV</h2>
+      
+      <div class="form-group">
+        <label for="pv-title">Titre du PV :</label>
+        <input id="pv-title" type="text" [(ngModel)]="pvTitle" name="pvTitle">
+      </div>
+      
+      <div class="form-group">
+        <label for="pv-number">Numéro du PV :</label>
+        <input id="pv-number" type="text" [(ngModel)]="pvNumber" name="pvNumber" [readonly]="true">
+      </div>
+      <div class="form-group">
+        <label for="pv-date">Date :</label>
+        <input id="pv-date" type="date" [(ngModel)]="pvDate" name="pvDate">
+      </div>
+      
+
+      <div class="form-group">
+        <label for="pv-lieu">Lieu :</label>
+<input id="pv-lieu" type="text" [(ngModel)]="pvLocation" name="pvLocation">         
+</div>
+      <div class="form-group">
+        <label for="pv-redacteur">Rédacteur :</label>
+        <input id="pv-redacteur" type="text" [(ngModel)]="pvRedacteur" name="pvRedacteur">
+      </div>
+
+      <div class="form-group">
+        <label for="pv-status">Statut :</label>
+        <input id="pv-status" type="text" [(ngModel)]="pvStatus" name="pvStatus">
+      </div>
+      
+      
+    </section>
+
+    <section class="form-section">
+      <h2>👥 Participants <span class="badge">{{ participants.length }}</span></h2>
+      
+      <div *ngFor="let participant of participants; let i = index" class="participant-input">
+        <div class="form-group">
+          <label for="participant-{{i}}">Nom du participant {{ i + 1 }} :</label>
+          <input id="participant-{{i}}" type="text" [(ngModel)]="participant.nom" name="participant-{{i}}">
+          <button type="button" (click)="removeParticipant(i)" class="remove-btn">✖️</button>
+        </div>
+      </div>
+
+      <div class="add-participant-btn">
+        <button type="button" (click)="addParticipant()">➕ Ajouter un participant</button>
+      </div>
+    </section>
+
+    <div class="btn-group">
+      <button type="submit">Sauvegarder</button>
+    </div>
+  </form>
+</div>

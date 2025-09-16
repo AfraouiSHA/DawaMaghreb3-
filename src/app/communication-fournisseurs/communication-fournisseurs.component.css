@@ -1,27 +1,31 @@
+/* src/app/pages/communication-fournisseurs/communication-fournisseurs.component.css */
 /* Fond flou (arrière-plan) */
 .blur-background {
-  position: fixed; /* absolute peut poser souci si le parent n'est pas positionné */
-  top: 0; 
+  position: fixed;
+  top: 0;
   left: 0;
-  width: 100%; 
+  width: 100%;
   height: 100%;
   background: url('/assets/image-dawamaghreb/imageaccueil.jpg.webp') center/cover no-repeat;
   filter: blur(8px);
-  z-index: -1;  /* Mettre en dessous du contenu */
+  z-index: -1;
 }
 
 /* Conteneur principal du contenu */
 .communication-container {
-  position: relative; /* Important pour superposer au fond */
-  z-index: 1; /* Au-dessus du fond */
+  position: relative;
+  z-index: 1;
   display: flex;
+  flex-wrap: wrap; /* Allows elements to wrap on small screens */
   gap: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin-bottom: 30px;
   background-color: #f7f7f7;
   padding: 20px;
   border-radius: 15px;
+  margin-top: 20px; /* Added top margin */
 }
+
 /* ==== logo ==== */
 .logo {
   width: 100px;
@@ -31,17 +35,28 @@
   z-index: 2;
 }
 
-.ajout-fournisseur {
-  flex: 1;
+.ajout-fournisseur,
+.suppliers-list,
+.chat-window {
   background-color: white;
-  padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  padding: 20px;
 }
 
-.ajout-fournisseur h2 {
+.ajout-fournisseur {
+  flex: 1 1 300px; /* Flexible but with a base size */
+  min-width: 280px; /* Minimum width */
+}
+
+.ajout-fournisseur h2,
+.suppliers-list h2,
+.chat-window header h3 {
   color: #2DBDB4;
   margin-bottom: 15px;
+  font-weight: 700;
+  border-bottom: 2px solid #FEBB5F; /* Added border for titles */
+  padding-bottom: 8px; /* Spacing below the border */
 }
 
 .ajout-fournisseur form {
@@ -49,7 +64,9 @@
   flex-direction: column;
 }
 
-.ajout-fournisseur input {
+.ajout-fournisseur input[type="text"],
+.ajout-fournisseur input[type="email"],
+.ajout-fournisseur input[type="tel"] {
   padding: 10px 14px;
   margin-bottom: 12px;
   border: 1.5px solid #ccc;
@@ -61,6 +78,18 @@
 .ajout-fournisseur input:focus {
   outline: none;
   border-color: #2DBDB4;
+}
+
+/* Styles pour les fournisseurs retenus */
+li.retenu {
+  background-color: #d1f7d1;
+  border-left: 4px solid #28a745;
+}
+
+/* Styles pour les fournisseurs non-retenus */
+li.non-retenu {
+  background-color: #ffe6cc;
+  border-left: 4px solid #ff9800;
 }
 
 .ajout-fournisseur button {
@@ -85,19 +114,9 @@
 }
 
 .suppliers-list {
-  width: 220px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  padding: 20px;
+  width: 280px; /* Fixed width for the supplier list */
   overflow-y: auto;
   max-height: 500px;
-}
-
-.suppliers-list h2 {
-  color: #2DBDB4;
-  margin-bottom: 15px;
-  font-weight: 700;
 }
 
 .suppliers-list ul {
@@ -113,6 +132,7 @@
   font-weight: 600;
   color: #333;
   transition: background-color 0.3s ease, color 0.3s ease;
+  margin-bottom: 5px; /* Spacing between list items */
 }
 
 .suppliers-list li:hover,
@@ -121,103 +141,53 @@
   color: white;
 }
 
+/* Ajout des règles pour maintenir la couleur au survol et à la sélection */
+li.retenu:hover,
+li.retenu.active {
+  background-color: #28a745; /* Vert plus foncé */
+  color: white;
+}
+
+li.non-retenu:hover,
+li.non-retenu.active {
+  background-color: #ff9800; /* Orange plus foncé */
+  color: white;
+}
+
 .chat-window {
-  flex: 3;
+  flex: 3; /* Takes remaining space */
   display: flex;
   flex-direction: column;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   padding: 20px;
-  max-height: 600px;
+  min-height: 400px; /* Minimum height for the message area */
 }
 
 .chat-window header {
   border-bottom: 3px solid #FEBB5F;
   padding-bottom: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   color: #2DBDB4;
   font-weight: 700;
   font-size: 1.3rem;
 }
 
-.messages {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 10px;
-  border: 1px solid #eee;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  background-color: #fafafa;
-  font-size: 0.95rem;
-}
-
-.messages div {
-  margin-bottom: 12px;
-  max-width: 75%;
-  padding: 10px 15px;
-  border-radius: 15px;
-  position: relative;
-}
-
-.messages div.sent {
-  background-color: #2DBDB4;
-  color: white;
-  align-self: flex-end;
-  border-bottom-right-radius: 4px;
-}
-
-.messages div.received {
-  background-color: #FEBB5F;
-  color: white;
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
-}
-
-.timestamp {
-  font-size: 0.7rem;
-  color: #ddd;
-  position: absolute;
-  bottom: 4px;
-  right: 12px;
-}
-
-.chat-window footer {
-  display: flex;
-  gap: 10px;
-}
-
-.chat-window footer input[type="text"] {
-  flex-grow: 1;
+.message-input-area textarea {
+  width: 100%;
   padding: 12px 15px;
   border: 1.5px solid #ccc;
-  border-radius: 25px;
+  border-radius: 8px; /* Slightly rounded corners for the textarea */
   font-size: 1rem;
+  min-height: 120px; /* Minimum height for the textarea */
+  box-sizing: border-box;
   transition: border-color 0.3s ease;
 }
 
-.chat-window footer input[type="text"]:focus {
+.message-input-area textarea:focus {
   outline: none;
   border-color: #2DBDB4;
 }
 
-.chat-window footer button {
-  background-color: #2DBDB4;
-  color: white;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-
-.chat-window footer button:hover {
-  background-color: #239b96;
-}
-
 .btn-demande {
-  margin-top: 15px;
   background-color: #FEBB5F;
   border: none;
   padding: 12px 20px;
@@ -227,21 +197,24 @@
   color: white;
   font-size: 1rem;
   transition: background-color 0.3s ease;
+  width: fit-content; /* Adapts to content */
+  margin-top: 20px;
+  margin-left: auto; /* Align right */
+  margin-right: auto; /* Align right */
 }
 
 .btn-demande:hover {
   background-color: #e0a945;
 }
 
-/* Styles pour la zone d'information marché-details */
-
+/* Styles for the marche-details info area */
 .marche-details {
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   padding: 25px 30px;
-  max-width: 700px;
-  margin: 0 auto 40px;
+  max-width: 100%; /* Adapts to container width */
+  margin: 20px auto 40px; /* Center and add margins */
   font-size: 1rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
@@ -274,6 +247,7 @@
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+  margin-top: 15px;
 }
 
 .actions li button {
@@ -292,8 +266,7 @@
   background-color: #239b96;
 }
 
-/* Liens documents */
-
+/* Document links */
 .marche-details ul li a {
   color: #2DBDB4;
   text-decoration: none;
@@ -306,3 +279,161 @@
   text-decoration: underline;
 }
 
+/* Feedback messages */
+.feedback-success {
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 8px;
+  background-color: #d4edda; /* Light green */
+  color: #155724; /* Dark green */
+  border: 1px solid #c3e6cb;
+  text-align: center;
+  font-weight: 500;
+}
+
+.feedback-error {
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 8px;
+  background-color: #f8d7da; /* Light red */
+  color: #721c24; /* Dark red */
+  border: 1px solid #f5c6cb;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .communication-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .suppliers-list, .ajout-fournisseur, .chat-window {
+    width: 100%;
+    max-width: 500px; /* Limit width on intermediate screens */
+  }
+  .marche-details {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo {
+    width: 80px;
+    top: 5px;
+    left: 5px;
+  }
+  .communication-container {
+    padding: 15px;
+    gap: 15px;
+  }
+  .ajout-fournisseur,
+  .suppliers-list,
+  .chat-window,
+  .marche-details {
+    padding: 15px;
+  }
+  .ajout-fournisseur h2,
+  .suppliers-list h2,
+  .chat-window header h3,
+  .marche-details h2 {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+  }
+  .ajout-fournisseur button,
+  .btn-demande,
+  .actions li button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  .actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .actions li button {
+    width: 100%;
+  }
+  .field-group input,
+  .field-group textarea,
+  .message-input-area textarea {
+    padding: 8px 10px;
+  }
+}
+
+/* Added styles for message history and loading indicators */
+.messages-history {
+  flex-grow: 1; /* Allow history to take available vertical space */
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 15px;
+  overflow-y: auto; /* Enable scrolling for long history */
+  max-height: 250px; /* Max height for message history area */
+  margin-bottom: 15px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.messages-history h4 {
+  color: #2DBDB4;
+  margin-bottom: 10px;
+  font-weight: 600;
+  border-bottom: 1px solid #FEBB5F;
+  padding-bottom: 5px;
+}
+
+.message-bubble {
+  padding: 10px 15px;
+  border-radius: 18px;
+  margin-bottom: 10px;
+  max-width: 80%;
+  position: relative;
+  word-wrap: break-word; /* Ensure long words wrap */
+}
+
+.message-bubble.sent-by-admin {
+  background-color: #dcf8c6; /* Light green for admin messages */
+  align-self: flex-end; /* Align to the right */
+  margin-left: auto;
+}
+
+.message-bubble.received-by-admin {
+  background-color: #e6e6ea; /* Light grey for received messages */
+  align-self: flex-start; /* Align to the left */
+  margin-right: auto;
+}
+
+.message-meta {
+  font-size: 0.75rem;
+  color: #777;
+  margin-bottom: 4px;
+}
+
+.no-fournisseur-message,
+.no-message-found,
+.loading-indicator {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 20px 0;
+}
+
+.new-message-area,
+.attribution-message-area {
+  margin-top: 15px; /* Spacing between message areas */
+}
+
+.new-message-area h4,
+.attribution-message-area h4 {
+  color: #2DBDB4;
+  margin-bottom: 10px;
+  font-weight: 600;
+  border-bottom: 1px solid #FEBB5F;
+  padding-bottom: 5px;
+}
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 15px;
+  margin-top: 10px;
+}

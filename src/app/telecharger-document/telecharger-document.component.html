@@ -1,0 +1,70 @@
+<div class="home-container">
+  <div class="blur-background"></div>
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo" class="logo" />
+  <h1 class="title">TÉLÉCHARGER LES DOCUMENTS</h1>
+
+  <div class="search-container">
+    <input type="text" placeholder="Numéro AO (ex: AO-2025-001)" [(ngModel)]="numeroAO" class="search-input">
+
+    <select class="search-input" (change)="choisirAO($event)">
+      <option value="">-- Sélectionner AO existant --</option>
+      <option *ngFor="let ao of listeAO" [value]="ao">{{ ao }}</option>
+    </select>
+
+    <input type="text" placeholder="Mot-clé" [(ngModel)]="rechercheMotCle" class="search-input">
+
+    <button class="orange-btn" (click)="rechercherDocuments()">🔍 Rechercher</button>
+    <button class="orange-btn" (click)="telechargerTout()">📦 Télécharger tout</button>
+  </div>
+
+  <ng-container *ngFor="let section of [{ titre: '📢 Avis de l\'appel d\'offres', docs: dossierAvis },{ titre: '📂 Dossier Technique', docs: dossierTechnique }, { titre: '📂 Dossier Financier', docs: dossierFinancier }, { titre: '📄 Autres documents', docs: dossierAutres }]">
+    <h2 class="section-title">{{ section.titre }}</h2>
+  <div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Nom du document</th>
+        <th>Date maj</th>
+        <th>Publié par</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let doc of getFilteredDocuments(section.docs)">
+        <td>{{ doc.nom }}</td>
+        <td>{{ doc.date }}</td>
+        <td>{{ doc.auteur }}</td>
+        <td>
+          <div class="action-buttons">
+            <button class="action-btn" (click)="telechargerDocument(doc)" [disabled]="!doc.url">
+              📥 Télécharger
+            </button>
+            <button class="action-btn" (click)="previewDocument(doc)" [disabled]="!doc.url">
+              👁️ Prévisualiser
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="getFilteredDocuments(section.docs).length === 0">
+        <td colspan="4">Aucun document trouvé pour le moment.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  </ng-container>
+
+  <div *ngIf="showModal" class="modal-overlay">
+    <div class="modal-content" [ngClass]="modalType">
+      <h3>{{ modalTitle }}</h3>
+      <p>{{ modalMessage }}</p>
+      <button class="btn" (click)="closeModal()">Fermer</button>
+    </div>
+  </div>
+
+  <div *ngIf="previewUrl" class="preview-overlay" (click)="closePreview()">
+    <div class="preview-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closePreview()">X</button>
+      <embed [src]="previewUrl" type="application/pdf" width="100%" height="100%" />
+    </div>
+  </div>
+</div>

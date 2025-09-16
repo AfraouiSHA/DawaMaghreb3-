@@ -1,9 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Router } from '@angular/router';
 
-// Déclaration du type en dehors de la classe
 type EntrepriseKeys = 'nom' | 'ice' | 'adresse' | 'email' | 'telephone';
+type UserKeys = 'prenom' | 'nom' | 'poste' | 'email' | 'telephone';
+
+// ⭐ REMPLACEZ CES VALEURS PAR LES CLÉS DE VOTRE PROJET SUPABASE ⭐
+const supabaseUrl = 'https://kfzlkfupyrokfimekkee.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmemxrZnVweXJva2ZpbWVra2VlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDM2OTE3MSwiZXhwIjoyMDY1OTQ0MTcxfQ.fJdH_-hehJ8fdOOJAIF3byDnP1E1ZDYu4mOFCn84iY';
+
+const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKey);
 
 @Component({
   selector: 'app-parametres',
@@ -12,23 +20,40 @@ type EntrepriseKeys = 'nom' | 'ice' | 'adresse' | 'email' | 'telephone';
   templateUrl: './parametres.component.html',
   styleUrls: ['./parametres.component.css']
 })
-export class ParametresComponent {
+export class ParametresComponent implements OnInit {
 
-  // Pour ngFor sur les clés de l'objet entreprise
   objectKeys = Object.keys;
 
-  // Sections disponibles
   sections = [
-    { key: 'profil', label: 'Profil de l’entreprise' },
-    { key: 'securite', label: 'Sécurité' },
-    { key: 'historique', label: 'Historique de connexion' },
-    { key: 'deconnexion', label: 'Déconnexion' }
+    { key: 'profil', label: 'Profil de l’utilisateur', icon: 'fas fa-user-circle' },
+    { key: 'securite', label: 'Sécurité', icon: 'fas fa-shield-alt' },
+    { key: 'historique', label: 'Historique de connexion', icon: 'fas fa-history' },
+    { key: 'deconnexion', label: 'Déconnexion', icon: 'fas fa-sign-out-alt' }
   ];
 
-  // Section affichée par défaut
   selectedSection: string = 'profil';
+  isLoading: boolean = false;
+  loginHistory: any[] = [];
+  user: Record<UserKeys, string> = {
+    prenom: '',
+    nom: '',
+    poste: '',
+    email: '',
+    telephone: ''
+  };
 
-  // Données de l'entreprise
+  userLabels: Record<UserKeys, string> = {
+    prenom: 'Prénom',
+    nom: 'Nom',
+    poste: 'Poste',
+    email: 'Adresse email',
+    telephone: 'Numéro de téléphone'
+  };
+
+  get userKeys(): UserKeys[] {
+    return Object.keys(this.user) as UserKeys[];
+  }
+
   entreprise: Record<EntrepriseKeys, string> = {
     nom: '',
     ice: '',
@@ -37,77 +62,147 @@ export class ParametresComponent {
     telephone: ''
   };
 
+  entrepriseLabels: Record<EntrepriseKeys, string> = {
+    nom: 'Nom de l’entreprise',
+    ice: 'ICE',
+    adresse: 'Adresse',
+    email: 'Email de l’entreprise',
+    telephone: 'Numéro de téléphone'
+  };
+
   get entrepriseKeys(): EntrepriseKeys[] {
     return Object.keys(this.entreprise) as EntrepriseKeys[];
   }
 
-  // Sécurité
-  is2FAEnabled = false;
   theme: 'light' | 'dark' = 'light';
   passwordStrength = 0;
   passwordStrengthText = 'Faible';
+  passwordSuccessMessage = '';
+  passwordErrorMessage = '';
 
-  // Historique de connexion
-  loginHistory = [
-    { date: new Date(), ip: '192.168.1.1', browser: 'Chrome (Windows)' },
-    { date: new Date(Date.now() - 86400000), ip: '192.168.1.2', browser: 'Firefox (Mac)' }
-  ];
+  isEmailValid = true;
+  isTelephoneValid = true;
+  isEntrepriseEmailValid = true;
+  isEntrepriseTelephoneValid = true;
 
-  // Modal de mot de passe (version modale ou inline)
-  showPasswordModal = false;
-  currentPassword = '';
+  oldPassword = '';
   newPassword = '';
   confirmPassword = '';
-  oldPassword = '';
 
-  hasMinLength = false;
-  hasUpperCase = false;
-  hasNumber = false;
-  hasSpecialChar = false;
+  constructor(private router: Router) { }
 
-  editMode = false;
-
-  // Modal
-  openPasswordModal(): void {
-    this.showPasswordModal = true;
+  ngOnInit(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      this.setTheme(savedTheme as 'light' | 'dark');
+    }
+    if (this.selectedSection === 'historique') {
+      this.getLoginHistory();
+    }
   }
 
-  closePasswordModal(): void {
-    this.showPasswordModal = false;
-    this.resetPasswordFields();
+  selectSection(sectionKey: string): void {
+    this.selectedSection = sectionKey;
+    if (sectionKey === 'historique') {
+      this.getLoginHistory();
+    }
   }
 
-  resetPasswordFields(): void {
-    this.currentPassword = '';
-    this.newPassword = '';
-    this.confirmPassword = '';
-    this.oldPassword = '';
-    this.passwordStrength = 0;
-    this.passwordStrengthText = 'Faible';
+  async getLoginHistory(): Promise<void> {
+    this.isLoading = true;
+    this.loginHistory = [];
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      console.log("Aucun utilisateur connecté.");
+      this.isLoading = false;
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('connexions')
+      .select('created_at, adresse_ip, Mapsur_os')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    this.isLoading = false;
+
+    if (error) {
+      console.error("Erreur de Supabase:", error);
+      return;
+    }
+
+    this.loginHistory = data || [];
+  }
+
+  async saveProfile(): Promise<void> {
+    this.validateProfile();
+    if (this.isEmailValid && this.isTelephoneValid && this.isEntrepriseEmailValid && this.isEntrepriseTelephoneValid) {
+        const { data: userUpdateData, error: userUpdateError } = await supabase.from('users').update(this.user).eq('email', this.user.email);
+        if (userUpdateError) {
+            console.error('Erreur lors de la sauvegarde du profil utilisateur:', userUpdateError.message);
+        } else {
+            console.log('Profil utilisateur sauvegardé avec succès:', userUpdateData);
+        }
+
+        const { data: entrepriseUpdateData, error: entrepriseUpdateError } = await supabase.from('entreprises').update(this.entreprise).eq('email', this.entreprise.email);
+        if (entrepriseUpdateError) {
+            console.error('Erreur lors de la sauvegarde du profil entreprise:', entrepriseUpdateError.message);
+        } else {
+            console.log('Profil entreprise sauvegardé avec succès:', entrepriseUpdateData);
+        }
+    } else {
+      console.log('Erreur de validation. Veuillez vérifier les champs.');
+    }
+  }
+
+  validateProfile(): void {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const telephoneRegex = /^\d{10}$/;
+
+    this.isEmailValid = emailRegex.test(this.user.email);
+    this.isTelephoneValid = telephoneRegex.test(this.user.telephone);
+    this.isEntrepriseEmailValid = emailRegex.test(this.entreprise.email);
+    this.isEntrepriseTelephoneValid = telephoneRegex.test(this.entreprise.telephone);
   }
 
   checkPasswordStrength(): void {
-    this.hasMinLength = this.newPassword.length >= 8;
-    this.hasUpperCase = /[A-Z]/.test(this.newPassword);
-    this.hasNumber = /\d/.test(this.newPassword);
-    this.hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(this.newPassword);
-
-    const strength = [
-      this.hasMinLength,
-      this.hasUpperCase,
-      this.hasNumber,
-      this.hasSpecialChar
-    ].filter(Boolean).length;
+    const password = this.newPassword;
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
 
     this.passwordStrength = strength;
-    this.passwordStrengthText = ['Faible', 'Moyen', 'Fort', 'Très fort'][strength - 1] || 'Faible';
+
+    switch (strength) {
+      case 0:
+        this.passwordStrengthText = 'Faible';
+        break;
+      case 1:
+        this.passwordStrengthText = 'Moyen';
+        break;
+      case 2:
+        this.passwordStrengthText = 'Bon';
+        break;
+      case 3:
+        this.passwordStrengthText = 'Fort';
+        break;
+      case 4:
+        this.passwordStrengthText = 'Très fort';
+        break;
+      default:
+        this.passwordStrengthText = 'Faible';
+    }
   }
 
   isPasswordValid(): boolean {
     return (
-      this.passwordStrength >= 3 &&
-      this.newPassword === this.confirmPassword &&
-      (this.currentPassword.trim() !== '' || this.oldPassword.trim() !== '')
+      this.oldPassword.length > 0 &&
+      this.newPassword.length >= 8 &&
+      this.newPassword === this.confirmPassword
     );
   }
 
@@ -124,29 +219,45 @@ export class ParametresComponent {
   setTheme(theme: 'light' | 'dark'): void {
     this.theme = theme;
     document.body.className = `${theme}-theme`;
-    // TODO : Ajouter persistance via localStorage
+    localStorage.setItem('theme', theme);
   }
 
-  logout(): void {
-    console.log('Déconnexion...');
-  }
-
-  savePassword(): void {
-    if (this.isPasswordValid()) {
-      // Logique d’envoi backend ici
-      console.log('Mot de passe modifié avec succès');
-      this.editMode = false;
-      this.resetPasswordFields();
+  async logout(): Promise<void> {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Erreur de déconnexion:', error.message);
     } else {
-      console.log('Mot de passe invalide');
+      console.log('Déconnexion réussie. Redirection...');
+      this.router.navigate(['/login']);
     }
   }
 
+  savePassword(): void {
+    this.passwordSuccessMessage = '';
+    this.passwordErrorMessage = '';
+
+    if (!this.isPasswordValid()) {
+      this.passwordErrorMessage = 'Veuillez remplir tous les champs correctement. Le nouveau mot de passe doit faire au moins 8 caractères et correspondre à la confirmation.';
+      return;
+    }
+
+    setTimeout(() => {
+      console.log('Mot de passe mis à jour.');
+      this.passwordSuccessMessage = 'Votre mot de passe a été mis à jour avec succès.';
+      this.resetPasswordFields();
+    }, 1000);
+  }
+
   cancelEdit(): void {
-    this.editMode = false;
     this.resetPasswordFields();
   }
+
+  resetPasswordFields(): void {
+    this.oldPassword = '';
+    this.newPassword = '';
+    this.confirmPassword = '';
+    this.passwordStrength = 0;
+    this.passwordStrengthText = 'Faible';
+    this.passwordErrorMessage = '';
+  }
 }
-
-
-

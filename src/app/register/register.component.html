@@ -1,5 +1,5 @@
-<div class="register-container"> 
-  <form class="register-form" (ngSubmit)="onSubmit()" #registerForm="ngForm">
+<div class="register-container">
+  <form class="register-form" (ngSubmit)="onSubmit()" #registerForm="ngForm" *ngIf="!is2FAConfiguring">
     <h2>Créer un compte</h2>
 
     <input
@@ -38,6 +38,15 @@
       autocomplete="new-password"
     />
 
+    <input
+      type="password"
+      placeholder="Confirmer mot de passe"
+      [(ngModel)]="confirmPassword"
+      name="confirmPassword"
+      required
+      autocomplete="new-password"
+    />
+
     <select [(ngModel)]="user.profil" name="profil" required>
       <option value="" disabled selected>Sélectionnez votre profil</option>
       <option value="maitre">Maître d’ouvrage</option>
@@ -49,12 +58,30 @@
       Créer un compte
     </button>
 
-    <!-- Lien vers la page de connexion -->
     <p class="login-link">
       Déjà inscrit ?
       <a [routerLink]="['/login']">Se connecter</a>
     </p>
   </form>
+
+  <div *ngIf="is2FAConfiguring" class="security-2fa-setup">
+    <h3>Configuration de la 2FA par application</h3>
+    <p>1. Scannez ce code QR avec votre application d'authentification (Google Authenticator, Authy, etc.).</p>
+    <div class="qrcode-container" *ngIf="qrCodeUri">
+      <img [src]="qrCodeUri" alt="QR Code 2FA">
+    </div>
+    <p>2. Entrez le code à 6 chiffres généré par l'application pour confirmer.</p>
+    <form (ngSubmit)="verify2FACode()">
+      <div class="password-field-group">
+        <label for="totp-code">Code de vérification</label>
+        <input type="text" id="totp-code" [(ngModel)]="totpCode" name="totpCode" placeholder="Code à 6 chiffres" required>
+      </div>
+      <div class="button-group">
+        <button class="btn-action" type="submit">Confirmer</button>
+      </div>
+      <div *ngIf="mfaErrorMessage" class="error-message">{{ mfaErrorMessage }}</div>
+    </form>
+  </div>
 </div>
 
 <img

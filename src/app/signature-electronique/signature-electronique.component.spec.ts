@@ -8,12 +8,9 @@ describe('SignatureElectroniqueComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SignatureElectroniqueComponent ]
-    })
-    .compileComponents();
-  });
+      imports: [SignatureElectroniqueComponent],
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(SignatureElectroniqueComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -23,10 +20,3 @@ describe('SignatureElectroniqueComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-
-
-
-
-
-

@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../service/auth.service';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Auth } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../service/auth.service'; // Importation de AuthService
 
 @Component({
   standalone: true,
@@ -19,10 +17,9 @@ export class LoginComponent implements OnInit {
   password: string = '';
 
   constructor(
-    private auth: Auth,
     private router: Router,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService // Injection du AuthService
   ) {}
 
   ngOnInit(): void {
@@ -35,37 +32,35 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onLogin() {
-    signInWithEmailAndPassword(this.auth, this.email, this.password)
-      .then(userCredential => {
-        const user = userCredential.user;
+  async onLogin(): Promise<void> {
+    // Appel de la méthode de connexion Supabase.
+    // L'authService.login retourne { error: Error | null },
+    // donc nous vérifions directement l'objet 'error'.
+    const { error } = await this.authService.login(this.email, this.password);
 
-        // ✅ Récupération temporaire du rôle selon l'email
-        let role = '';
-        if (this.email.includes('maitre')) {
-          role = 'maitre-ouvrage';
-        } else if (this.email.includes('chef')) {
-          role = 'chef-de-projet';
-        } else if (this.email.includes('fournisseur')) {
-          role = 'fournisseur';
-        }
+    if (error) {
+      console.error('Erreur de connexion Supabase :', error);
+      // Gérer les messages d'erreur plus spécifiques si nécessaire
+      let errorMessage = 'Email ou mot de passe incorrect';
+      if (error.message.includes('Invalid login credentials')) {
+        errorMessage = 'Email ou mot de passe incorrect.';
+      } else if (error.message.includes('User not found')) {
+        errorMessage = 'Utilisateur non trouvé.';
+      }
+      this.toastr.error(errorMessage, 'Erreur');
+    } else {
+      // ✅ Connexion réussie via Supabase
+      this.toastr.success('Connexion réussie', 'Bienvenue');
 
-        // ✅ Sauvegarde utilisateur dans le service
-        this.authService.setCurrentUser({
-          email: user.email || '',
-          uid: user.uid,
-          role: role
-        });
+      // IMPORTANT: Le listener `onAuthStateChange` dans `AuthService`
+      // va automatiquement récupérer le rôle de l'utilisateur et d'autres données de profil
+      // de votre table 'profiles' après une connexion Supabase réussie.
+      // Vous N'AVEZ PAS besoin d'assigner manuellement des rôles ou d'appeler `setCurrentUser` ici.
+      // L'observable `currentUser$` dans AuthService sera mis à jour en interne.
 
-        this.toastr.success('Connexion réussie', 'Bienvenue');
-
-        // ✅ Redirection vers la page d'accueil SEULEMENT après login
-        this.router.navigate(['/accueil']);
-      })
-      .catch(error => {
-        console.error('Erreur de connexion :', error);
-        this.toastr.error('Email ou mot de passe incorrect', 'Erreur');
-      });
+      // ✅ Redirection vers la page d'accueil après login
+      this.router.navigate(['/accueil']);
+    }
   }
 
   allerVersRegister(event: Event) {
@@ -73,10 +68,3 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/register']);
   }
 }
-
-
-
-
-
-
-  

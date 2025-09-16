@@ -1,52 +1,42 @@
-<div class="home-container">  
-  <!-- Image floue en arrière-plan -->
+<div class="home-container">
   <div class="blur-background"></div>
 
-  <!-- Logo -->
   <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
 
-  <!-- Titre -->
-  <h1 class="title">MAÎTRE D’OUVRAGE</h1>
+  <h1 class="title">DOCUMENTS À SIGNER</h1>
 
-  <!-- Boutons principaux -->
   <div class="button-row">
-    <button class="orange-btn">TÉLÉCHARGER LES DOCUMENTS</button>
-    <button class="orange-btn" (click)="goToTelechargementPV()">TÉLÉCHARGER PV</button>
-    
+    <button class="orange-btn" (click)="goToTelechargementDocuments()">TÉLÉCHARGER LES DOCUMENTS</button>
 
-    <!-- Bouton pour la signature électronique -->
+    <button class="orange-btn" (click)="goToTelechargementPV()" [disabled]="loading || !projectId">
+      TÉLÉCHARGER PV
+    </button>
     <button class="orange-btn" (click)="goToSignatureElectronique()">SIGNER ÉLECTRONIQUEMENT</button>
   </div>
+ <div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>DOCUMENT</th>
+        <th>STATUT</th>
+        <th>ACTION</th>
+      </tr>
+    </thead>
 
-  <!-- Tableau -->
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>DOCUMENT</th>
-          <th>STATUT</th>
-          <th>ACTION</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-         <td>PV N°01/2025</td>
-          <td><span class="status green">Validé</span></td>
-          <td><button class="action-btn">📥 Télécharger</button></td>
-        </tr>
-        <tr>
-          <td>PV N°02/2025</td>
-          <td><span class="status yellow">En attente</span></td>
-          <td><button class="action-btn">✍️ Signer</button></td>
-        </tr>
-        <tr>
-          <td>PV N°03/2025</td>
-          <td><span class="status red">Rejeté</span></td>
-          <td><button class="action-btn">🔁 Réessayer</button></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <tbody>
+      <tr *ngFor="let doc of documents">
+        <td>{{ doc.file_name }}</td>
+        <td>
+          <span class="status yellow">{{ doc.statut }}</span>
+        </td>
+        <td>
+          <button class="action-btn" (click)="telechargerDocument(doc.file_url)">📥 Télécharger</button>
+          <button class="action-btn" *ngIf="doc.statut === 'À signer'" (click)="signerDocument(doc.id)">
+            ✍️ Signer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-
-  
+</div>

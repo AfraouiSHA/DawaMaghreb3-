@@ -1,364 +1,334 @@
-<!-- src/app/soumission/soumission.component.html -->
+<div class="blur-background"></div>
+<div class="soumission-container">
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawamaghreb" class="logo" />
 
-<!-- Le fond flou est géré par CSS, pas besoin d'un div vide spécifique si c'est juste un effet de style -->
+  <h1 class="title">Soumissionner à l'appel d'offres</h1>
 
-<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 font-sans">
-  <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl p-8 space-y-8">
+  <form class="form-container" novalidate (ngSubmit)="onSubmit(soumissionForm)" #soumissionForm="ngForm">
 
-    <div class="flex justify-center mb-6">
-      <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawamaghreb" class="h-20" />
+    <section class="card-section">
+      <h2><i class="fas fa-file-contract"></i> Informations sur l’appel d’offres</h2>
+    </section>
+    <div class="field-group">
+      <label for="refAO">Référence / Numéro</label>
+      <input type="text" id="refAO" name="refAO" placeholder="Ex: AO-2025-001" required [(ngModel)]="form.refAO" #refAO="ngModel" readonly />
+      <div *ngIf="refAO.invalid && (refAO.dirty || refAO.touched)" class="error-message">
+        La référence de l'AO est requise.
+      </div>
+    </div>
+    <div class="field-group">
+      <label for="objetAO">Objet</label>
+      <textarea id="objetAO" name="objetAO" placeholder="Objet de l’appel d’offres" required [(ngModel)]="form.objetAO" #objetAO="ngModel" readonly></textarea>
+      <div *ngIf="objetAO.invalid && (objetAO.dirty || objetAO.touched)" class="error-message">
+        L'objet de l'AO est requis.
+      </div>
+    </div>
+    <div class="field-group">
+      <label for="dateLimite">Date limite de soumission</label>
+      <input type="date" id="dateLimite" name="dateLimite" required [(ngModel)]="form.dateLimite" #dateLimite="ngModel" readonly />
+      <div *ngIf="dateLimite.invalid && (dateLimite.dirty || dateLimite.touched)" class="error-message">
+        La date limite est requise.
+      </div>
     </div>
 
-    <h1 class="text-4xl font-extrabold text-center text-indigo-800 mb-8">Soumissionner à l'appel d'offres</h1>
 
-    <!-- Utilisation de #soumissionForm="ngForm" pour accéder à l'état du formulaire Angular -->
-    <!-- (ngSubmit) doit appeler la méthode correcte : soumettreFormulaire -->
-    <form class="space-y-6" novalidate (ngSubmit)="soumettreFormulaire(soumissionForm)" #soumissionForm="ngForm">
-
-      <!-- Informations appel d'offres -->
-      <section class="bg-indigo-50 p-6 rounded-lg shadow-inner" aria-labelledby="infos-ao-title">
-        <h2 id="infos-ao-title" class="text-2xl font-bold text-indigo-700 mb-4 flex items-center">
-          <span class="mr-2">📝</span> Informations sur l’appel d’offres
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="field-group">
-            <label for="refAO" class="block text-sm font-medium text-gray-700">Référence / Numéro</label>
-            <!-- Liaison de données avec formData.refAO -->
-            <input id="refAO" name="refAO" type="text" placeholder="Ex: AO-2025-001" autocomplete="off"
-                   [(ngModel)]="formData.refAO"
-                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2">
-          </div>
-          <div class="field-group">
-            <label for="dateLimite" class="block text-sm font-medium text-gray-700">Date limite de soumission</label>
-            <!-- Liaison de données avec formData.dateLimite -->
-            <input id="dateLimite" name="dateLimite" type="date"
-                   [(ngModel)]="formData.dateLimite"
-                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2">
-          </div>
+    <section class="card-section">
+      <h2><i class="fas fa-building"></i> Informations sur l’entreprise</h2>
+      <p class="section-description">Entrez les informations de votre société.</p>
+      <div class="field-group">
+        <label for="nomEntreprise">Nom de l'Entreprise</label>
+        <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="Nom complet de l'entreprise" required [(ngModel)]="form.nomEntreprise" #nomEntreprise="ngModel" />
+        <div *ngIf="nomEntreprise.invalid && (nomEntreprise.dirty || nomEntreprise.touched)" class="error-message">
+          Le nom de l'entreprise est requis.
         </div>
-        <div class="field-group mt-4">
-          <label for="objetAO" class="block text-sm font-medium text-gray-700">Objet</label>
-          <!-- Liaison de données avec formData.objetAO -->
-          <textarea id="objetAO" name="objetAO" placeholder="Objet de l’appel d’offres" rows="3"
-                    [(ngModel)]="formData.objetAO"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"></textarea>
+      </div>
+      <div class="field-group">
+        <label for="adresse">Adresse</label>
+        <input type="text" id="adresse" name="adresse" placeholder="Adresse complète" required [(ngModel)]="form.adresse" #adresse="ngModel" />
+        <div *ngIf="adresse.invalid && (adresse.dirty || adresse.touched)" class="error-message">
+          L'adresse est requise.
         </div>
-      </section>
+      </div>
+      <div class="field-group">
+        <label for="telephone">Téléphone</label>
+        <input type="tel" id="telephone" name="telephone" placeholder="Ex: +212 6 XX XX XX XX" required [(ngModel)]="form.telephone" #telephone="ngModel" />
+        <div *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)" class="error-message">
+          Le numéro de téléphone est requis.
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="contact@votreentreprise.com" required email [(ngModel)]="form.email" #email="ngModel" />
+        <div *ngIf="email.invalid && (email.dirty || email.errors?.['required'] || email.touched)" class="error-message">
+          <span *ngIf="email.errors?.['required']">L'email est requis.</span>
+          <span *ngIf="email.errors?.['email']">Veuillez entrer un email valide.</span>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="compteBancaire">Compte bancaire (RIB)</label>
+        <input type="text" id="compteBancaire" name="compteBancaire" placeholder="RIB ou informations bancaires" [(ngModel)]="form.compteBancaire" required #compteBancaire="ngModel" />
+        <div *ngIf="compteBancaire.invalid && (compteBancaire.dirty || compteBancaire.touched)" class="error-message">
+          Le compte bancaire est requis.
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="taxePro">Taxe professionnelle</label>
+        <input type="text" id="taxePro" name="taxePro" placeholder="Numéro de taxe professionnelle" [(ngModel)]="form.taxeProfessionnelle" required #taxePro="ngModel" />
 
-      <!-- Informations entreprise -->
-      <section class="bg-blue-50 p-6 rounded-lg shadow-inner" aria-labelledby="infos-entreprise-title">
-        <h2 id="infos-entreprise-title" class="text-2xl font-bold text-blue-700 mb-4 flex items-center">
-          <span class="mr-2">🏢</span> Informations sur l’entreprise
-        </h2>
+        <div *ngIf="taxePro.invalid && (taxePro.dirty || taxePro.touched)" class="error-message">
+          La taxe professionnelle est requise.
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="ice">ICE</label>
+        <input type="text" id="ice" name="ice" placeholder="Identifiant Commun de l'Entreprise" [(ngModel)]="form.ice" required #ice="ngModel" />
+        <div *ngIf="ice.invalid && (ice.dirty || ice.touched)" class="error-message">
+          L'ICE est requis.
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="cnss">CNSS</label>
+        <input type="text" id="cnss" name="cnss" placeholder="Numéro CNSS" [(ngModel)]="form.cnss" required #cnss="ngModel" />
+        <div *ngIf="cnss.invalid && (cnss.dirty || cnss.touched)" class="error-message">
+          Le numéro CNSS est requis.
+        </div>
+      </div>
+    </section>
 
-        <div class="field-group">
-          <label for="nomEntreprise" class="block text-sm font-medium text-gray-700">
-            Nom de l'entreprise <span aria-hidden="true">*</span>
+    <section class="card-section">
+      <h2><i class="fas fa-file-contract"></i> Documents de l'appel d'offres</h2>
+      <p class="section-description">Ces documents sont disponibles pour consultation et téléchargement.</p>
+
+      <div *ngIf="documentsAO.length > 0" class="documents-list">
+        <ul>
+          <li *ngFor="let doc of documentsAO" class="document-item">
+            <div class="document-info">
+              <i class="fas fa-file-pdf document-icon"></i>
+              <span class="document-name">{{ doc.file_name }}</span>
+            </div>
+            <div class="document-actions">
+              <button class="btn-preview" (click)="previewDocument(doc)">
+                <i class="fas fa-eye"></i> Prévisualiser
+              </button>
+              <button class="btn-download" (click)="downloadDocument(doc)">
+                <i class="fas fa-download"></i> Télécharger
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="documentsAO.length === 0" class="no-documents-message">
+        Aucun document n'est disponible pour cet appel d'offres.
+      </div>
+    </section>
+
+    <section class="card-section">
+      <h2><i class="fas fa-table"></i> Détail estimatif (Devis)</h2>
+      <div class="field-group file-upload-group">
+        <label class="file-upload-label">
+          <input type="file" (change)="onFileSelected($event, 'fichierDevisRempli')" accept=".xls,.xlsx" required #excelInput>
+          <span class="file-upload-btn">
+            <i class="fas fa-upload"></i> Télécharger le devis
+          </span>
+          <span class="file-name" *ngIf="form.uploadedFiles.fichierDevisRempli">{{ form.uploadedFiles.fichierDevisRempli.name }}</span>
+        </label>
+        <div *ngIf="!form.uploadedFiles.fichierDevisRempli" class="error-message">
+          Veuillez télécharger le fichier de devis.
+        </div>
+      </div>
+    </section>
+
+    <section class="card-section devis-table-container" *ngIf="devisData.length > 0">
+      <div class="table-scroll-wrapper">
+        <table class="devis-table">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Désignation</th>
+              <th>Unité</th>
+              <th>Quantité</th>
+              <th>P.U. (HT)</th>
+              <th>P.T. (HT)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of devisData; let i = index">
+              <td>{{ item.numero }}</td>
+              <td>{{ item.designation }}</td>
+              <td>{{ item.unite }}</td>
+              <td>{{ item.quantite }}</td>
+              <td>
+              <td class="cell-pu-ht">
+  <input
+    type="number"
+    class="pu-input"
+    [(ngModel)]="item.pu_ht"
+    name="pu-{{i}}"
+    [disabled]="!devisData || devisData.length === 0"
+    (input)="onCellChange(i, item.pu_ht)"
+  />
+</td>
+              <td>{{ item.pt_ht | number: '1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="totals-section">
+        <p>Total HT : {{ totalHT | number:'1.2-2' }} DH</p>
+        <p>TVA ({{ tvaRate * 100 }}%) : {{ tvaAmount | number:'1.2-2' }} DH</p>
+        <p>Total TTC : {{ totalTTC | number:'1.2-2' }} DH</p>
+      </div>
+    </section>
+
+
+    <section class="card-section">
+      <h2><i class="fas fa-id-card-alt"></i> Offre administrative</h2>
+      <p class="section-description">
+        Veuillez joindre les documents administratifs requis pour votre soumission. Taille maximale par fichier: 5MB.
+        <strong style="color: var(--primary-orange);">Merci de privilégier le format PDF pour tous les documents.</strong>
+      </p>
+      <div class="document-upload-grid">
+        <div class="file-input-wrapper">
+          <input type="file" id="registreCommerce" name="registreCommerce" accept=".pdf" required (change)="onFileSelected($event, 'registreCommerce')" />
+          <label for="registreCommerce" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">Registre de Commerce (RC) <span class="required-star">*</span></span>
+            </div>
+            <span class="file-selected-display-text">{{ form.uploadedFiles.registreCommerce?.name || 'Aucun fichier choisi' }}</span>
           </label>
-          <!-- Liaison de données avec formData.nomEntreprise -->
-          <input id="nomEntreprise" name="nomEntreprise" type="text" placeholder="Nom complet de l'entreprise" required
-                 [(ngModel)]="formData.nomEntreprise" #nomEntrepriseCtrl="ngModel"
-                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
-          <div *ngIf="nomEntrepriseCtrl.invalid && (nomEntrepriseCtrl.dirty || nomEntrepriseCtrl.touched)"
-               class="text-red-600 text-sm mt-1">
-            Le nom de l'entreprise est requis.
+          <div *ngIf="soumissionForm.submitted && !form.uploadedFiles.registreCommerce" class="error-message-inline">
+            Le Registre de Commerce est requis.
           </div>
         </div>
-
-        <div class="field-group mt-4">
-          <label for="adresse" class="block text-sm font-medium text-gray-700">Adresse</label>
-          <!-- Liaison de données avec formData.adresse -->
-          <textarea id="adresse" name="adresse" placeholder="Adresse complète" rows="2"
-                    [(ngModel)]="formData.adresse"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"></textarea>
-        </div>
-
-        <div class="field-group mt-4">
-          <label for="telephone" class="block text-sm font-medium text-gray-700">Téléphone</label>
-          <!-- Liaison de données avec formData.telephone -->
-          <input id="telephone" name="telephone" type="tel" placeholder="+212 6 XX XX XX XX"
-                 pattern="^\+?\d{1,4}[\d\s\-]{3,}$" autocomplete="tel"
-                 [(ngModel)]="formData.telephone"
-                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
-          <div *ngIf="soumissionForm.controls['telephone']?.invalid && (soumissionForm.controls['telephone']?.dirty || soumissionForm.controls['telephone']?.touched)"
-               class="text-red-600 text-sm mt-1">
-            Veuillez entrer un numéro de téléphone valide.
+        <div class="file-input-wrapper">
+          <input type="file" id="attestationFiscale" name="attestationFiscale" accept=".pdf" required (change)="onFileSelected($event, 'attestationFiscale')" />
+          <label for="attestationFiscale" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">Attestation Fiscale <span class="required-star">*</span></span>
+            </div>
+            <span class="file-selected-display-text">{{ form.uploadedFiles.attestationFiscale?.name || 'Aucun fichier choisi' }}</span>
+          </label>
+          <div *ngIf="soumissionForm.submitted && !form.uploadedFiles.attestationFiscale" class="error-message-inline">
+            L'Attestation Fiscale est requise.
           </div>
         </div>
-
-        <div class="field-group mt-4">
-          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-          <!-- Liaison de données avec formData.email -->
-          <input id="email" name="email" type="email" placeholder="contact@entreprise.ma" autocomplete="email" required
-                 [(ngModel)]="formData.email" #emailCtrl="ngModel"
-                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
-          <div *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)"
-               class="text-red-600 text-sm mt-1">
-            Veuillez entrer une adresse email valide.
+        <div class="file-input-wrapper">
+          <input type="file" id="attestationCNSS" name="attestationCNSS" accept=".pdf" required (change)="onFileSelected($event, 'attestationCNSS')" />
+          <label for="attestationCNSS" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">Attestation CNSS <span class="required-star">*</span></span>
+            </div>
+            <span class="file-selected-display-text">{{ form.uploadedFiles.attestationCNSS?.name || 'Aucun fichier choisi' }}</span>
+          </label>
+          <div *ngIf="soumissionForm.submitted && !form.uploadedFiles.attestationCNSS" class="error-message-inline">
+            L'Attestation CNSS est requise.
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="field-group mt-4">
-          <label for="compteBancaire" class="block text-sm font-medium text-gray-700">Compte bancaire</label>
-          <!-- Liaison de données avec formData.compteBancaire -->
-          <input id="compteBancaire" name="compteBancaire" type="text" placeholder="Numéro de compte"
-                 [(ngModel)]="formData.compteBancaire"
-                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
+    <section class="card-section">
+      <h2><i class="fas fa-cogs"></i> Offre technique</h2>
+      <p class="section-description">
+        Veuillez joindre les documents techniques pertinents pour votre soumission. Taille maximale par fichier: 5MB.
+        <strong style="color: var(--primary-orange);">Merci de privilégier le format PDF pour tous les documents.</strong>
+      </p>
+      <div class="document-upload-grid">
+        <div class="file-input-wrapper">
+          <input type="file" id="refProjets" name="refProjets" accept=".pdf,.png,.jpg,.jpeg" multiple (change)="onMultiFileSelected($event, 'refProjets')" />
+          <label for="refProjets" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">Références de Projets Similaires (PDF, Images)</span>
+            </div>
+            <span class="file-selected-display-text">
+              <ng-container *ngIf="form.uploadedFiles.refProjets && form.uploadedFiles.refProjets.length > 0">
+                {{ form.uploadedFiles.refProjets.length }} fichier(s) choisi(s)
+              </ng-container>
+              <ng-container *ngIf="!form.uploadedFiles.refProjets || form.uploadedFiles.refProjets.length === 0">
+                Aucun fichier choisi
+              </ng-container>
+            </span>
+          </label>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <div class="field-group">
-            <label for="taxePro" class="block text-sm font-medium text-gray-700">N° inscription taxe professionnelle</label>
-            <!-- Liaison de données avec formData.taxePro -->
-            <input id="taxePro" name="taxePro" type="text"
-                   [(ngModel)]="formData.taxePro"
-                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
-          </div>
-          <div class="field-group">
-            <label for="ice" class="block text-sm font-medium text-gray-700">N° ICE</label>
-            <!-- Liaison de données avec formData.ice -->
-            <input id="ice" name="ice" type="text"
-                   [(ngModel)]="formData.ice"
-                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
-          </div>
+        <div class="file-input-wrapper">
+          <input type="file" id="plans" name="plans" accept=".pdf,.dwg,.dxf" multiple (change)="onMultiFileSelected($event, 'plans')" />
+          <label for="plans" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">Plans et Schémas (PDF, CAD)</span>
+            </div>
+            <span class="file-selected-display-text">
+              <ng-container *ngIf="form.uploadedFiles.plans && form.uploadedFiles.plans.length > 0">
+                {{ form.uploadedFiles.plans.length }} fichier(s) choisi(s)
+              </ng-container>
+              <ng-container *ngIf="!form.uploadedFiles.plans || form.uploadedFiles.plans.length === 0">
+                Aucun fichier choisi
+              </ng-container>
+            </span>
+          </label>
         </div>
-
-        <div class="field-group mt-4">
-          <label for="cnss" class="block text-sm font-medium text-gray-700">N° affiliation CNSS</label>
-          <!-- Liaison de données avec formData.cnss -->
-          <input id="cnss" name="cnss" type="text"
-                 [(ngModel)]="formData.cnss"
-                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
+        <div class="file-input-wrapper">
+          <input type="file" id="cvTech" name="cvTech" accept=".pdf" multiple (change)="onMultiFileSelected($event, 'cvTech')" />
+          <label for="cvTech" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">CV du Personnel Technique (PDF)</span>
+            </div>
+            <span class="file-selected-display-text">
+              <ng-container *ngIf="form.uploadedFiles.cvTech && form.uploadedFiles.cvTech.length > 0">
+                {{ form.uploadedFiles.cvTech.length }} fichier(s) choisi(s)
+              </ng-container>
+              <ng-container *ngIf="!form.uploadedFiles.cvTech || form.uploadedFiles.cvTech.length === 0">
+                Aucun fichier choisi
+              </ng-container>
+            </span>
+          </label>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Devis -->
-      <section class="bg-green-50 p-6 rounded-lg shadow-inner" aria-labelledby="devis-title">
-        <h2 id="devis-title" class="text-2xl font-bold text-green-700 mb-4 flex items-center">
-          <span class="mr-2">📄</span> Devis
-        </h2>
-
-        <div class="flex flex-wrap gap-4 mb-4">
-          <!-- Le bouton "Remplir le devis" appelle loadExcelData() -->
-          <button type="button" (click)="loadExcelData()"
-                  class="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300 ease-in-out">
-            Remplir le devis
-          </button>
-          <button type="button" (click)="telechargerDevis()"
-                  class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out">
-            Télécharger le devis (Excel)
-          </button>
-        </div>
-
-        <!-- Messages de chargement/erreur pour le tableau de devis -->
-        <div *ngIf="loading" class="text-indigo-600 text-lg mb-4 text-center">Chargement du devis...</div>
-        <div *ngIf="errorMessage" class="text-red-600 text-lg mb-4 text-center">{{ errorMessage }}</div>
-
-        <!-- AG-Grid tableau éditable -->
-        <!-- Le tableau s'affiche si rowData a des éléments (chargé de l'Excel) -->
-        <div *ngIf="rowData && rowData.length > 0"
-             class="ag-theme-alpine w-full h-96 mt-4 rounded-lg overflow-hidden shadow-lg"
-             role="region" aria-label="Tableau de devis éditable">
-          <ag-grid-angular
-            [rowData]="rowData"
-            [columnDefs]="columnDefs"
-            [defaultColDef]="defaultColDef"
-            [animateRows]="true"
-            [rowSelection]="'multiple'"
-            (cellValueChanged)="onCellValueChanged($event)"
-            class="w-full h-full"
-          ></ag-grid-angular>
-          <button type="button" (click)="saveEditedData()"
-                  class="mt-4 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out">
-            Enregistrer les modifications du tableau
-          </button>
-        </div>
-        <div *ngIf="!loading && !errorMessage && (!rowData || rowData.length === 0)" class="text-gray-600 mt-4 text-center">
-            Cliquez sur "Remplir le devis" pour importer le devis Excel.
-        </div>
-
-
-        <label class="flex items-center mt-4 text-gray-700" for="saveDraft">
-          <!-- Liaison de données avec formData.saveDraft -->
-          <input type="checkbox" id="saveDraft" name="saveDraft"
-                 [(ngModel)]="formData.saveDraft" (change)="onSaveDraftToggle($event)"
-                 class="form-checkbox h-5 w-5 text-indigo-600 rounded-md">
-          <span class="ml-2">Enregistrer comme brouillon</span>
-        </label>
-      </section>
-
-      <!-- Documents à joindre -->
-      <section class="bg-purple-50 p-6 rounded-lg shadow-inner" aria-labelledby="documents-title">
-        <h2 id="documents-title" class="text-2xl font-bold text-purple-700 mb-4 flex items-center">
-          <span class="mr-2">📁</span> Documents à joindre
-        </h2>
-
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Offre technique</h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="field-group">
-            <label for="refProjets" class="block text-sm font-medium text-gray-700">Références projets similaires</label>
-            <!-- (change) avec onFileSelect -->
-            <input id="refProjets" name="refProjets" type="file" accept=".pdf,.doc,.docx" multiple
-                   (change)="onFileSelect($event, 'refProjets')"
-                   class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
-          </div>
-
-          <div class="field-group">
-            <label for="descriptifsTech" class="block text-sm font-medium text-gray-700">Descriptifs techniques</label>
-            <!-- (change) avec onFileSelect -->
-            <input id="descriptifsTech" name="descriptifsTech" type="file" accept=".pdf,.doc,.docx" multiple
-                   (change)="onFileSelect($event, 'descriptifsTech')"
-                   class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
-          </div>
-
-          <div class="field-group">
-            <label for="plans" class="block text-sm font-medium text-gray-700">Plans d'implantation / schémas</label>
-            <!-- (change) avec onFileSelect -->
-            <input id="plans" name="plans" type="file" accept=".pdf,.jpg,.png" multiple
-                   (change)="onFileSelect($event, 'plans')"
-                   class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
-          </div>
-
-          <div class="field-group">
-            <label for="cvTech" class="block text-sm font-medium text-gray-700">CV techniciens & ingénieurs</label>
-            <!-- (change) avec onFileSelect -->
-            <input id="cvTech" name="cvTech" type="file" accept=".pdf,.doc,.docx" multiple
-                   (change)="onFileSelect($event, 'cvTech')"
-                   class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
-          </div>
-        </div>
-
-        <h3 class="text-xl font-semibold text-gray-800 mt-6 mb-3">Documents administratifs</h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="field-group">
-            <label for="registreCommerce" class="block text-sm font-medium text-gray-700">Registre de Commerce (RC)</label>
-            <!-- (change) avec onFileSelect -->
-            <input id="registreCommerce" name="registreCommerce" type="file" accept=".pdf,.jpg,.png"
-                   (change)="onFileSelect($event, 'registreCommerce')" required
-                   class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
-          </div>
-
-          <div class="field-group">
-            <label for="attestationCNSS" class="block text-sm font-medium text-gray-700">Attestation CNSS</label>
-            <!-- (change) avec onFileSelect -->
-            <input id="attestationCNSS" name="attestationCNSS" type="file" accept=".pdf,.jpg,.png"
-                   (change)="onFileSelect($event, 'attestationCNSS')" required
-                   class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
-          </div>
-        </div>
-      </section>
-
-      <!-- Délais et engagements -->
-      <section class="bg-yellow-50 p-6 rounded-lg shadow-inner" aria-labelledby="delais-title">
-        <h2 id="delais-title" class="text-2xl font-bold text-yellow-700 mb-4 flex items-center">
-          <span class="mr-2">⏳</span> Délais et engagements
-        </h2>
-
-        <div class="field-group mb-4">
-          <label for="delaiExecution" class="block text-sm font-medium text-gray-700">Délai d'exécution proposé</label>
-          <!-- Liaison de données avec formData.delaiExecution -->
-          <input id="delaiExecution" name="delaiExecution" type="text" placeholder="Ex: 3 mois"
-                 [(ngModel)]="formData.delaiExecution"
-                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 p-2">
-        </div>
-
-        <label class="flex items-center text-gray-700" for="acceptConditions">
-          <!-- Liaison de données avec formData.acceptConditions -->
-          <input type="checkbox" id="acceptConditions" name="acceptConditions" required
-                 [(ngModel)]="formData.acceptConditions" #acceptConditionsCtrl="ngModel"
-                 class="form-checkbox h-5 w-5 text-yellow-600 rounded-md">
-          <span class="ml-2">J'accepte les conditions générales d'appel d'offres</span>
-        </label>
-        <div *ngIf="acceptConditionsCtrl.invalid && (acceptConditionsCtrl.dirty || acceptConditionsCtrl.touched)"
-             class="text-red-600 text-sm mt-1">
-          Vous devez accepter les conditions pour soumettre.
-        </div>
-      </section>
-
-      <!-- Actions du formulaire -->
-      <section class="flex flex-wrap justify-center gap-4 mt-8">
-        <button type="submit"
-                [disabled]="soumissionForm.invalid"
-                class="px-8 py-3 bg-orange-600 text-white font-bold rounded-lg shadow-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-300 ease-in-out">
-          Soumettre l'offre
-        </button>
-        <!-- Bouton "Réinitialiser" -->
-        <button type="button" (click)="reinitialiserFormulaire(soumissionForm)"
-                class="px-8 py-3 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-300 ease-in-out">
-          Réinitialiser le formulaire
-        </button>
-        <!-- Bouton "Annuler / Retour" -->
-        <button type="button" (click)="goBack()"
-                class="px-8 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg shadow-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-300 ease-in-out">
-          Annuler / Retour
-        </button>
-      </section>
-    </form>
-  </div>
-</div>
-
-<!-- Modal pour les messages (remplace alert()) -->
-<div *ngIf="showModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-xl p-6 w-96">
-    <h3 class="text-xl font-bold mb-4" [ngClass]="{'text-green-600': modalType === 'success', 'text-red-600': modalType === 'error', 'text-yellow-600': modalType === 'warning', 'text-blue-600': modalType === 'info'}">
-      {{ modalTitle }}
-    </h3>
-    <p class="text-gray-700 mb-6">{{ modalMessage }}</p>
-    <div class="flex justify-end">
-      <button (click)="closeModal()"
-              class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        OK
-      </button>
+    <div class="field-group">
+      <label class="accept-conditions">
+        <input type="checkbox" name="acceptConditions" required [(ngModel)]="form.acceptConditions" #acceptConditions="ngModel" />
+        J'accepte les termes et conditions de l'appel d'offres.
+      </label>
+      <div *ngIf="acceptConditions.invalid && (acceptConditions.dirty || acceptConditions.touched)" class="error-message">
+        Vous devez accepter les conditions.
+      </div>
     </div>
-  </div>
+
+
+    <section class="card-section actions">
+      <button type="submit" class="action-button orange" [disabled]="soumissionForm.invalid || !form.acceptConditions || loading">
+        <i class="fas fa-paper-plane"></i> Soumettre la soumission
+      </button>
+      <button type="button" class="action-button turquoise" (click)="resetForm(soumissionForm)">
+        <i class="fas fa-undo-alt"></i> Réinitialiser le formulaire
+      </button>
+    </section>
+
+
+    <div *ngIf="message" class="custom-message-box" [ngClass]="messageType">
+      {{ message }}
+    </div>
+
+    <div *ngIf="loading" class="loading-message">
+      <i class="fas fa-spinner fa-spin"></i> Chargement du devis...
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <i class="fas fa-exclamation-circle"></i> {{ error }}
+    </div>
+
+    <div *ngIf="devisData.length === 0 && !loading && !error && selectedFileName" class="no-data-message">
+      <i class="fas fa-info-circle"></i> Aucune donnée de devis disponible pour le fichier sélectionné.
+    </div>
+
+  </form>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

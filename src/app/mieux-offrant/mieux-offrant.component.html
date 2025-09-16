@@ -1,227 +1,265 @@
-<!-- Image de fond floutée -->
 <div class="blur-background"></div>
 
-<!-- Conteneur principal -->
-<div class="ao-container">
+<div class="result-page">
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawamaghreb" class="logo" />
 
-<!-- Conteneur principal avec fond flou -->
-<div class="page-container">
-  <!-- Image de fond floutée qui couvre toute la page -->
-  <div class="blur-background"></div>
-
-  <!-- Contenu principal -->
-  <div class="ao-container">
-    <!-- Logo centré en haut -->
-    <div class="logo-container">
-      <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+  <h2><i class="fas fa-clipboard-check"></i> Évaluation des Offres - Appel d'Offres</h2>
+   <div class="row">
+    <div class="col-md-6">
+      <label for="tender-offer-select">Sélectionnez un Appel d'Offres :</label>
+      <select id="tender-offer-select" class="form-control" [(ngModel)]="selectedTenderOffer" (change)="onTenderOfferSelected()">
+        <option *ngFor="let ref of uniqueTenderOffers" [value]="ref">{{ ref }}</option>
+      </select>
     </div>
+  </div>
 
-    <!-- Le reste de votre contenu... -->
-    <section class="ao-header card">
-      <!-- ... -->
-    </section>
-    
-    <!-- ... autres sections ... -->
+  <div class="row mt-4" *ngIf="bids.length > 0">
+    <div class="col-md-12">
+      <h2>Soumissions pour l'AO : {{ selectedTenderOffer }}</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nom de l'entreprise</th>
+            <th>Total HT</th>
+            <th>Total TTC</th>
+            <th>Détails</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bid of bids">
+            <td>{{ bid.nom_entreprise }}</td>
+            <td>{{ bid.total_ht | number: '1.2-2' }}</td>
+            <td>{{ bid.total_ttc | number: '1.2-2' }}</td>
+            <td>
+              <button class="btn btn-info" (click)="voirDetails(bid)">Voir les détails</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="alert alert-danger mt-4" *ngIf="errorMessage">
+    {{ errorMessage }}
   </div>
 </div>
 
-  <!-- Section 1 : En-tête de l'AO -->
-  <section class="ao-header card">
-    <div class="ao-meta">
-      <h2>{{ao.reference}} - {{ao.objet}}</h2>
-      <div class="meta-grid">
-        <div>
-          <label>Date clôture :</label>
-          <span>{{ao.dateOuverture | date:'dd/MM/yyyy'}}</span>
-        </div>
-        <div>
-          <label>Statut :</label>
-          <span class="status-badge en-cours">En évaluation</span>
-        </div>
-        <div>
-          <label>Responsable :</label>
-          <span>Chef de projet</span>
-        </div>
+ <div *ngIf="selectedBid">
+  <div class="card my-4">
+    <div class="card-header bg-primary text-white">
+      Informations sur l'Appel d'Offres
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label>Référence / Numéro:</label>
+        <input type="text" class="form-control" [value]="selectedBid.numeroAO" readonly>
+      </div>
+      <div class="form-group">
+        <label>Objet:</label>
+        <textarea class="form-control" [value]="selectedBid.objet" rows="3" readonly></textarea>
+      </div>
+      <div class="form-group">
+        <label>Date Limite Soumission:</label>
+        <input type="date" class="form-control" [value]="selectedBid.dateLimite | date:'yyyy-MM-dd'" readonly>
       </div>
     </div>
-  </section>
-
-  <!-- Section 2 : Tableau comparatif -->
-  <section class="comparison-section card">
-    <div class="section-header">
-      <h2>Comparaison des offres</h2>
-      <div class="export-actions">
-        <button class="export-btn">
-          <i class="icon-download"></i> Exporter
-        </button>
-      </div>
-    </div>
-    
-    <div class="table-responsive">
-      <table class="offers-table">
-        <thead>
-          <tr>
-            <th class="col-company">Fournisseur</th>
-            <th class="col-price">Montant (MAD)</th>
-            <th class="col-score">Score</th>
-            <th class="col-conformity">Conformité</th>
-            <th class="col-actions">Documents</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let offre of offres" [class.highlighted]="offre.noteGlobale >= 85">
-            <td class="company-cell">
-              <img [src]="offre.fournisseur.logoUrl" class="company-logo">
-              <div>
-                <div class="company-name">{{offre.fournisseur.nom}}</div>
-                <div class="company-id">RC: {{fournisseur.rc}}</div>
-              </div>
-            </td>
-            <td class="price-cell">
-              {{offre.montantTotal | number:'1.2-2'}}
-              <div class="price-diff" [class.under-budget]="offre.montantTotal < 4800000">
-                {{(offre.montantTotal - 4800000) / 4800000 | percent:'1.2-2'}}
-              </div>
-            </td>
-            <td class="score-cell">
-              <div class="score-value">{{offre.noteGlobale | number:'1.1-1'}}/100</div>
-              <div class="score-bar">
-                <div class="bar-fill" [style.width.%]="offre.noteGlobale"></div>
-              </div>
-            </td>
-            <td class="conformity-cell">
-              <span class="conformity-badge" [class.conforme]="offre.conformiteAdministrative.statut === 'Conforme'">
-                {{offre.conformiteAdministrative.statut}}
-              </span>
-              <div *ngIf="offre.conformiteAdministrative.manquements.length > 0" class="non-conformites">
-                {{offre.conformiteAdministrative.manquements.join(', ')}}
-              </div>
-            </td>
-            <td class="actions-cell">
-              <button class="doc-btn" (click)="openDocument('technique')">
-                <i class="icon-file-text"></i> Technique
-              </button>
-              <button class="doc-btn" (click)="openDocument('financiere')">
-                <i class="icon-file-text"></i> Financière
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- Section 3 : Analyse technique -->
-  <section class="analysis-section card">
-    <div class="tabs">
-      <button class="tab active">Analyse Technique</button>
-      <button class="tab">Analyse Financière</button>
-    </div>
-    
-    <div class="evaluation-details">
-      <h3>Fiches d'évaluation technique</h3>
-      <div class="commission-members">
-        <div class="member" *ngFor="let member of commissionMembers">
-          <div class="member-avatar">{{member.initials}}</div>
-          <div class="member-name">{{member.name}}</div>
-        </div>
-      </div>
-      
-      <table class="criteria-table">
-        <thead>
-          <tr>
-            <th>Critère</th>
-            <th>Pondération</th>
-            <th>Note</th>
-            <th>Note pondérée</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let critere of technicalCriteria">
-            <td>{{critere.nom}}</td>
-            <td>{{critere.ponderation}}%</td>
-            <td>{{critere.note}}/10</td>
-            <td>{{(critere.note * critere.ponderation / 10) | number:'1.2-2'}}</td>
-          </tr>
-          <tr class="total-row">
-            <td>Total</td>
-            <td>100%</td>
-            <td>{{calculateAverage(technicalCriteria)}}/10</td>
-            <td>{{calculateWeightedAverage(technicalCriteria) | number:'1.2-2'}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- Section 4 : Analyse financière -->
-  <section class="financial-section card">
-    <h2>Analyse Financière</h2>
-    
-    <div class="financial-grid">
-      <div class="financial-summary">
-        <div class="summary-item">
-          <label>Budget prévisionnel :</label>
-          <span>4 800 000 MAD</span>
-        </div>
-        <div class="summary-item">
-          <label>Meilleure offre :</label>
-          <span>4 520 000 MAD</span>
-        </div>
-        <div class="summary-item">
-          <label>Économie :</label>
-          <span class="savings">280 000 MAD (5.83%)</span>
-        </div>
-      </div>
-      
-      <div class="financial-chart">
-        <!-- Graphique des offres (à implémenter avec une librairie comme Chart.js) -->
-        <div class="chart-placeholder">
-          [Histogramme comparatif des offres]
-        </div>
-      </div>
-    </div>
-    
-    <div class="price-ranking">
-      <h3>Classement par prix</h3>
-      <ol>
-        <li *ngFor="let offre of offres">
-          {{offre.fournisseur.nom}} - {{offre.montantTotal | number:'1.2-2'}} MAD
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- Section 5 : Décision -->
-  <section class="decision-section card">
-    <h2>Décision Finale</h2>
-    
-    <div class="recommendation-box">
-      <div class="recommendation-header">
-        <h3>Votre Décision Finale</h3>
-        <div class="recommendation-status">À valider</div>
-      </div>
-      <p>{{recommandation.texte}}</p>
-      
-      <div class="decision-form">
-        <label>Votre commentaire :</label>
-        <textarea [(ngModel)]="commentairesChefProjet" placeholder="Ajoutez vos observations..."></textarea>
-        
-        <div class="decision-buttons">
-          <button class="validate-btn" (click)="validateDecision()">
-            <i class="icon-check"></i> Valider la décision
-          </button>
-          <button class="request-btn" (click)="requestModification()">
-            <i class="icon-edit"></i> Demander modification
-          </button>
-          <button class="reject-btn" (click)="rejectDecision()">
-            <i class="icon-x"></i> Rejeter
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
 </div>
 
+    
 
+  <div class="section comparison-section">
+    <h3>Tableau Comparatif des Offres</h3>
 
+    <div class="table-responsive">
+      <div *ngIf="loadingAoData" class="info-message">Chargement des offres...</div>
+      <div *ngIf="!loadingAoData && rowData.length === 0" class="info-message">Aucune offre soumise trouvée pour cet appel d'offres.</div>
+      <table *ngIf="!loadingAoData && rowData.length > 0">
+        <thead>
+          <tr>
+            <th>Fournisseur</th>
+            <th>Montant Total (MAD)</th>
+            <th>Conformité</th>
+            <th>Documents</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let offer of sortedOffersByPrice" [class.selected-row]="selectedOffer?.id === offer.id">
+            <td>
+              <div class="vendor-info">
+                <img [src]="offer.fournisseur.logoUrl" alt="Logo" class="company-logo">
+                <div class="company-name">{{ offer.fournisseur.nom }}</div>
+              </div>
+            </td>
+            <td [ngClass]="{'best-price': offer.montantTotal === bestOfferAmount}">
+              {{ offer.montantTotal | currency:'MAD':'symbol':'1.2-2':'fr' }}
+            </td>
+            <td>
+              <span class="conformity-badge"
+                [ngClass]="{'conforme': offer.conformite === 'Conforme', 'non-conforme': offer.conformite === 'Non Conforme'}">
+                {{ offer.conformite }}
+              </span>
+              <div *ngIf="offer.conformite === 'Non Conforme'" class="non-conformites">{{ offer.motifNonConformite }}</div>
+            </td>
+            <td>
+              <div class="flex flex-col gap-2">
+                <button class="doc-btn" (click)="openDocument(offer, 'technical')"
+                
+  [disabled]="isDocumentLoading && currentLoadingDocumentOfferId === offer.id && currentLoadingDocumentType === 'technical'">
+  <i class="fas fa-file-alt"></i> Technique
+  <span *ngIf="isDocumentLoading && currentLoadingDocumentOfferId === offer.id && currentLoadingDocumentType === 'technical'" class="loading-spinner ml-2"></span>
+</button>
+                <button class="doc-btn" (click)="openDocument(offer, 'administrative')"
+                  [disabled]="isDocumentLoading && currentLoadingDocumentOfferId === offer.id && currentLoadingDocumentType === 'administrative'">
+                  <i class="fas fa-money-bill-alt"></i> Administratif
+                  <span *ngIf="isDocumentLoading && currentLoadingDocumentOfferId === offer.id && currentLoadingDocumentType === 'administrative'" class="loading-spinner ml-2"></span>
+                </button>
+              </div>
+            </td>
+            <td>
+              <button class="validate-btn" (click)="selectOffer(offer)">Sélectionner</button>
+              
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="documentLoadingError" class="error-message mt-4">
+      Erreur de chargement du document : {{ documentLoadingError }}
+    </div>
+  </div>
+
+  <div class="section document-display-section" *ngIf="selectedOffer && (selectedOffer.documents.administrative.length > 0 || selectedOffer.documents.technical.length > 0)">
+    
+
+  <div class="section" *ngIf="selectedOffer">
+  <div class="section-header">
+    <span class="flex items-center"><i class="fas fa-chart-bar"></i> Analyse des Évaluations</span>
+  </div>
+
+  <div class="tab-content">
+    <h3 class="sub-title">Analyse Financière Détaillée</h3>
+    <div class="financial-grid">
+      <div class="financial-summary">
+        <div class="summary-item"><label>Classement par Prix :</label></div>
+        <ol class="price-ranking">
+          <li *ngFor="let offer of sortedOffersByPrice">{{ offer.montantTotal | currency:'MAD':'symbol':'1.2-2':'fr' }} ({{ offer.fournisseur.nom }})</li>
+        </ol>
+      </div>
+
+      <div class="devis-display-area">
+        <h4 class="text-lg font-bold text-gray-800 mb-2">Devis Détaillé</h4>
+        <p *ngIf="selectedOffer?.excelFileName" class="text-sm text-gray-500 mb-2">
+          Fichier Excel chargé : <strong>{{ selectedOffer?.excelFileName }}</strong>
+        </p>
+
+        <div *ngIf="loadingDevisData" class="info-message">Chargement du devis...</div>
+        <div *ngIf="devisLoadError" class="error-message">{{ devisLoadError }}</div>
+
+        <div *ngIf="!loadingDevisData && excelDevisDataForDisplay">
+          <h5 class="text-md font-semibold text-gray-700 mb-2">{{ excelDevisDataForDisplay.metadata?.title || 'Devis' }}</h5>
+          <div class="table-responsive small-table">
+            <table>
+              <thead>
+                <tr *ngIf="excelDevisDataForDisplay.gridData && excelDevisDataForDisplay.gridData.length > 0">
+                  <th *ngFor="let header of excelDevisDataForDisplay.gridData[0]">{{ header }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of excelDevisDataForDisplay?.gridData?.slice(1); let i = index">
+                  <td *ngFor="let cell of row">{{ cell }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="summary-totals mt-4 text-right">
+            <div class="flex justify-end items-center mb-1">
+              <span class="font-semibold mr-2">{{ excelDevisDataForDisplay.metadata?.totalHTLabel || 'Total HT' }} :</span>
+              <span class="text-blue-700 font-bold">{{ totalHTDevis | currency:'MAD':'symbol':'1.2-2':'fr' }}</span>
+            </div>
+            <div class="flex justify-end items-center mb-1">
+              <span class="font-semibold mr-2">{{ excelDevisDataForDisplay.metadata?.tvaLabel || 'TVA (20%)' }} :</span>
+              <span class="text-blue-700 font-bold">{{ tvaDevis | currency:'MAD':'symbol':'1.2-2':'fr' }}</span>
+            </div>
+            <div class="flex justify-end items-center border-t-2 border-gray-200 pt-2 mt-2">
+              <span class="font-bold text-lg mr-2">{{ excelDevisDataForDisplay.metadata?.totalTTCLabel || 'TOTAL TTC' }} :</span>
+              <span class="text-green-700 font-extrabold text-xl">{{ totalTTCDevis | currency:'MAD':'symbol':'1.2-2':'fr' }}</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!loadingDevisData && !excelDevisDataForDisplay && !devisLoadError" class="info-message">
+          Aucune donnée de devis Excel disponible à afficher.
+        </div>
+      </div>
+    </div>
+    <p class="text-gray-700 mt-4">
+      **Commentaires sur l'analyse financière :** {{ selectedOffer?.evaluationFinanciere?.comments || 'Aucun commentaire.' }}
+    </p>
+  </div>
+</div>
+
+  <div class="section">
+    <div class="section-header">
+      <span class="flex items-center"><i class="fas fa-gavel"></i> Décision Finale</span>
+    </div>
+    <div class="recommendation-box">
+      <div class="recommendation-header">
+        <h3 class="text-lg font-bold">Votre Décision Finale</h3>
+        <span class="recommendation-status"
+          [ngClass]="{
+            'a-valider': aoData.statut === 'En attente de décision',
+            'validee': aoData.statut === 'Attribué',
+            'rejetee': aoData.statut === 'Annulé'
+          }">
+          <i class="fas" [ngClass]="{
+            'fa-exclamation-triangle': aoData.statut === 'En attente de décision',
+            'fa-check-circle': aoData.statut === 'Attribué',
+            'fa-times-circle': aoData.statut === 'Annulé'
+          }"></i>
+          {{ aoData.statut === 'En attente de décision' ? 'À valider' : (aoData.statut === 'Attribué' ? 'Validée' : (aoData.statut === 'Annulé' ? 'Rejetée' : 'Statut Inconnu')) }}
+        </span>
+      </div>
+      <p>Retenir comme mieux-disant technique et financier.</p>
+      
+      <div class="decision-form-fields">
+        <div class="form-group row mb-3 align-items-center">
+            <label class="col-sm-4 col-form-label">Fournisseur Retenu :</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" [(ngModel)]="vendorRetenu" placeholder="Nom du fournisseur retenu">
+            </div>
+            <div class="col-sm-2 text-right">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="checkRetenu" [(ngModel)]="isRetenu">
+                    <label class="form-check-label" for="checkRetenu">Retenu</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row mb-3 align-items-center">
+            <label class="col-sm-4 col-form-label">Fournisseur Non Retenu :</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" [(ngModel)]="vendorNonRetenu" placeholder="Nom du fournisseur non retenu">
+            </div>
+            <div class="col-sm-2 text-right">
+                <div class="form-check form-check-inline">
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="decision-form">
+        <label for="decisionComment">Votre commentaire :</label>
+        <textarea id="decisionComment" rows="5" placeholder="Ajoutez vos observations..." [(ngModel)]="decisionComment"></textarea>
+      </div>
+      <div class="decision-buttons">
+        <button class="validate-btn" (click)="validateDecision()"><i class="fas fa-check"></i> Valider la décision</button>
+        <button class="request-btn" (click)="requestModification()"><i class="fas fa-edit"></i> Demander modification</button>
+        <button class="reject-btn" (click)="rejectDecision()"><i class="fas fa-times"></i> Rejeter</button>
+      </div>
+      <div class="mt-6 text-sm text-gray-600">
+        <ul class="list-disc list-inside ml-4">
+          <li *ngFor="let decision of decisionHistory">{{ decision.date | date:'dd/MM/yyyy' }} - {{ decision.status }} ({{ decision.comment }})</li>
+        </ul>
+      </div>
+    </div>
+  </div>
