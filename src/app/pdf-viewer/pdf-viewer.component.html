@@ -1,0 +1,6 @@
+<p>pdf-viewer works!</p>
+<!-- Input pour sélectionner un fichier PDF -->
+<input type="file" (change)="onFileSelected($event)" />
+
+<!-- Le visualiseur de PDF -->
+<pdf-viewer [src]="pdfSrc" [render-text]="true"></pdf-viewer>

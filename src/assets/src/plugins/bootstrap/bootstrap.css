@@ -1,0 +1,12 @@
+
+
+.element {
+  /* Apparence du composant (bouton, champ, etc.) */
+  appearance: none;      /* Pour Firefox */
+  -webkit-appearance: none;   /* Pour Safari et Chrome anciens */
+  appearance: none;           /* Standard moderne */
+
+  /* Ajustement de la taille du texte sur mobiles */
+  -webkit-text-size-adjust: 100%; /* Pour anciens navigateurs WebKit */
+  text-size-adjust: 100%;         /* Standard moderne */
+}

@@ -1,0 +1,77 @@
+<div class="background-blur"></div>
+
+<div class="container">
+  <header>
+    <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+    <h1>Téléchargement du Procès-Verbal</h1>
+  </header>
+
+  <section class="infos">
+    <h2>🧾 Informations générales sur le PV</h2>
+    <div *ngIf="pvInfo">
+      <p><strong>Titre du PV :</strong> {{ pvInfo.pv_title || pvInfo.file_name }}</p>
+      <p><strong>Numéro du PV :</strong> {{ pvInfo.pv_number || 'Non spécifié' }}</p>
+      <p><strong>Date :</strong> {{ pvInfo.pv_date || (pvInfo.created_at | date:'medium') }}</p>
+      <p><strong>Lieu :</strong> {{ pvInfo.pv_lieu || 'Non spécifié' }}</p>
+      <p><strong>Rédacteur :</strong> {{ pvInfo.pv_redacteur || 'Non spécifié' }}</p>
+      <p><strong>Statut :</strong> {{ pvInfo.pv_status || 'Non spécifié' }}</p>
+    </div>
+    <div *ngIf="!pvInfo">
+      <p>Aucune information générale disponible. Veuillez sélectionner un PV dans la liste ci-dessous.</p>
+    </div>
+  </section>
+
+  <section class="infos">
+  <h2>👥 Participants</h2>
+  <div *ngIf="pvInfo && pvInfo.pv_participants?.length > 0">
+    <ul>
+      <li *ngFor="let participant of pvInfo.pv_participants">{{ participant.nom }}</li>
+    </ul>
+  </div>
+  <div *ngIf="pvInfo && (!pvInfo.pv_participants || pvInfo.pv_participants.length === 0)">
+    <p>Aucun participant n'a été enregistré.</p>
+  </div>
+  <div *ngIf="!pvInfo">
+    <p>Veuillez sélectionner un PV pour voir les participants.</p>
+  </div>
+</section>
+
+ 
+
+  <section class="infos pv-list">
+    <h2>📋 Autres Procès-Verbaux Associés</h2>
+    <div *ngIf="pvDocuments.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Nom du document</th>
+            <th>Date de création</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doc of pvDocuments">
+            <td>{{ doc.file_name }}</td>
+            <td>{{ doc.created_at | date:'short' }}</td>
+            <td class="action-buttons">
+              <!-- Le bouton "Voir contenu" affiche le document dans la page. -->
+              <button class="btn-action" (click)="viewDocumentAndDetails(doc); $event.stopPropagation()">👁️ Voir contenu PV</button>
+              <!-- Le bouton "Télécharger" garde sa fonctionnalité de téléchargement. -->
+              <button class="btn-action" (click)="telechargerDocument(doc); $event.stopPropagation()">📥 Télécharger</button>
+              <!-- Le bouton "Signer" ne navigue plus et prépare le document pour la signature. -->
+              <button class="btn-action sign-btn" (click)="signDocument(doc)">✍️ Signer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="pvDocuments.length === 0">
+      <p>Aucun autre document PV associé n'a été trouvé.</p>
+    </div>
+  </section>
+
+  <section class="infos" *ngIf="previewUrl">
+    <h2>👁️ Prévisualisation du document</h2>
+    <iframe [src]="previewUrl" width="100%" height="500"></iframe>
+  </section>
+</div>

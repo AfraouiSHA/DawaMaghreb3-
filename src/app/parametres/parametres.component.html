@@ -1,0 +1,128 @@
+<div class="blur-background"></div>
+
+<div class="ao-container">
+
+  <div class="logo-container">
+    <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+  </div>
+
+  <div class="settings-wrapper">
+
+    <nav class="settings-nav">
+      <button 
+        *ngFor="let section of sections"
+        (click)="selectSection(section.key)" [class.active]="selectedSection === section.key">
+        <i [class]="section.icon"></i>
+        <span>{{ section.label }}</span>
+      </button>
+    </nav>
+
+    <div class="settings-content">
+
+      <section *ngIf="selectedSection === 'profil'" class="settings-section">
+        <h2>Profil de l’utilisateur</h2>
+        <form (ngSubmit)="saveProfile()">
+          <div class="info-pair" *ngFor="let key of userKeys">
+            <label [for]="key">{{ userLabels[key] }}</label>
+            <input 
+              [id]="key" 
+              [name]="key" 
+              type="text" 
+              [(ngModel)]="user[key]" 
+              [placeholder]="userLabels[key]" />
+          </div>
+        
+          <h2 style="margin-top: 30px;">Profil de l’entreprise</h2>
+          <div class="info-pair" *ngFor="let key of entrepriseKeys">
+            <label [for]="'entreprise-' + key">{{ entrepriseLabels[key] }}</label>
+            <input 
+              [id]="'entreprise-' + key" 
+              [name]="'entreprise-' + key" 
+              type="text" 
+              [(ngModel)]="entreprise[key]" 
+              [placeholder]="entrepriseLabels[key]" />
+          </div>
+          <div class="button-group">
+            <button type="submit" class="btn-action">Sauvegarder</button>
+          </div>
+        </form>
+      </section>
+
+      <section *ngIf="selectedSection === 'securite'" class="settings-section">
+        <h2>Sécurité</h2>
+
+        <div class="security-password-section">
+          <h3>Changer votre mot de passe</h3>
+          <form class="password-form" (ngSubmit)="savePassword()">
+            <div class="password-field-group">
+              <label for="old-password">Mot de passe actuel</label>
+              <input 
+                type="password" 
+                id="old-password" 
+                [(ngModel)]="oldPassword" 
+                name="oldPassword" 
+                placeholder="Entrez l’ancien mot de passe" />
+            </div>
+
+            <div class="password-field-group">
+              <label for="new-password">Nouveau mot de passe</label>
+              <input 
+                type="password" 
+                id="new-password" 
+                [(ngModel)]="newPassword" 
+                (ngModelChange)="checkPasswordStrength()" 
+                name="newPassword" 
+                placeholder="Nouveau mot de passe" />
+              <div class="password-strength-container" *ngIf="newPassword.length > 0">
+                <div class="strength-bar" [class]="getPasswordStrengthClass()"></div>
+                <span class="strength-label">{{ passwordStrengthText }}</span>
+              </div>
+            </div>
+
+            <div class="password-field-group">
+              <label for="confirm-password">Confirmer le mot de passe</label>
+              <input 
+                type="password" 
+                id="confirm-password" 
+                [(ngModel)]="confirmPassword" 
+                name="confirmPassword" 
+                placeholder="Répétez le mot de passe" />
+              <span *ngIf="newPassword !== confirmPassword && confirmPassword.length > 0" class="error-message">
+                Les mots de passe ne correspondent pas.
+              </span>
+            </div>
+
+            <div class="button-group">
+              <button class="btn-action" type="submit" [disabled]="!isPasswordValid()">Mettre à jour</button>
+              <button class="btn-cancel" type="button" (click)="cancelEdit()">Annuler</button>
+            </div>
+            <div *ngIf="passwordSuccessMessage" class="success-message">{{ passwordSuccessMessage }}</div>
+            <div *ngIf="passwordErrorMessage" class="error-message">{{ passwordErrorMessage }}</div>
+          </form>
+        </div>
+      </section>
+
+      <section *ngIf="selectedSection === 'historique'" class="settings-section">
+        <h2>Historique de connexion</h2>
+        <div *ngIf="isLoading" class="loading-message">
+          <p>Chargement de l'historique...</p>
+        </div>
+        <div *ngIf="!isLoading && loginHistory.length === 0" class="no-history-message">
+          <p>Aucun historique de connexion trouvé.</p>
+        </div>
+        <div *ngIf="!isLoading && loginHistory.length > 0" class="history-entry">
+            <div *ngFor="let item of loginHistory" class="history-entry">
+                <span>{{ item.created_at | date:'short' }}</span>
+                <span>{{ item.adresse_ip }}</span>
+                <span>{{ item.Mapsur_os }}</span>
+            </div>
+        </div>
+      </section>
+
+      <section *ngIf="selectedSection === 'deconnexion'" class="settings-section logout-section">
+        <button class="logout-button" (click)="logout()">Déconnexion</button>
+      </section>
+
+    </div>
+  </div>
+</div>

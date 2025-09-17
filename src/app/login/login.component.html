@@ -1,0 +1,45 @@
+<div class="login-container">  
+
+  <!-- Logo en haut à gauche -->
+  <img src="/assets/image-dawamaghreb/dawamaghreb_logo.jpg"  class="logo-top-left" />
+
+  <div class="login-box">
+
+    <!-- Logo centré au-dessus -->
+<img src="/assets/image-dawamaghreb/dawamaghreb_logo.jpg" class="logo-center" />
+
+    <!-- Titre principal -->
+    <h1 class="title">DawaMaghreb</h1>
+
+    <!-- Sous-titre -->
+    <p class="subtitle">
+      Accédez à votre espace pour gérer et suivre vos appels d'offres en toute simplicité sur votre plateforme DawaMaghreb - appels d'offres
+    </p>
+
+    <!-- Titre de section -->
+    <h2 class="title">Connectez-vous</h2>
+
+    <!-- Formulaire de connexion -->
+    <form (ngSubmit)="onLogin()">
+      <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+      <input type="password" placeholder="Mot de passe" [(ngModel)]="password" name="password" required />
+
+      <button type="submit" class="login-btn">Se connecter</button>
+
+      <a href="#" (click)="allerVersRegister($event)" class="register-link">Créer un compte</a>
+      <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+    </form>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+    
+
+    
+  

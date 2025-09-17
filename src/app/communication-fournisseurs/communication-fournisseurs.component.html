@@ -1,0 +1,106 @@
+<div class="home-container">
+  <div class="blur-background"></div>
+
+  <div class="background-container">
+    <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawamaghreb" class="logo" />
+
+    <div class="communication-container">
+      <aside class="suppliers-list">
+        <h2>Fournisseurs</h2>
+        <div *ngIf="loading" class="loading-indicator">
+          Chargement des fournisseurs...
+        </div>
+        <ul *ngIf="!loading && fournisseurs.length > 0">
+          <li *ngFor="let fournisseur of fournisseurs"
+              [class.active]="fournisseur === fournisseurSelectionne"
+              (click)="selectionnerFournisseur(fournisseur)">
+            {{ fournisseur.nom_entreprise }}
+          </li>
+        </ul>
+        <div *ngIf="!loading && fournisseurs.length === 0" class="no-fournisseur-message">
+          Aucun fournisseur trouvé.
+        </div>
+      </aside>
+
+      <header>
+        <h3>{{ headerMessage }}</h3>
+      </header>
+      <main class="chat-window" *ngIf="fournisseurSelectionne">
+  
+  <div class="message-input-area attribution-message-area">
+    <textarea
+      placeholder="Écrire le message d'attribution ici..."
+      [(ngModel)]="messageAttributionContent"
+      name="messageAttribution"
+      rows="6"
+    ></textarea>
+  </div>
+  
+
+        <footer>
+          <button
+  class="btn-demande"
+  (click)="sendMessage()" [disabled]="!messageAttributionContent.trim() || loading"
+>
+  <span *ngIf="!loading">📤 Envoyer le message d'attribution</span>
+  <span *ngIf="loading">Envoi en cours...</span>
+</button>
+        </footer>
+
+        <div
+          *ngIf="feedbackMessage"
+          [ngClass]="{'feedback-success': !isError, 'feedback-error': isError}"
+          class="mt-4"
+        >
+          {{ feedbackMessage }}
+        </div>
+      </main>
+    </div>
+
+    <div class="marche-details" *ngIf="fournisseurSelectionne">
+      <h2>Informations générales sur le marché attribué</h2>
+      <ul>
+        <li><strong>Référence :</strong> {{ marcheAttribution?.reference || 'N/A' }}</li>
+        <li><strong>Date d’attribution :</strong> {{ marcheAttribution ? (marcheAttribution.dateAttribution | date:'dd MMM HH:mm') : 'N/A' }}</li>
+        <li><strong>Montant :</strong> {{ marcheAttribution ? (marcheAttribution.montant | currency:'MAD':'symbol':'1.2-2':'fr') : 'N/A' }}</li>
+        <li><strong>Durée :</strong> {{ marcheAttribution?.duree || 'N/A' }}</li>
+        <li><strong>Mode de passation :</strong> {{ marcheAttribution?.modePassation || 'N/A' }}</li>
+        <li><strong>Objet :</strong> {{ marcheAttribution?.objet || 'N/A' }}</li>
+      </ul>
+
+      <h2>Coordonnées du fournisseur</h2>
+      <ul>
+        <li><strong>Entreprise :</strong> {{ fournisseurSelectionne.nom_entreprise }}</li>
+        <li><strong>Adresse :</strong> {{ fournisseurSelectionne.adresse_entreprise || 'N/A' }}</li>
+        <li><strong>Téléphone :</strong> {{ fournisseurSelectionne.telephone_entreprise || 'N/A' }}</li>
+        <li><strong>Email :</strong> {{ fournisseurSelectionne.email_entreprise || 'N/A' }}</li>
+        <li><strong>Compte bancaire (RIB) :</strong> {{ fournisseurSelectionne.compte_bancaire || 'N/A' }}</li>
+        <li><strong>Taxe professionnelle :</strong> {{ fournisseurSelectionne.taxe_pro || 'N/A' }}</li>
+        <li><strong>ICE :</strong> {{ fournisseurSelectionne.ice || 'N/A' }}</li>
+        <li><strong>CNSS :</strong> {{ fournisseurSelectionne.cnss || 'N/A' }}</li>
+      </ul>
+
+      <h2>📂 Documents liés à l’attribution</h2>
+      <ul>
+        <li><a href="#">📄 Lettre d’attribution</a></li>
+        <li><a href="#">📄 Contrat signé</a></li>
+        <li><a href="#">📄 PV de commission</a></li>
+        <li><a href="#">📄 Avis d’attribution</a></li>
+      </ul>
+
+      <h2>Suivi et historique</h2>
+      <ul>
+        <li><strong>Date d’envoi :</strong> {{ fournisseurSelectionne.created_at ? (fournisseurSelectionne.created_at | date:'dd MMM HH:mm') : 'N/A' }}</li>
+        <li><strong>Statut :</strong> {{ fournisseurSelectionne.statut || 'N/A' }}</li>
+        <li><strong>Confirmation :</strong> Non reçue</li>
+      </ul>
+
+      <ul class="actions">
+        <li><button (click)="modifierMessage()">✏️ Modifier le message</button></li>
+        <li><button (click)="joindreDocuments()">📎 Joindre des documents</button></li>
+        <li><button (click)="relancerFournisseur()">🔁 Relancer le fournisseur</button></li>
+        <li><button (click)="telechargerElements()">📥 Télécharger tous les éléments</button></li>
+      </ul>
+    </div>
+  </div>
+</div>

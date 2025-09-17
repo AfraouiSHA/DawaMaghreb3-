@@ -1,0 +1,87 @@
+<div class="container"> 
+
+  <h2>Liste des Appels d'Offres existants</h2>
+
+  <!-- Message de chargement -->
+  <div *ngIf="loading" class="loading-message">
+    <i class="fas fa-spinner fa-spin"></i> Chargement des données...
+  </div>
+
+  <!-- Messages d'état -->
+  <div *ngIf="message" class="custom-message-box" [ngClass]="messageType">
+    {{ message }}
+  </div>
+
+  <!-- Tableau des AO -->
+  <div *ngIf="appelsOffres.length > 0" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Numéro d'AO</th>
+          <th>Objet</th>
+          <th>Date limite</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ao of appelsOffres">
+          <td>{{ ao.numeroAO }}</td>
+          <td>{{ ao.objet }}</td>
+          <td>{{ ao.dateLimite | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <a [routerLink]="['/soumission', ao.id]" class="btn btn-primary">Soumettre</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Message si aucun AO -->
+  <div *ngIf="appelsOffres.length === 0 && !loading" class="no-data-message">
+    <p>Aucun appel d'offres n'est enregistré pour le moment.</p>
+  </div>
+  
+  <hr>
+
+  <h2>Créer un nouvel Appel d'Offres (AO)</h2>
+
+  <!-- Formulaire d'AO -->
+  <form [formGroup]="infoAoForm" (ngSubmit)="onSubmit()">
+    
+    <!-- Champ numéroAO -->
+    <div class="form-group">
+      <label for="numeroAO">Numéro d'appel d'offres (AO)</label>
+      <input type="text" id="numeroAO" formControlName="numeroAO" required>
+      <div *ngIf="infoAoForm.get('numeroAO')?.invalid && (infoAoForm.get('numeroAO')?.dirty || infoAoForm.get('numeroAO')?.touched)" class="error-message">
+        Le numéro d'AO est obligatoire.
+      </div>
+    </div>
+
+    <!-- Champ objet -->
+    <div class="form-group">
+      <label for="objet">Objet de l'appel d'offres</label>
+      <textarea id="objet" formControlName="objet" rows="4" required></textarea>
+      <div *ngIf="infoAoForm.get('objet')?.invalid && (infoAoForm.get('objet')?.dirty || infoAoForm.get('objet')?.touched)" class="error-message">
+        L'objet de l'AO est obligatoire.
+      </div>
+    </div>
+
+    <!-- Champ dateLimite -->
+    <div class="form-group">
+      <label for="dateLimite">Date limite de remise des offres</label>
+      <input type="date" id="dateLimite" formControlName="dateLimite" required>
+      <div *ngIf="infoAoForm.get('dateLimite')?.invalid && (infoAoForm.get('dateLimite')?.dirty || infoAoForm.get('dateLimite')?.touched)" class="error-message">
+        La date limite est obligatoire.
+      </div>
+    </div>
+
+    <!-- Champ statut caché -->
+    <input type="hidden" formControlName="statut">
+
+    <!-- Bouton soumission -->
+    <button type="submit" class="submit-button" [disabled]="infoAoForm.invalid || loading">
+      <i class="fas fa-paper-plane"></i> Enregistrer l'AO
+    </button>
+
+  </form>
+</div>

@@ -1,0 +1,42 @@
+<div class="home-container">
+  <div class="blur-background"></div>
+
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+
+  <h1 class="title">DOCUMENTS À SIGNER</h1>
+
+  <div class="button-row">
+    <button class="orange-btn" (click)="goToTelechargementDocuments()">TÉLÉCHARGER LES DOCUMENTS</button>
+
+    <button class="orange-btn" (click)="goToTelechargementPV()" [disabled]="loading || !projectId">
+      TÉLÉCHARGER PV
+    </button>
+    <button class="orange-btn" (click)="goToSignatureElectronique()">SIGNER ÉLECTRONIQUEMENT</button>
+  </div>
+ <div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>DOCUMENT</th>
+        <th>STATUT</th>
+        <th>ACTION</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let doc of documents">
+        <td>{{ doc.file_name }}</td>
+        <td>
+          <span class="status yellow">{{ doc.statut }}</span>
+        </td>
+        <td>
+          <button class="action-btn" (click)="telechargerDocument(doc.file_url)">📥 Télécharger</button>
+          <button class="action-btn" *ngIf="doc.statut === 'À signer'" (click)="signerDocument(doc.id)">
+            ✍️ Signer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>

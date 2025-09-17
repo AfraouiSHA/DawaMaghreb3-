@@ -1,0 +1,32 @@
+// src/app/services/firestore.service.ts
+
+import { Injectable } from '@angular/core';
+import { Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+
+export interface Item {
+  id?: string;       // optionnel : id du document Firestore
+  name: string;
+  description?: string;
+  // ajoute ici les champs que tu utilises dans ta collection
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FirestoreService {
+
+  constructor(private firestore: Firestore) {}
+
+  // Lire toute la collection "items" (par exemple)
+  getItems(): Observable<Item[]> {
+    const itemsCollection = collection(this.firestore, 'items');
+    return collectionData(itemsCollection, { idField: 'id' }) as Observable<Item[]>;
+  }
+
+  // Lire un document spécifique par son ID
+  getItemById(id: string): Observable<Item | undefined> {
+    const itemDoc = doc(this.firestore, `items/${id}`);
+    return docData(itemDoc, { idField: 'id' }) as Observable<Item | undefined>;
+  }
+}

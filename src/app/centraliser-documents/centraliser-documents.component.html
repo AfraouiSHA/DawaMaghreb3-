@@ -1,0 +1,250 @@
+<div class="modern-page-container">
+  <div class="background-layer"></div>
+  <div class="background-overlay"></div>
+
+  <header class="page-header">
+    <div class="header-content">
+      <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawamaghreb" class="company-logo" />
+      <div class="header-text">
+        <h1 class="main-title">Centralisation des Documents</h1>
+        <p class="main-subtitle">Plateforme collaborative de gestion documentaire</p>
+      </div>
+    </div>
+
+    <div class="search-container">
+      <input type="text" placeholder="Nom de documents"
+             [(ngModel)]="nomDocumentsRecherche"
+             (input)="rechercherDocuments()"
+             class="search-input">
+      <button class="orange-btn" (click)="rechercherDocuments()">🔍 Rechercher</button>
+    </div>
+  </header>
+
+  <main class="main-sections">
+    <div class="sections-container">
+      <section class="document-section fournisseur-section">
+        <div class="section-wrapper">
+          <div class="section-header">
+            <div class="section-icon fournisseur-icon">📦</div>
+            <div class="section-info">
+              <h2 class="section-title">Fournisseur</h2>
+              <p class="section-subtitle">Gérez les documents destinés au fournisseur</p>
+            </div>
+          </div>
+
+          <div *ngIf="nomDocumentsRecherche.length === 0">
+            <ng-container *ngFor="let section of [
+              { titre: '📢 Avis de l\'appel d\'offres', docs: fichiersFournisseurs.avis, category: 'avis' },
+              { titre: '📂 Dossier Administratif', docs: fichiersFournisseurs.administratifs, category: 'administratifs' },
+              { titre: '📂 Dossier Technique', docs: fichiersFournisseurs.techniques, category: 'techniques' },
+              { titre: '📂 Dossier Financier', docs: fichiersFournisseurs.financiers, category: 'financiers' },
+              { titre: '📂 Autres Documents', docs: fichiersFournisseurs.autres, category: 'autres' }
+            ]">
+              <h3 class="category-title">{{ section.titre }}</h3>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nom du document</th>
+                      <th>Date </th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="section.docs.length === 0">
+                      <td colspan="3" class="empty-state">Aucun document dans cette catégorie</td>
+                    </tr>
+                    <tr *ngFor="let doc of section.docs; let i = index">
+                      <td>{{ doc.nom }}</td>
+                      <td>{{ doc.date }}</td>
+                      <td class="action-buttons">
+                        <label class="action-btn upload-btn">
+                          <input type="file" (change)="onFileChange($event, 'fournisseur', section.category, i)" style="display: none;"/>
+                          ⬆️
+                        </label>
+                        <button class="action-btn" (click)="downloadFile(doc)" [disabled]="!doc.url">📥</button>
+                        <button class="action-btn" (click)="previewFile(doc)" [disabled]="!doc.url">👁️</button>
+                        <button class="action-btn" (click)="remplirInformation(doc.id)" [disabled]="!doc.id">
+                          Remplir Information
+                        </button>
+                        <button class="action-btn delete-btn" (click)="supprimerFichier(i, 'fournisseur', section.category)" [disabled]="!doc.url">🗑️</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="section.category === 'autres'" class="add-document-container">
+                <input type="text" [(ngModel)]="newOtherDocNameF" placeholder="Nom du document" class="add-doc-input">
+                <label class="action-btn upload-btn orange-btn">
+                  <input type="file" (change)="onAddOtherFileChange($event, 'fournisseur', newOtherDocNameF)" style="display: none;"/>
+                  ➕ Ajouter un document
+                </label>
+              </div>
+            </ng-container>
+          </div>
+          
+          <div *ngIf="nomDocumentsRecherche.length > 0">
+            <h3 class="files-list-title">Résultats de la recherche pour "<span>{{ nomDocumentsRecherche }}</span>"</h3>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nom du document</th>
+                    <th>Date </th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="documentsFiltresF.length === 0">
+                    <td colspan="3" class="empty-state">Aucun document trouvé.</td>
+                  </tr>
+                  <tr *ngFor="let doc of documentsFiltresF; let i = index">
+                    <td>{{ doc.nom }}</td>
+                    <td>{{ doc.date }}</td>
+                    <td class="action-buttons">
+                      <label class="action-btn upload-btn">
+                         <input type="file" (change)="onFileChange($event, 'fournisseur', doc.category!, i)" style="display: none;"/>
+                       ⬆️
+                      </label>
+                      <button class="action-btn" (click)="downloadFile(doc)" [disabled]="!doc.url">📥</button>
+                      <button class="action-btn" (click)="previewFile(doc)" [disabled]="!doc.url">👁️</button>
+                      <button class="action-btn" (click)="remplirInformation(doc.id)" [disabled]="!doc.id">
+                        Remplir Information
+                      </button>
+                      <button class="action-btn delete-btn" (click)="supprimerFichier(i, 'fournisseur', doc.category!)" [disabled]="!doc.url">🗑️</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="document-section maitre-ouvrage-section">
+        <div class="section-wrapper">
+          <div class="section-header">
+            <div class="section-icon maitre-ouvrage-icon">👷‍♀️</div>
+            <div class="section-info">
+              <h2 class="section-title">Maître d'Ouvrage</h2>
+              <p class="section-subtitle">Gérez les documents destinés au maître d'ouvrage</p>
+            </div>
+          </div>
+
+          <div *ngIf="nomDocumentsRecherche.length === 0">
+            <ng-container *ngFor="let section of [
+              { titre: '📢 Avis de l\'appel d\'offres', docs: fichiersMaitreOuvrage.avis, category: 'avis' },
+              { titre: '📂 Dossier Technique', docs: fichiersMaitreOuvrage.techniques, category: 'techniques' },
+              { titre: '📂 Dossier Financier', docs: fichiersMaitreOuvrage.financiers, category: 'financiers' },
+              { titre: '📂 PV de Réunion', docs: fichiersMaitreOuvrage.pv, category: 'pv' },
+              { titre: '📂 Autres Documents', docs: fichiersMaitreOuvrage.autres, category: 'autres' }
+            ]">
+              <h3 class="category-title">{{ section.titre }}</h3>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nom du document</th>
+                      <th>Date </th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="section.docs.length === 0">
+                      <td colspan="3" class="empty-state">Aucun document dans cette catégorie</td>
+                    </tr>
+                    <tr *ngFor="let doc of section.docs; let i = index">
+                      <td>{{ doc.nom }}</td>
+                      <td>{{ doc.date }}</td>
+                      <td class="action-buttons">
+                        <label class="action-btn upload-btn">
+                          <input type="file" (change)="onFileChange($event, 'maitreOuvrage', section.category, i)" style="display: none;"/>
+                          ⬆️
+                        </label>
+                        <button class="action-btn" (click)="remplirInformation(doc.id)" [disabled]="!doc.id">
+                          Remplir Information
+                        </button>
+                        <button class="action-btn" (click)="downloadFile(doc)" [disabled]="!doc.url">📥</button>
+                        <button class="action-btn" (click)="previewFile(doc)" [disabled]="!doc.url">👁️</button>
+                        <button class="action-btn delete-btn" (click)="supprimerFichier(i, 'maitreOuvrage', section.category)" [disabled]="!doc.url">🗑️</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="section.category === 'pv'" class="add-document-container">
+                <input type="text" [(ngModel)]="newPvDocNameMOA" placeholder="Nom du PV" class="add-doc-input">
+                <label class="action-btn upload-btn orange-btn">
+                  <input type="file" (change)="onAddPvFileChange($event, 'maitreOuvrage', newPvDocNameMOA)" style="display: none;"/>
+                  ➕ Ajouter un PV
+                </label>
+              </div>
+              <div *ngIf="section.category === 'autres'" class="add-document-container">
+                <input type="text" [(ngModel)]="newOtherDocNameMOA" placeholder="Nom du document" class="add-doc-input">
+                <label class="action-btn upload-btn orange-btn">
+                  <input type="file" (change)="onAddOtherFileChange($event, 'maitreOuvrage', newOtherDocNameMOA)" style="display: none;"/>
+                  ➕ Ajouter un document
+                </label>
+              </div>
+            </ng-container>
+          </div>
+
+          <div *ngIf="nomDocumentsRecherche.length > 0">
+            <h3 class="files-list-title">Résultats de la recherche pour "<span>{{ nomDocumentsRecherche }}</span>"</h3>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nom du document</th>
+                    <th>Date </th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="documentsFiltresMOA.length === 0">
+                    <td colspan="3" class="empty-state">Aucun document trouvé.</td>
+                  </tr>
+                  <tr *ngFor="let doc of documentsFiltresMOA; let i = index">
+                    <td>{{ doc.nom }}</td>
+                    <td>{{ doc.date }}</td>
+                    <td class="action-buttons">
+                      <label class="action-btn upload-btn">
+                        <input type="file" (change)="onFileChange($event, 'maitreOuvrage', doc.category!, i)" style="display: none;"/>
+                        ⬆️
+                      </label>
+                      <button class="action-btn" (click)="remplirInformation(doc.id)" [disabled]="!doc.id">
+                        Remplir Information
+                      </button>
+                      <button class="action-btn" (click)="downloadFile(doc)" [disabled]="!doc.url">📥</button>
+                      <button class="action-btn" (click)="previewFile(doc)" [disabled]="!doc.url">👁️</button>
+                      <button class="action-btn delete-btn" (click)="supprimerFichier(i, 'maitreOuvrage', doc.category!)" [disabled]="!doc.url">🗑️</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="page-footer">
+    <p>&copy; 2025 Dawamaghreb. Tous droits réservés.</p>
+  </footer>
+
+  <div *ngIf="showModal" class="modal-overlay">
+    <div class="modal-content" [ngClass]="modalType">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ modalTitle }}</h3>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <p>{{ modalMessage }}</p>
+      </div>
+      <div class="modal-footer">
+        <button class="action-btn" (click)="closeModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

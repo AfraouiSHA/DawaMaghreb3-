@@ -1,0 +1,216 @@
+<div class="background-blur"></div>
+<div class="container">
+  <header>
+    <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+    <h1>Plateforme de Signature Électronique Professionnelle</h1>
+  </header>
+
+  <section class="block document-upload-section">
+    <h2>📄 Document à signer</h2>
+
+    <label class="custom-upload-btn">
+      CHOISIR UN PDF
+      <input type="file" (change)="onFileSelected($event)" accept="application/pdf" class="hidden-input" />
+    </label>
+    <span class="file-status">{{ fileName || 'Aucun fichier sélectionné' }}</span>
+
+    <div class="professional-toolbar" *ngIf="pdfSrc">
+      <div class="toolbar-section">
+        <h3>📝 Signature</h3>
+        <button mat-raised-button color="primary" class="upload-signature-btn" [disabled]="isProcessingSignature">
+          <mat-icon>upload</mat-icon>
+          <label for="signature-upload-input">Charger Signature</label>
+          <input id="signature-upload-input" type="file" (change)="onSignatureFileSelected($event)" accept="image/*"
+            class="hidden-input" />
+        </button>
+      </div>
+
+      <div class="toolbar-section processing-spinner" *ngIf="isProcessingSignature">
+        <mat-progress-spinner mode="indeterminate" diameter="24"></mat-progress-spinner>
+        <span>Traitement de la signature...</span>
+      </div>
+
+      <div class="toolbar-section" *ngIf="processedSignatureUrl">
+        <h3>🎯 Placement</h3>
+        <mat-button-toggle-group [(value)]="placementMode" class="placement-modes"
+          (change)="setPlacementMode(placementMode)">
+          <mat-button-toggle value="click" matTooltip="Cliquer pour placer">
+            <mat-icon>touch_app</mat-icon> Clic
+          </mat-button-toggle>
+          <mat-button-toggle value="draw" matTooltip="Dessiner la zone" disabled>
+            <mat-icon>crop_free</mat-icon> Dessiner
+          </mat-button-toggle>
+          <mat-button-toggle value="preset" matTooltip="Taille prédéfinie" disabled>
+            <mat-icon>aspect_ratio</mat-icon> Preset
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+        <button mat-raised-button color="warn" (click)="cancelPlacement()" *ngIf="isPlacingSignature">
+          <mat-icon>cancel</mat-icon> Annuler le placement
+        </button>
+      </div>
+
+      <div class="toolbar-section" *ngIf="processedSignatureUrl || signatureElement">
+        <h3>📏 Presets de taille</h3>
+        <mat-select [(value)]="selectedPreset" class="preset-selector">
+          <mat-option *ngFor="let preset of signaturePresets" [value]="preset">
+            {{ preset.name }} ({{ preset.width }}×{{ preset.height }})
+          </mat-option>
+        </mat-select>
+        <button mat-icon-button (click)="applyPreset(selectedPreset)" [disabled]="!signatureElement"
+          matTooltip="Appliquer la taille">
+          <mat-icon>check</mat-icon>
+        </button>
+      </div>
+
+      <div class="toolbar-section">
+        <h3>⚙️ Outils</h3>
+        <div class="tool-buttons">
+          <button mat-icon-button (click)="undo()" [disabled]="!canUndo()" matTooltip="Annuler">
+            <mat-icon>undo</mat-icon>
+          </button>
+          <button mat-icon-button (click)="redo()" [disabled]="!canRedo()" matTooltip="Rétablir">
+            <mat-icon>redo</mat-icon>
+          </button>
+          <button mat-icon-button (click)="showGrid = !showGrid" matTooltip="Grille">
+            <mat-icon>grid_on</mat-icon>
+          </button>
+          <button mat-icon-button (click)="snapToGrid = !snapToGrid" matTooltip="Magnétisme" [class.active]="snapToGrid">
+            <mat-icon>grid_3x3</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="placement-instructions" *ngIf="isPlacingSignature">
+      <mat-icon>info</mat-icon>
+      <div class="instruction-content">
+        <strong>Mode de placement activé</strong>
+        <p>Cliquez sur le PDF pour placer votre signature</p>
+      </div>
+    </div>
+    
+    <section class="pdf-section">
+      <div class="pdf-container" #pdfContainer [class.placing-signature]="isPlacingSignature" [class.show-grid]="showGrid"
+        (mousemove)="onPdfMouseMove($event)" (click)="onPdfClick($event)">
+
+        <div class="grid-overlay" *ngIf="showGrid"></div>
+
+        <pdf-viewer *ngIf="pdfSrc" [src]="pdfSrc" [render-text]="true" [original-size]="true" [show-all]="true"
+          (after-load-complete)="onPdfLoadComplete($event)" class="pdf-viewer">
+        </pdf-viewer>
+
+        <div *ngIf="isPlacingSignature && previewSignature && previewSignature.page === currentPage"
+          class="signature-preview" [style.left.px]="previewSignature.x" [style.top.px]="previewSignature.y"
+          [style.width.px]="previewSignature.width" [style.height.px]="previewSignature.height"
+          [style.opacity]="previewSignature.opacity" [style.transform]="'rotate(' + previewSignature.rotation + 'deg)'">
+          <img [src]="previewSignature.imageDataUrl" alt="Aperçu signature" class="preview-image">
+          <div class="preview-label">Aperçu</div>
+        </div>
+
+        <div *ngIf="signatureElement && signatureElement.page === currentPage" class="signature-element"
+          [style.left.px]="signatureElement.x" [style.top.px]="signatureElement.y"
+          [style.width.px]="signatureElement.width" [style.height.px]="signatureElement.height"
+          [style.opacity]="signatureElement.opacity" [style.transform]="'rotate(' + signatureElement.rotation + 'deg)'"
+          (mousedown)="startDraggingSignature($event)">
+
+          <img [src]="signatureElement.imageDataUrl" alt="Signature" class="signature-image">
+
+          <div class="resize-handles">
+            <div class="resize-handle tl" (mousedown)="startResizingSignature($event, 'tl')"></div>
+            <div class="resize-handle tr" (mousedown)="startResizingSignature($event, 'tr')"></div>
+            <div class="resize-handle bl" (mousedown)="startResizingSignature($event, 'bl')"></div>
+            <div class="resize-handle br" (mousedown)="startResizingSignature($event, 'br')"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-controls" *ngIf="pdfSrc">
+        <button mat-icon-button (click)="goToPage(currentPage - 1)" [disabled]="currentPage <= 1">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span class="page-info">Page {{ currentPage }} / {{ totalPages }}</span>
+        <button mat-icon-button (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </section>
+
+    <div class="confirmation-section" *ngIf="signatureElement && !isSignatureConfirmed">
+      <button mat-raised-button color="primary" (click)="confirmerSignature()">
+        <mat-icon>check_circle_outline</mat-icon> Confirmer la signature
+      </button>
+    </div>
+
+    <div class="finalization-section">
+      <button mat-raised-button color="accent" (click)="applySignatureAndSavePdf()"
+        [disabled]="!pdfSrc || !signatureElement || !acceptConditions || !isSignatureConfirmed" class="finalize-btn">
+        <mat-icon>check_circle</mat-icon> Finaliser et Télécharger le Document
+      </button>
+    </div>
+  </section>
+
+  <section class="block user-info-section">
+    <h2>👨‍💼 Informations de l'utilisateur</h2>
+    <div class="user-inputs">
+      <mat-form-field appearance="fill">
+        <mat-label>Nom</mat-label>
+        <input matInput [(ngModel)]="utilisateur.nom">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Fonction</mat-label>
+        <input matInput [(ngModel)]="utilisateur.fonction">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="utilisateur.email" type="email">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Entreprise</mat-label>
+        <input matInput [(ngModel)]="utilisateur.entreprise" type="entreprise">
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary" (click)="saveUserData()">
+      <mat-icon>save</mat-icon> Sauvegarder les informations
+    </button>
+  </section>
+
+  <section class="block signature-status-section">
+    <h2>Statut de la signature</h2>
+    <mat-checkbox [(ngModel)]="document.isSigned">Signé</mat-checkbox>
+  </section>
+
+<section class="block signataires-section">
+  <h2>👥 Liste des signataires</h2>
+  <div *ngIf="signataires && signataires.length > 0; else noSignataires">
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Fonction</th>
+          <th>Email</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let signataire of signataires">
+          <td>{{ signataire.nom }}</td>
+          <td>{{ signataire.fonction }}</td>
+          <td>{{ signataire.email }}</td>
+          <td>{{ signataire.signe ? '✅ Signé' : '❌ Non signé' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #noSignataires>
+    <p>Aucun signataire en attente sur ce document.</p>
+  </ng-template>
+</section>
+
+  <footer>
+    <p>⚠️ Cette signature électronique a la même valeur légale qu'une signature manuscrite.</p>
+    <mat-checkbox *ngIf="acceptConditions !== undefined" [(ngModel)]="acceptConditions">
+      J'accepte les conditions générales
+    </mat-checkbox>
+  </footer>
+</div>

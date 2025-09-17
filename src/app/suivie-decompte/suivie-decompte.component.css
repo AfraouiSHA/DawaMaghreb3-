@@ -1,0 +1,114 @@
+.page-container {
+    position: relative;
+    min-height: 100vh;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    overflow-x: hidden;
+  }
+  
+  .blur-background {
+    position: absolute;
+    inset: 0;
+    background: url('/assets/image-dawamaghreb/imageaccueil.jpg.webp') center/cover no-repeat;
+    filter: blur(8px) brightness(0.8);
+    z-index: 0;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .logo {
+    width: 140px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .header-title {
+    margin-left: 140px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: black;
+  }
+  
+  .glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 1;
+    color: white;
+  }
+  
+  .project-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+  
+  .table-section table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .table-section th,
+  .table-section td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: left;
+    font-size: 0.95rem;
+  }
+  
+  .table-section th {
+    color: hsl(51, 76%, 76%);
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .etat.valide {
+    color: #abfaad;
+    font-weight: bold;
+  }
+  
+  .etat.attente {
+    color: #ffa500;
+    font-weight: bold;
+  }
+  
+  .btn-voir {
+    background-color: #2DBDB4;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .btn-voir:hover {
+    background-color: #219a90;
+  }
+  
+  
+  

@@ -1,0 +1,302 @@
+# Query: UntypedFormGroup 
+# ContextLines: 1
+
+60 results - 58 files
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionCahierCharges\cahiercharges-update\cahiercharges-update.component.ts:
+  25    id: any;
+  26:   public cahierChargesUdForm: FormGroup = new FormGroup({
+  27      cahierChargesLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionCategorieProjet\categorieprojet-add\categorieprojet-add.component.ts:
+  21  
+  22:   public categorieProjetForm: FormGroup = new FormGroup({
+  23      categorieProjetLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionCategorieProjet\categorieprojet-update\categorieprojet-update.component.ts:
+  21     id: any;
+  22:   public categorieProjetUdForm: FormGroup = new FormGroup({
+  23      categorieProjetLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionCategoriesProjet\categoriesprojet-add\categoriesprojet-add.component.ts:
+  21  
+  22:   public categoriesProjetForm: FormGroup = new FormGroup({
+  23      categoriesProjetLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionCategoriesProjet\categoriesprojet-update\categoriesprojet-update.component.ts:
+  21     id: any;
+  22:   public categoriesProjetUdForm: FormGroup = new FormGroup({
+  23      categoriesProjetLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionCivilite\civilite-update\civilite-update.component.ts:
+  17   id:any;
+  18:   public civilieForm: FormGroup = new FormGroup({
+  19     
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionCritere\critere-add\critere-add.component.ts:
+  25  export class CritereAddComponent implements OnInit {
+  26:   public critereForm: FormGroup = new FormGroup({
+  27      critereLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionCritere\critere-update\critere-update.component.ts:
+  27     id: any;
+  28:   public critereUdForm: FormGroup = new FormGroup({
+  29      critereLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionDevise\devise-add\devise-add.component.ts:
+  21  
+  22:   public deviseForm: FormGroup = new FormGroup({
+  23      deviseIdentifiant: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionDevise\devise-update\devise-update.component.ts:
+  22     id: any; 
+  23:   public deviseUdForm: FormGroup = new FormGroup({
+  24      deviseIdentifiant: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionEtat\etat-add\etat-add.component.ts:
+  23  
+  24:   public etatForm: FormGroup = new FormGroup({
+  25      etatLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionEtat\etat-update\etat-update.component.ts:
+  23    id: any;
+  24:   public etatUdForm: FormGroup = new FormGroup({
+  25      etatLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionEtatCategorie\etatcategorie-add\etatcategorie-add.component.ts:
+  21  
+  22:   public etatCategorieForm: FormGroup = new FormGroup({
+  23      etatCategorieLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionEtatCategorie\etatcategorie-update\etatcategorie-update.component.ts:
+  21    id: any;
+  22:   public etatCategorieUdForm: FormGroup = new FormGroup({
+  23      etatCategorieLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionEvenement\evenement-add\evenement-add.component.ts:
+  23  
+  24:   public evenementForm: FormGroup = new FormGroup({
+  25      evenementLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionEvenement\evenement-update\evenement-update.component.ts:
+  23    id: any;
+  24:   public evenementUdForm: FormGroup = new FormGroup({
+  25      evenementLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionEvenementType\evenementtype-add\evenementtype-add.component.ts:
+  21  
+  22:   public evenementTypeForm: FormGroup = new FormGroup({
+  23      evenementTypeLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionEvenementType\evenementtype-update\evenementtype-update.component.ts:
+  22     id: any; 
+  23:   public evenementTypeUdform: FormGroup = new FormGroup({
+  24      evenementTypeLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionFonction\fonction-add\fonction-add.component.ts:
+  21  
+  22:   public fonctionForm: FormGroup = new FormGroup({
+  23      fonctionLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionFonction\fonction-update\fonction-update.component.ts:
+  22     id: any;
+  23:   public fonctionUdForm: FormGroup = new FormGroup({
+  24      fonctionLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionFormeJuridique\formejuridique-add\formejuridique-add.component.ts:
+  21  
+  22:   public formeJuridiqueForm: FormGroup = new FormGroup({
+  23      formeJuridiqueNom: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionFormeJuridique\formejuridique-update\formejuridique-update.component.ts:
+  22     id: any;
+  23:   public formeJuridiqueUdForm: FormGroup = new FormGroup({
+  24      formeJuridiqueNom: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionGouvernerat\gouvernerat-add\gouvernerat-add.component.ts:
+  21  
+  22:   public gouverneratForm: FormGroup = new FormGroup({
+  23      gouverneratLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionGouvernerat\gouvernerat-add-ville\gouvernerat-add-ville.component.ts:
+  23  
+  24:   public villeForm: FormGroup = new FormGroup({
+  25      villeNom: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionGouvernerat\gouvernerat-update\gouvernerat-update.component.ts:
+  22     id: any;
+  23:   public gouverneratUdForm: FormGroup = new FormGroup({
+  24      gouverneratLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionLettre\lettre-add\lettre-add.component.ts:
+  23  
+  24:   public lettreForm: FormGroup = new FormGroup({
+  25      typeLettre: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionLettre\lettre-update\lettre-update.component.ts:
+  25     typeLettres: TypeLettre [] = [] ;
+  26:   public lettreUdForm: FormGroup = new FormGroup({
+  27      typeLettre: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionModeReglement\modereglement-add\modereglement-add.component.ts:
+  21  
+  22:   public modeReglementForm: FormGroup = new FormGroup({
+  23      modeReglementLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionModeReglement\modereglement-update\modereglement-update.component.ts:
+  21    id: any;
+  22:   public modeReglementUdForm: FormGroup = new FormGroup({
+  23      modeReglementLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionMotif\motif-add\motif-add.component.ts:
+  21  
+  22:   public motifForm: FormGroup = new FormGroup({
+  23      motifLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionMotif\motif-update\motif-update.component.ts:
+  22     id: any; 
+  23:   public motifUdForm: FormGroup = new FormGroup({
+  24      motifLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionNature\nature-add\nature-add.component.ts:
+  21  
+  22:   public natureForm: FormGroup = new FormGroup({
+  23      natureLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionNature\nature-update\nature-update.component.ts:
+  21     id: any;
+  22:   public natureUdForm: FormGroup = new FormGroup({
+  23      natureLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionNatureCritere\naturecritere-add\naturecritere-add.component.ts:
+  21  
+  22:   public natureCritereForm: FormGroup = new FormGroup({
+  23      natureCritereLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionNatureCritere\naturecritere-update\naturecritere-update.component.ts:
+  21    id: any;
+  22:   public natureCritereForm: FormGroup = new FormGroup({
+  23      natureCritereLibelle: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionOperateur\operateur-add\operateur-add.component.ts:
+  21  
+  22:   public operateurForm: FormGroup = new FormGroup({
+  23      operateurNom: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionOperateur\operateur-update\operateur-update.component.ts:
+  21    id: any;
+  22:   public operateurForm: FormGroup = new FormGroup({
+  23      operateurNom: new FormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionPays\pays-add\pays-add.component.ts:
+  21  
+  22:   public paysForm: FormGroup = new UntypedFormGroup({
+  23      paysCode: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionPays\pays-add-gouvernerat\pays-add-gouvernerat.component.ts:
+  23  
+  24:   public gouverneratForm: UntypedFormGroup = new UntypedFormGroup({
+  25      gouverneratLibelle: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionPays\pays-update\pays-update.component.ts:
+  21    id: any;
+  22:   public paysUdForm: UntypedFormGroup = new UntypedFormGroup({
+  23      paysCode: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionSecteurActivite\secteuractivite-add\secteuractivite-add.component.ts:
+  23    etats: Etat[] = [];
+  24:   public secteurActiviteForm: UntypedFormGroup = new UntypedFormGroup({
+  25      secteurActiviteLibelle: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTauxTva\tauxtva-add\tauxtva-add.component.ts:
+  21  
+  22:   public tauxTVAForm: UntypedFormGroup = new UntypedFormGroup({
+  23      tauxTVAValeur: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTauxTva\tauxtva-update\tauxtva-update.component.ts:
+  22     id: any;
+  23:   public tauxTVAUdForm: UntypedFormGroup = new UntypedFormGroup({
+  24      tauxTVAValeur: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTypeCahierDesCharges\typecahierdescharges-add\typecahierdescharges-add.component.ts:
+  21  
+  22:   public typeCahierDesChargesForm: UntypedFormGroup = new UntypedFormGroup({
+  23      typeCahierDesChargesDescription: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTypeCahierDesCharges\typecahierdescharges-update\typecahierdescharges-update.component.ts:
+  21    id: any;
+  22:   public typeCahierDesChargesUdForm: UntypedFormGroup = new UntypedFormGroup({
+  23      typeCahierDesChargesDescription: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTypeCritere\typecritere-add\typecritere-add.component.ts:
+  21  
+  22:   public typeCritereForm: UntypedFormGroup = new UntypedFormGroup({
+  23      typeCritereNom: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTypeCritere\typecritere-update\typecritere-update.component.ts:
+  21    id: any;
+  22:   public typeCritereForm: UntypedFormGroup = new UntypedFormGroup({
+  23      typeCritereNom: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTypeFicheSuiviTechnique\typefichesuivitechnique-add\typefichesuivitechnique-add.component.ts:
+  21  
+  22:   public typeFicheSuiviTechniqueForm: UntypedFormGroup = new UntypedFormGroup({
+  23      typeFicheSuiviTechniqueLibelle: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTypeFicheSuiviTechnique\typefichesuivitechnique-update\typefichesuivitechnique-update.component.ts:
+  21    id: any;
+  22:   public typeFicheSuiviTechniqueUdForm: UntypedFormGroup = new UntypedFormGroup({
+  23      typeFicheSuiviTechniqueLibelle: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTypeLettre\typelettre-add\typelettre-add.component.ts:
+  21  
+  22:   public typeLettreForm: UntypedFormGroup = new UntypedFormGroup({
+  23      typeLettreLibelle: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTypeLettre\typelettre-update\typelettre-update.component.ts:
+  21    id: any;
+  22:   public typeLettreUdForm: UntypedFormGroup = new UntypedFormGroup({
+  23      typeLettreLibelle: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTypePv\typepv-add\typepv-add.component.ts:
+  21  
+  22:   public typePVForm: UntypedFormGroup = new UntypedFormGroup({
+  23      typePVLibelle: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionTypePv\typepv-update\typepv-update.component.ts:
+  22     id: any;
+  23:   public typePVUdForm: UntypedFormGroup = new UntypedFormGroup({
+  24      typePVLibelle: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionVille\ville-add\ville-add.component.ts:
+  21  
+  22:   public villeForm: UntypedFormGroup = new UntypedFormGroup({
+  23      villeNom: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\GestionVille\ville-update\ville-update.component.ts:
+  22     id: any;
+  23:   public villeUdForm: UntypedFormGroup = new UntypedFormGroup({
+  24      villeNom: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\RepresentantLegalTitre\representant-legal-titre-add\representant-legal-titre-add.component.ts:
+   3  import { RepresentantLegalTitre } from 'src/app/models/RepresentantLegalTitre';
+   4: import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+   5  import { RepresentantLegalTitreService } from 'src/app/services/RepresentantLegalTitreService';
+
+  14  
+  15:   representantLegalTitreForm: UntypedFormGroup = new UntypedFormGroup({
+  16      representantLegalTitreLibelle: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Parametrages\RepresentantLegalTitre\representant-legal-titre-update\representant-legal-titre-update.component.ts:
+   2  import { Component, OnInit } from '@angular/core';
+   3: import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+   4  import { ActivatedRoute, Router } from '@angular/router';
+
+  13  export class RepresentantLegalTitreUpdateComponent implements OnInit {
+  14:   representantLegalTitreForm: UntypedFormGroup = new UntypedFormGroup({
+  15      representantLegalTitreLibelle: new UntypedFormControl(''),
+
+Front-dawamaghreb outil\src\app\Views\Soumissionnaire\soumissionnaire-add-listerouge\soumissionnaire-add-listerouge.component.ts:
+  25    blackListeMotifs: BlackListeMotif[] = [];
+  26:   public soumissionnaireBlackListForm: UntypedFormGroup = new UntypedFormGroup({
+  27      soumissionnaireBlackListDateDebut: new UntypedFormControl(''),

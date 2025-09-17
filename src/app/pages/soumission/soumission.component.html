@@ -1,0 +1,334 @@
+<div class="blur-background"></div>
+<div class="soumission-container">
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawamaghreb" class="logo" />
+
+  <h1 class="title">Soumissionner à l'appel d'offres</h1>
+
+  <form class="form-container" novalidate (ngSubmit)="onSubmit(soumissionForm)" #soumissionForm="ngForm">
+
+    <section class="card-section">
+      <h2><i class="fas fa-file-contract"></i> Informations sur l’appel d’offres</h2>
+    </section>
+    <div class="field-group">
+      <label for="refAO">Référence / Numéro</label>
+      <input type="text" id="refAO" name="refAO" placeholder="Ex: AO-2025-001" required [(ngModel)]="form.refAO" #refAO="ngModel" readonly />
+      <div *ngIf="refAO.invalid && (refAO.dirty || refAO.touched)" class="error-message">
+        La référence de l'AO est requise.
+      </div>
+    </div>
+    <div class="field-group">
+      <label for="objetAO">Objet</label>
+      <textarea id="objetAO" name="objetAO" placeholder="Objet de l’appel d’offres" required [(ngModel)]="form.objetAO" #objetAO="ngModel" readonly></textarea>
+      <div *ngIf="objetAO.invalid && (objetAO.dirty || objetAO.touched)" class="error-message">
+        L'objet de l'AO est requis.
+      </div>
+    </div>
+    <div class="field-group">
+      <label for="dateLimite">Date limite de soumission</label>
+      <input type="date" id="dateLimite" name="dateLimite" required [(ngModel)]="form.dateLimite" #dateLimite="ngModel" readonly />
+      <div *ngIf="dateLimite.invalid && (dateLimite.dirty || dateLimite.touched)" class="error-message">
+        La date limite est requise.
+      </div>
+    </div>
+
+
+    <section class="card-section">
+      <h2><i class="fas fa-building"></i> Informations sur l’entreprise</h2>
+      <p class="section-description">Entrez les informations de votre société.</p>
+      <div class="field-group">
+        <label for="nomEntreprise">Nom de l'Entreprise</label>
+        <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="Nom complet de l'entreprise" required [(ngModel)]="form.nomEntreprise" #nomEntreprise="ngModel" />
+        <div *ngIf="nomEntreprise.invalid && (nomEntreprise.dirty || nomEntreprise.touched)" class="error-message">
+          Le nom de l'entreprise est requis.
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="adresse">Adresse</label>
+        <input type="text" id="adresse" name="adresse" placeholder="Adresse complète" required [(ngModel)]="form.adresse" #adresse="ngModel" />
+        <div *ngIf="adresse.invalid && (adresse.dirty || adresse.touched)" class="error-message">
+          L'adresse est requise.
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="telephone">Téléphone</label>
+        <input type="tel" id="telephone" name="telephone" placeholder="Ex: +212 6 XX XX XX XX" required [(ngModel)]="form.telephone" #telephone="ngModel" />
+        <div *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)" class="error-message">
+          Le numéro de téléphone est requis.
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="contact@votreentreprise.com" required email [(ngModel)]="form.email" #email="ngModel" />
+        <div *ngIf="email.invalid && (email.dirty || email.errors?.['required'] || email.touched)" class="error-message">
+          <span *ngIf="email.errors?.['required']">L'email est requis.</span>
+          <span *ngIf="email.errors?.['email']">Veuillez entrer un email valide.</span>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="compteBancaire">Compte bancaire (RIB)</label>
+        <input type="text" id="compteBancaire" name="compteBancaire" placeholder="RIB ou informations bancaires" [(ngModel)]="form.compteBancaire" required #compteBancaire="ngModel" />
+        <div *ngIf="compteBancaire.invalid && (compteBancaire.dirty || compteBancaire.touched)" class="error-message">
+          Le compte bancaire est requis.
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="taxePro">Taxe professionnelle</label>
+        <input type="text" id="taxePro" name="taxePro" placeholder="Numéro de taxe professionnelle" [(ngModel)]="form.taxeProfessionnelle" required #taxePro="ngModel" />
+
+        <div *ngIf="taxePro.invalid && (taxePro.dirty || taxePro.touched)" class="error-message">
+          La taxe professionnelle est requise.
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="ice">ICE</label>
+        <input type="text" id="ice" name="ice" placeholder="Identifiant Commun de l'Entreprise" [(ngModel)]="form.ice" required #ice="ngModel" />
+        <div *ngIf="ice.invalid && (ice.dirty || ice.touched)" class="error-message">
+          L'ICE est requis.
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="cnss">CNSS</label>
+        <input type="text" id="cnss" name="cnss" placeholder="Numéro CNSS" [(ngModel)]="form.cnss" required #cnss="ngModel" />
+        <div *ngIf="cnss.invalid && (cnss.dirty || cnss.touched)" class="error-message">
+          Le numéro CNSS est requis.
+        </div>
+      </div>
+    </section>
+
+    <section class="card-section">
+      <h2><i class="fas fa-file-contract"></i> Documents de l'appel d'offres</h2>
+      <p class="section-description">Ces documents sont disponibles pour consultation et téléchargement.</p>
+
+      <div *ngIf="documentsAO.length > 0" class="documents-list">
+        <ul>
+          <li *ngFor="let doc of documentsAO" class="document-item">
+            <div class="document-info">
+              <i class="fas fa-file-pdf document-icon"></i>
+              <span class="document-name">{{ doc.file_name }}</span>
+            </div>
+            <div class="document-actions">
+              <button class="btn-preview" (click)="previewDocument(doc)">
+                <i class="fas fa-eye"></i> Prévisualiser
+              </button>
+              <button class="btn-download" (click)="downloadDocument(doc)">
+                <i class="fas fa-download"></i> Télécharger
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="documentsAO.length === 0" class="no-documents-message">
+        Aucun document n'est disponible pour cet appel d'offres.
+      </div>
+    </section>
+
+    <section class="card-section">
+      <h2><i class="fas fa-table"></i> Détail estimatif (Devis)</h2>
+      <div class="field-group file-upload-group">
+        <label class="file-upload-label">
+          <input type="file" (change)="onFileSelected($event, 'fichierDevisRempli')" accept=".xls,.xlsx" required #excelInput>
+          <span class="file-upload-btn">
+            <i class="fas fa-upload"></i> Télécharger le devis
+          </span>
+          <span class="file-name" *ngIf="form.uploadedFiles.fichierDevisRempli">{{ form.uploadedFiles.fichierDevisRempli.name }}</span>
+        </label>
+        <div *ngIf="!form.uploadedFiles.fichierDevisRempli" class="error-message">
+          Veuillez télécharger le fichier de devis.
+        </div>
+      </div>
+    </section>
+
+    <section class="card-section devis-table-container" *ngIf="devisData.length > 0">
+      <div class="table-scroll-wrapper">
+        <table class="devis-table">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Désignation</th>
+              <th>Unité</th>
+              <th>Quantité</th>
+              <th>P.U. (HT)</th>
+              <th>P.T. (HT)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of devisData; let i = index">
+              <td>{{ item.numero }}</td>
+              <td>{{ item.designation }}</td>
+              <td>{{ item.unite }}</td>
+              <td>{{ item.quantite }}</td>
+              <td>
+              <td class="cell-pu-ht">
+  <input
+    type="number"
+    class="pu-input"
+    [(ngModel)]="item.pu_ht"
+    name="pu-{{i}}"
+    [disabled]="!devisData || devisData.length === 0"
+    (input)="onCellChange(i, item.pu_ht)"
+  />
+</td>
+              <td>{{ item.pt_ht | number: '1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="totals-section">
+        <p>Total HT : {{ totalHT | number:'1.2-2' }} DH</p>
+        <p>TVA ({{ tvaRate * 100 }}%) : {{ tvaAmount | number:'1.2-2' }} DH</p>
+        <p>Total TTC : {{ totalTTC | number:'1.2-2' }} DH</p>
+      </div>
+    </section>
+
+
+    <section class="card-section">
+      <h2><i class="fas fa-id-card-alt"></i> Offre administrative</h2>
+      <p class="section-description">
+        Veuillez joindre les documents administratifs requis pour votre soumission. Taille maximale par fichier: 5MB.
+        <strong style="color: var(--primary-orange);">Merci de privilégier le format PDF pour tous les documents.</strong>
+      </p>
+      <div class="document-upload-grid">
+        <div class="file-input-wrapper">
+          <input type="file" id="registreCommerce" name="registreCommerce" accept=".pdf" required (change)="onFileSelected($event, 'registreCommerce')" />
+          <label for="registreCommerce" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">Registre de Commerce (RC) <span class="required-star">*</span></span>
+            </div>
+            <span class="file-selected-display-text">{{ form.uploadedFiles.registreCommerce?.name || 'Aucun fichier choisi' }}</span>
+          </label>
+          <div *ngIf="soumissionForm.submitted && !form.uploadedFiles.registreCommerce" class="error-message-inline">
+            Le Registre de Commerce est requis.
+          </div>
+        </div>
+        <div class="file-input-wrapper">
+          <input type="file" id="attestationFiscale" name="attestationFiscale" accept=".pdf" required (change)="onFileSelected($event, 'attestationFiscale')" />
+          <label for="attestationFiscale" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">Attestation Fiscale <span class="required-star">*</span></span>
+            </div>
+            <span class="file-selected-display-text">{{ form.uploadedFiles.attestationFiscale?.name || 'Aucun fichier choisi' }}</span>
+          </label>
+          <div *ngIf="soumissionForm.submitted && !form.uploadedFiles.attestationFiscale" class="error-message-inline">
+            L'Attestation Fiscale est requise.
+          </div>
+        </div>
+        <div class="file-input-wrapper">
+          <input type="file" id="attestationCNSS" name="attestationCNSS" accept=".pdf" required (change)="onFileSelected($event, 'attestationCNSS')" />
+          <label for="attestationCNSS" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">Attestation CNSS <span class="required-star">*</span></span>
+            </div>
+            <span class="file-selected-display-text">{{ form.uploadedFiles.attestationCNSS?.name || 'Aucun fichier choisi' }}</span>
+          </label>
+          <div *ngIf="soumissionForm.submitted && !form.uploadedFiles.attestationCNSS" class="error-message-inline">
+            L'Attestation CNSS est requise.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-section">
+      <h2><i class="fas fa-cogs"></i> Offre technique</h2>
+      <p class="section-description">
+        Veuillez joindre les documents techniques pertinents pour votre soumission. Taille maximale par fichier: 5MB.
+        <strong style="color: var(--primary-orange);">Merci de privilégier le format PDF pour tous les documents.</strong>
+      </p>
+      <div class="document-upload-grid">
+        <div class="file-input-wrapper">
+          <input type="file" id="refProjets" name="refProjets" accept=".pdf,.png,.jpg,.jpeg" multiple (change)="onMultiFileSelected($event, 'refProjets')" />
+          <label for="refProjets" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">Références de Projets Similaires (PDF, Images)</span>
+            </div>
+            <span class="file-selected-display-text">
+              <ng-container *ngIf="form.uploadedFiles.refProjets && form.uploadedFiles.refProjets.length > 0">
+                {{ form.uploadedFiles.refProjets.length }} fichier(s) choisi(s)
+              </ng-container>
+              <ng-container *ngIf="!form.uploadedFiles.refProjets || form.uploadedFiles.refProjets.length === 0">
+                Aucun fichier choisi
+              </ng-container>
+            </span>
+          </label>
+        </div>
+        <div class="file-input-wrapper">
+          <input type="file" id="plans" name="plans" accept=".pdf,.dwg,.dxf" multiple (change)="onMultiFileSelected($event, 'plans')" />
+          <label for="plans" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">Plans et Schémas (PDF, CAD)</span>
+            </div>
+            <span class="file-selected-display-text">
+              <ng-container *ngIf="form.uploadedFiles.plans && form.uploadedFiles.plans.length > 0">
+                {{ form.uploadedFiles.plans.length }} fichier(s) choisi(s)
+              </ng-container>
+              <ng-container *ngIf="!form.uploadedFiles.plans || form.uploadedFiles.plans.length === 0">
+                Aucun fichier choisi
+              </ng-container>
+            </span>
+          </label>
+        </div>
+        <div class="file-input-wrapper">
+          <input type="file" id="cvTech" name="cvTech" accept=".pdf" multiple (change)="onMultiFileSelected($event, 'cvTech')" />
+          <label for="cvTech" class="file-upload-content-area">
+            <div class="file-info">
+              <i class="fas fa-file-upload upload-icon"></i>
+              <span class="file-label-text">CV du Personnel Technique (PDF)</span>
+            </div>
+            <span class="file-selected-display-text">
+              <ng-container *ngIf="form.uploadedFiles.cvTech && form.uploadedFiles.cvTech.length > 0">
+                {{ form.uploadedFiles.cvTech.length }} fichier(s) choisi(s)
+              </ng-container>
+              <ng-container *ngIf="!form.uploadedFiles.cvTech || form.uploadedFiles.cvTech.length === 0">
+                Aucun fichier choisi
+              </ng-container>
+            </span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <div class="field-group">
+      <label class="accept-conditions">
+        <input type="checkbox" name="acceptConditions" required [(ngModel)]="form.acceptConditions" #acceptConditions="ngModel" />
+        J'accepte les termes et conditions de l'appel d'offres.
+      </label>
+      <div *ngIf="acceptConditions.invalid && (acceptConditions.dirty || acceptConditions.touched)" class="error-message">
+        Vous devez accepter les conditions.
+      </div>
+    </div>
+
+
+    <section class="card-section actions">
+      <button type="submit" class="action-button orange" [disabled]="soumissionForm.invalid || !form.acceptConditions || loading">
+        <i class="fas fa-paper-plane"></i> Soumettre la soumission
+      </button>
+      <button type="button" class="action-button turquoise" (click)="resetForm(soumissionForm)">
+        <i class="fas fa-undo-alt"></i> Réinitialiser le formulaire
+      </button>
+    </section>
+
+
+    <div *ngIf="message" class="custom-message-box" [ngClass]="messageType">
+      {{ message }}
+    </div>
+
+    <div *ngIf="loading" class="loading-message">
+      <i class="fas fa-spinner fa-spin"></i> Chargement du devis...
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <i class="fas fa-exclamation-circle"></i> {{ error }}
+    </div>
+
+    <div *ngIf="devisData.length === 0 && !loading && !error && selectedFileName" class="no-data-message">
+      <i class="fas fa-info-circle"></i> Aucune donnée de devis disponible pour le fichier sélectionné.
+    </div>
+
+  </form>
+</div>

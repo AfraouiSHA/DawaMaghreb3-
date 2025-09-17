@@ -1,0 +1,63 @@
+<div class="blur-background"></div>
+
+<div class="result-page">
+  <img src="assets/image-dawamaghreb/dawamaghreb_logo.jpg" alt="Logo Dawa" class="logo" />
+
+  <h2><i class="fas fa-envelope-open-text"></i> Consulter le Résultat de l'Appel d'Offres</h2>
+
+  <div *ngIf="loading" class="info-message">Chargement des messages...</div>
+  <div *ngIf="errorMessage && !loading" class="error-message">{{ errorMessage }}</div>
+
+  <div class="messages-list" *ngIf="!loading && messages.length > 0">
+    <div class="message-card" *ngFor="let message of messages">
+      <div class="message-header">
+        <span class="message-fournisseur">De: Chef de Projet | Pour ID: <strong>{{message.id_fournisseur}}</strong></span>
+        <span class="message-timestamp">{{ formatDate(message.created_at) }}</span>
+        <p>{{ message.content }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Message d'Attribution :</h3>
+    
+  </div>
+
+  <div class="section" *ngIf="fournisseur">
+  <h3>Coordonnées du fournisseur retenu</h3>
+  <table class="info-table">
+    <tr><th>Entreprise</th><td>{{ fournisseur.nom_entreprise }}</td></tr>
+    <tr><th>ICE</th><td>{{ fournisseur.ice }}</td></tr>
+    <tr><th>Email</th><td>{{ fournisseur.email }}</td></tr>
+    <tr><th>Téléphone</th><td>{{ fournisseur.telephone || 'Non renseigné' }}</td></tr>
+    <tr><th>Adresse</th><td>{{ fournisseur.adresse || 'Non renseignée' }}</td></tr>
+  </table>
+</div>
+
+  <div class="section">
+    <h3>📂 Documents contractuels joints</h3>
+    <ul class="doc-list">
+      <li>📄 Procès-verbal de commission</li>
+    </ul>
+  </div>
+
+<div class="section" *ngIf="appelOffre">
+  <h3>Informations générales sur le marché</h3>
+  <table class="info-table">
+    <tr><th>Référence</th><td>{{ appelOffre.numeroAO }}</td></tr>
+    <tr><th>Objet</th><td>{{ appelOffre.objet }}</td></tr>
+    <tr><th>Durée</th><td>{{ appelOffre.delai_execution }} jours</td></tr>
+    <tr><th>Date limite</th><td>{{ formatDate(appelOffre.dateLimite) }}</td></tr>
+    <tr><th>Statut</th><td>{{ appelOffre.statut }}</td></tr>
+  </table>
+</div>
+
+ 
+
+  <div class="section actions">
+    <button class="btn">✏️ Modifier le message</button>
+    <button class="btn">📎 Joindre des documents</button>
+    <button class="btn">🔁 Relancer le fournisseur</button>
+  </div>
+
+</div> ```

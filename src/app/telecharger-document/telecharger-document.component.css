@@ -1,0 +1,176 @@
+.blur-background {
+  position: fixed; /* Changé de absolute à fixed */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Utilise la largeur complète de la viewport */
+  height: 100vh; /* Utilise la hauteur complète de la viewport */
+  background-image: url('/assets/image-dawamaghreb/imageaccueil.jpg.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Ajouté pour fixer le background */
+  filter: blur(8px);
+  z-index: -1; /* Changé de 0 à -1 pour être derrière tous les éléments */
+}
+
+.home-container {
+  position: relative;
+  z-index: 1;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  min-height: 100vh; /* Assure que le container couvre toute la hauteur */
+}
+
+.logo {
+  width: 140px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10; /* Ajouté z-index élevé pour assurer la visibilité */
+}
+
+.title {
+  text-align: center;
+  color: white;
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  z-index: 10; /* Ajouté z-index pour assurer la visibilité */
+  position: relative; /* Ajouté pour que z-index fonctionne */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ajouté pour améliorer la lisibilité */
+}
+
+.search-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  z-index: 10; /* Ajouté z-index */
+  position: relative; /* Ajouté pour que z-index fonctionne */
+}
+
+.search-input {
+  padding: 0.8rem;
+  border-radius: 30px;
+  border: none;
+  width: 250px;
+  z-index: 10; /* Ajouté z-index */
+  position: relative; /* Ajouté pour que z-index fonctionne */
+}
+
+select.search-input {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+}
+
+.orange-btn {
+  background-color: #FEBB5F;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  border-radius: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 10; /* Ajouté z-index */
+  position: relative; /* Ajouté pour que z-index fonctionne */
+}
+
+.section-title {
+  color: black;
+  font-size: 24px;
+  margin: 20px 0 10px;
+  z-index: 10; /* Ajouté z-index */
+  position: relative; /* Ajouté pour que z-index fonctionne */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ajouté pour améliorer la lisibilité */
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  z-index: 10; /* Ajouté z-index */
+  position: relative; /* Ajouté pour que z-index fonctionne */
+}
+
+table {
+  border-collapse: collapse;
+  width: 95%;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* Ajouté z-index */
+  position: relative; /* Ajouté pour que z-index fonctionne */
+}
+
+th, td {
+  padding: 1rem;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+}
+
+thead tr {
+  background-color: #2DBDB4;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+tbody tr:nth-child(odd) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.status {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+.status.green { background-color: #4CAF50; }
+.status.yellow { background-color: #FFC107; color: black; }
+.status.red { background-color: #F44336; }
+.status.gray { background-color: #9E9E9E; }
+
+.action-btn {
+  background-color: #FEBB5F;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0 2px;
+}
+
+.comment-input {
+  padding: 0.3rem;
+  border-radius: 10px;
+  border: none;
+  width: 150px;
+}
+
+/* Ajout de règles pour gérer les problèmes de responsive */
+@media (max-width: 768px) {
+  .blur-background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .logo {
+    position: relative;
+    top: auto;
+    left: auto;
+    display: block;
+    margin: 0 auto 20px;
+  }
+  
+  .title {
+    margin-top: 20px;
+  }
+}
